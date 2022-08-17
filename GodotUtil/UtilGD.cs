@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Godot
 {
@@ -41,6 +40,14 @@ namespace Godot
             hour = (int)timeDict["hour"];
             minute = (int)timeDict["minute"];
             seconds = (int)timeDict["second"];
+        }
+
+        public static RandomNumberGenerator GodotRNG(bool setup = false)
+        {
+            var rng = new RandomNumberGenerator();
+            if(setup)
+                rng.Randomize();
+            return rng;
         }
 
         #region Create Node

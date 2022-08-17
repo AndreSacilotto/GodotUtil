@@ -1,10 +1,14 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 using static Godot.NetworkedMultiplayerENet;
+using static Godot.NetworkedMultiplayerPeer;
 
 namespace Util
 {
     public static class UtilNetwork
     {
+        public const int MAX_PORT = 65535;
+        public const int SERVER_ID = 1;
 
         public static void SeparateFullAddress(string fullAddress, out string address, out int port, char separator = ':')
         {
@@ -18,8 +22,10 @@ namespace Util
             return address + separator + port;
         }
 
-        public static NetworkedMultiplayerENet CreateENetPeer(bool ordered = false, int channels = 3, CompressionModeEnum compression = CompressionModeEnum.RangeCoder, bool relay = true, int transferChannel = -1, string dtlsHostname = "", bool dtlsVerify = true, bool dtlsUse = false) => new NetworkedMultiplayerENet
+        public static NetworkedMultiplayerENet CreateENetPeer(bool refuseConnections = false, TransferModeEnum transferMode = TransferModeEnum.Reliable, bool ordered = false, int channels = 3, CompressionModeEnum compression = CompressionModeEnum.RangeCoder, bool relay = true, int transferChannel = -1, string dtlsHostname = "", bool dtlsVerify = true, bool dtlsUse = false) => new NetworkedMultiplayerENet
         {
+            RefuseNewConnections = refuseConnections,
+            TransferMode = transferMode,
             AlwaysOrdered = ordered,
             ChannelCount = channels,
             CompressionMode = compression,
@@ -35,7 +41,6 @@ namespace Util
         public static WebRTCMultiplayer NetworkPeerWebRTC(this SceneTree tree) => tree.NetworkPeer as WebRTCMultiplayer;
         public static WebSocketMultiplayerPeer NetworkPeerWebSocket(this SceneTree tree) => tree.NetworkPeer as WebSocketMultiplayerPeer;
 
-
         public static void CloseENet(SceneTree tree)
         {
             (tree.NetworkPeer as NetworkedMultiplayerENet).CloseConnection();
@@ -45,6 +50,15 @@ namespace Util
         {
             (tree.NetworkPeer as WebRTCMultiplayer).Close();
             tree.NetworkPeer = null;
+        }
+
+        public static int[] GetAllPeers(SceneTree tree)
+        {
+            var peers = tree.GetNetworkConnectedPeers();
+            var peersPlus = new int[peers.Length + 1];
+            Array.Copy(peers, 0, peersPlus, 1, peers.Length);
+            peersPlus[0] = tree.GetNetworkUniqueId();
+            return peersPlus;
         }
 
         public static string[] GetIPs()

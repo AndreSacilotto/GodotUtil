@@ -9,9 +9,9 @@ namespace Util
     {
         public const string FLOAT_FIXED_POINT = "0.############################################################################################################";
 
-        public const string numbers = "0123456789";
-        public const string charLower = "abcdefghijklmnopqrstuvwxyz";
-        public const string charUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public const string NUMBERS = "0123456789";
+        public const string CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
+        public const string CHAR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         #region Contains
 
@@ -55,6 +55,78 @@ namespace Util
         }
 
         #endregion
+
+        public static string Replace(this string text, char search, string replacement)
+        {
+            var sb = new StringBuilder(text.Length);
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == search)
+                    sb.Append(replacement);
+                else
+                    sb.Append(text[i]);
+            }
+            return sb.ToString();
+        }
+
+        public static string Replace(this string text, string replacement, params char[] search)
+        {
+            var sb = new StringBuilder(text.Length);
+            for (int i = 0; i < text.Length; i++)
+            {
+                bool found = false;
+                for (int j = 0; j < search.Length; j++)
+                {
+                    if (text[i] == search[j])
+                    {
+                        sb.Append(replacement);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                    sb.Append(text[i]);
+            }
+            return sb.ToString();
+        }
+
+        public static string ReplaceAll(string text, string replacement, params string[] search)
+        {
+            var sb = new StringBuilder();
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                bool found = false;
+                for (int j = 0; j < search.Length; j++)
+                {
+                    var current = search[j];
+                    if (i - text.Length < current.Length)
+                        continue;
+
+                    bool same = true;
+                    int k;
+                    for (k = 0; k < current.Length; k++)
+                        same = text[i + k] == current[k];
+
+                    if (same)
+                    {
+                        sb.Append(replacement);
+                        i += k;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                    sb.Append(text[i]);
+            }
+
+            return sb.ToString();
+        }
+
+
+        #region Methods
 
         public static string EnumToName(Enum enumValue)
         {
@@ -148,14 +220,10 @@ namespace Util
 
         public static string GenerateID(int lenght, bool allowNumbers, bool allowLowerCase, bool allowUpperCase)
         {
-            const string numbers = "0123456789";
-            const string charLower = "abcdefghijklmnopqrstuvwxyz";
-            const string charUpper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
             var allowChars = string.Empty;
-            if (allowNumbers) allowChars += numbers;
-            if (allowLowerCase) allowChars += charLower;
-            if (allowUpperCase) allowChars += charUpper;
+            if (allowNumbers) allowChars += NUMBERS;
+            if (allowLowerCase) allowChars += CHAR_LOWER;
+            if (allowUpperCase) allowChars += CHAR_UPPER;
 
             var rng = new Random();
             var sb = new StringBuilder(lenght);
@@ -164,6 +232,8 @@ namespace Util
                 sb.Append(allowChars[rng.Next(len)]);
             return sb.ToString();
         }
+
+        #endregion
 
     }
 
