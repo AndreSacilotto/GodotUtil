@@ -35,6 +35,8 @@ namespace Godot
         }
 
         #endregion
+
+        #region Time
         
         public static void GodotTime(out int hour, out int minute, out int seconds)
         {
@@ -44,6 +46,10 @@ namespace Godot
             seconds = (int)timeDict["second"];
         }
 
+        #endregion
+
+        #region RNG
+
         public static RandomNumberGenerator GodotRNG(bool setup = false)
         {
             var rng = new RandomNumberGenerator();
@@ -51,6 +57,8 @@ namespace Godot
                 rng.Randomize();
             return rng;
         }
+
+        #endregion
 
         #region Create Node
 
@@ -249,7 +257,7 @@ namespace Godot
 
         #endregion
 
-        #region Node Others
+        #region Node Hierarch
         [MethodImpl(INLINE)] public static void GetNode<T>(this Node node, NodePath np, out T item) where T : Node => item = node.GetNode<T>(np);
         [MethodImpl(INLINE)] public static void GetChild<T>(this Node node, int index, out T item) where T : Node => item = node.GetChild<T>(index);
 
@@ -260,6 +268,16 @@ namespace Godot
         {
             foreach (var item in node.GetChildren())
                 yield return (T)item;
+        }
+
+        #endregion
+
+        #region Node Others
+
+        public static void SetBothProcess(Node node, bool enable)
+        {
+            node.SetProcess(enable);
+            node.SetPhysicsProcess(enable);
         }
 
         #endregion
