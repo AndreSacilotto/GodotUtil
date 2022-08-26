@@ -52,7 +52,7 @@ namespace Util
             tree.NetworkPeer = null;
         }
 
-        public static int[] GetAllPeers(SceneTree tree)
+        public static int[] GetPeersWithServer(SceneTree tree)
         {
             var peers = tree.GetNetworkConnectedPeers();
             var peersPlus = new int[peers.Length + 1];
@@ -65,6 +65,23 @@ namespace Util
         {
             return UtilGD.GodotArray<string>(IP.GetLocalAddresses());
         }
+
+        public static void OpenTerminals(int count, string godot, string project, string scene)
+        {
+            var args = new string[] { "--path", project, scene };
+            for (int i = 0; i < count; i++)
+                OS.Execute(godot, args, false);
+        }        
+        
+        public static void OpenTerminals(int count, string scene = "")
+        {
+            var godotPath = OS.GetExecutablePath();
+            var projectPath = ProjectSettings.GlobalizePath("res://");
+            if(string.IsNullOrWhiteSpace(scene))
+                scene = (string)ProjectSettings.GetSetting("application/run/main_scene");
+            OpenTerminals(count, godotPath, projectPath, scene);
+        }
+
 
     }
 }
