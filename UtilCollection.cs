@@ -6,6 +6,9 @@ namespace Util
 {
     public static class UtilCollection
     {
+
+        #region Array
+
         public static T[] NewOfSameSize<T>(this T[] array) => new T[array.Length];
         public static T[,] NewOfSameSize<T>(this T[,] array) => new T[array.GetLength(0), array.GetLength(1)];
         public static T[] Clone<T>(this T[] array) => (T[])array.Clone();
@@ -24,6 +27,18 @@ namespace Util
                 Array.Resize(ref array, (int)newCapactiy);
             }
         }
+
+        public static bool ArrayOfSameSize(this object[][] arrays)
+        {
+            int size = arrays[0].Length;
+            for (int i = 1; i < arrays.Length; i++)
+                if (size == arrays[i].Length)
+                    return false;
+            return true;
+        }
+
+        #endregion
+
 
         #region Row and Collums
         public static int Rows<T>(this T[,] array) => array.GetLength(0);
@@ -116,7 +131,19 @@ namespace Util
         public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) =>
             dictionary.TryGetValue(key, out var value) ? value : default;
 
+        public static TValue TryRemoveValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        {
+            if (dictionary.TryGetValue(key, out var value)) 
+            {
+                dictionary.Remove(key);
+                return value;
+            }
+            return default;
+        }
 
         #endregion
+
+
+
     }
 }

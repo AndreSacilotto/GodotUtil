@@ -7,7 +7,7 @@ namespace Util.ObjectPool
 {
     public class ObjectPool<T> : IObjectPool<T> where T : class, IObjectPoolItem<T>, new()
     {
-        private readonly Queue<T> pool = new Queue<T>();
+        private readonly Queue<T> pool = new();
 
         public int Count => pool.Count;
 

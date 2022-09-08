@@ -4,7 +4,7 @@ namespace Util.MathC
 {
     public struct Power2 : IComparable, IFormattable, IConvertible, IComparable<Power2>, IEquatable<Power2>
     {
-        public static Power2 NewPower2(int exponent) => new Power2((uint)(1 << exponent));
+        public static Power2 NewPower2(int exponent) => new((uint)(1 << exponent));
 
         private uint value;
 
@@ -144,8 +144,8 @@ namespace Util.MathC
 
         #endregion
 
-        public static explicit operator Power2(int v) => new Power2(v);
-        public static explicit operator Power2(uint v) => new Power2(v);
+        public static explicit operator Power2(int v) => new(v);
+        public static explicit operator Power2(uint v) => new(v);
 
         public static implicit operator int(Power2 p) => p.IntValue;
         public static implicit operator uint(Power2 p) => p.value;

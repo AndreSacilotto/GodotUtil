@@ -30,7 +30,7 @@ namespace Util
 
         #region Percent
 
-        public static NumberFormatInfo PercentFormat => new NumberFormatInfo
+        public static NumberFormatInfo PercentFormat => new()
         {
             PercentGroupSeparator = string.Empty,
             PercentPositivePattern = 1,

@@ -58,7 +58,7 @@ namespace Util
             var list = new List<Control>();
             for (int i = startIdx; i < len; i++)
             {
-                if (!(control.GetChild(i) is Control c) || !c.Visible)
+                if (control.GetChild(i) is not Control c || !c.Visible)
                     continue;
                 list.Add(c);
             }
@@ -141,7 +141,7 @@ namespace Util
         {
             foreach (var item in node.GetChildren())
             {
-                if (!(item is Control c) || !c.Visible)
+                if (item is not Control c || !c.Visible)
                     continue;
                 yield return (T)c;
             }

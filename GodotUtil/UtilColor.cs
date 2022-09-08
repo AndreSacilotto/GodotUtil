@@ -13,13 +13,12 @@ namespace Util
             A
         }
 
-        private static readonly RandomNumberGenerator colorRng = new RandomNumberGenerator();
-        private static readonly Regex colorExpression = new Regex(@"#?[0-9A-Fa-f]{6}");
+        private static readonly RandomNumberGenerator colorRng = new();
+        private static readonly Regex colorExpression = new(@"#?[0-9A-Fa-f]{6}");
 
         public static bool HexStringIsValidColor(string value) => colorExpression.IsMatch(value);
 
-        public static Color RandomColor(float alpha = 1) =>
-            new Color(colorRng.Randf(), colorRng.Randf(), colorRng.Randf(), alpha);
+        public static Color RandomColor(float alpha = 1) => new(colorRng.Randf(), colorRng.Randf(), colorRng.Randf(), alpha);
 
         public static Color PseudoRandomColor(string colorStr, float alpha = 1)
         {
@@ -31,7 +30,7 @@ namespace Util
                 g += charValue + charValue;
                 b += charValue + charValue + charValue;
             }
-            return new Color((r % 255) / 255f, (g % 255) / 255f, (b % 255) / 255f, alpha);
+            return new((r % 255) / 255f, (g % 255) / 255f, (b % 255) / 255f, alpha);
         }
 
 
@@ -62,71 +61,71 @@ namespace Util
         #region Basic Colors
 
         /// <summary>255 255 255</summary>
-        public static Color White => new Color(1, 1, 1, 1);
+        public static Color White => new(1, 1, 1, 1);
         /// <summary>0 0 0</summary>
-        public static Color Black => new Color(0, 0, 0, 1);
+        public static Color Black => new(0, 0, 0, 1);
         /// <summary>255 255 255 a:0</summary>
-        public static Color Transparent => new Color(1, 1, 1, 0);
+        public static Color Transparent => new(1, 1, 1, 0);
 
         /// <summary>255 0 0</summary>
-        public static Color Red => new Color(1, 0, 0, 1);
+        public static Color Red => new(1, 0, 0, 1);
         /// <summary>0 255 0</summary>
-        public static Color Green => new Color(0, 1, 0, 1);
+        public static Color Green => new(0, 1, 0, 1);
         /// <summary>0 0 255</summary>
-        public static Color Blue => new Color(0, 0, 1, 1);
+        public static Color Blue => new(0, 0, 1, 1);
 
         /// <summary>255 255 0</summary>
-        public static Color Yellow => new Color(1, 1, 0, 1);
+        public static Color Yellow => new(1, 1, 0, 1);
         /// <summary>255 0 255 - Same as Fuchsia</summary>
-        public static Color Magenta => new Color(1, 0, 1, 1);
+        public static Color Magenta => new(1, 0, 1, 1);
         /// <summary>0 255 255 - Same as Aqua</summary>
-        public static Color Cyan => new Color(0, 1, 1, 1);
+        public static Color Cyan => new(0, 1, 1, 1);
 
         #endregion
 
         #region Half Colors
 
         /// <summary>255 128 0</summary>
-        public static Color Orange => new Color(1, 0.5f, 0, 1);
+        public static Color Orange => new(1, 0.5f, 0, 1);
         /// <summary>255 0 128 - Same as Rose</summary>
-        public static Color DeepPink => new Color(1, 0, 0.5f, 1);
+        public static Color DeepPink => new(1, 0, 0.5f, 1);
 
         /// <summary>128 255 0 - Can also be called GreenRed</summary>
-        public static Color GreenYellow => new Color(0.5f, 1, 0, 1);
+        public static Color GreenYellow => new(0.5f, 1, 0, 1);
         /// <summary>0 255 128 - Same as SpringGreen</summary>
-        public static Color GreenBlue => new Color(0, 1, 0.5f, 1);
+        public static Color GreenBlue => new(0, 1, 0.5f, 1);
 
         /// <summary>128 0 255 - Usually called ElectricViolet</summary>
-        public static Color Violet => new Color(0.5f, 0, 1, 1);
+        public static Color Violet => new(0.5f, 0, 1, 1);
         /// <summary>0 128 255</summary>
-        public static Color Azure => new Color(0, 0.5f, 1, 1);
+        public static Color Azure => new(0, 0.5f, 1, 1);
 
         //Single Half
         /// <summary>128 0 0</summary>
-        public static Color Maroon => new Color(0.5f, 0, 0, 1);
+        public static Color Maroon => new(0.5f, 0, 0, 1);
         /// <summary>0 128 0</summary>
-        public static Color HalfGreen => new Color(0, 0.5f, 0, 1);
+        public static Color HalfGreen => new(0, 0.5f, 0, 1);
         /// <summary>0 0 128</summary>
-        public static Color Navy => new Color(0, 0, 0.5f, 1);
+        public static Color Navy => new(0, 0, 0.5f, 1);
 
         //Double Half
         /// <summary>128 128 0</summary>
-        public static Color Olive => new Color(0.5f, 0.5f, 0, 1);
+        public static Color Olive => new(0.5f, 0.5f, 0, 1);
         /// <summary>128 0 128</summary>
-        public static Color Purple => new Color(0.5f, 0, 0.5f, 1);
+        public static Color Purple => new(0.5f, 0, 0.5f, 1);
         /// <summary>0 128 128</summary>
-        public static Color Teal => new Color(0, 0.5f, 0.5f, 1);
+        public static Color Teal => new(0, 0.5f, 0.5f, 1);
 
         /// <summary>128 128 128 - Also known as Grey</summary>
-        public static Color Gray => new Color(0.5f, 0.5f, 0.5f, 1);
+        public static Color Gray => new(0.5f, 0.5f, 0.5f, 1);
 
         #endregion
 
         #region More Colors
 
-        public static Color Copper => new Color(0.72f, 0.45f, 0.2f, 1);
-        public static Color Silver => new Color(.75f, .75f, .75f, 1);
-        public static Color Gold => new Color(1, 0.84f, 0, 1);
+        public static Color Copper => new(0.72f, 0.45f, 0.2f, 1);
+        public static Color Silver => new(.75f, .75f, .75f, 1);
+        public static Color Gold => new(1, 0.84f, 0, 1);
 
         #endregion
 

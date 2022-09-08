@@ -22,7 +22,7 @@ namespace Util
             return address + separator + port;
         }
 
-        public static NetworkedMultiplayerENet CreateENetPeer(bool refuseConnections = false, TransferModeEnum transferMode = TransferModeEnum.Reliable, bool ordered = false, int channels = 3, CompressionModeEnum compression = CompressionModeEnum.RangeCoder, bool relay = true, int transferChannel = -1, string dtlsHostname = "", bool dtlsVerify = true, bool dtlsUse = false) => new NetworkedMultiplayerENet
+        public static NetworkedMultiplayerENet CreateENetPeer(bool refuseConnections = false, TransferModeEnum transferMode = TransferModeEnum.Reliable, bool ordered = false, int channels = 3, CompressionModeEnum compression = CompressionModeEnum.RangeCoder, bool relay = true, int transferChannel = -1, string dtlsHostname = "", bool dtlsVerify = true, bool dtlsUse = false) => new()
         {
             RefuseNewConnections = refuseConnections,
             TransferMode = transferMode,
@@ -82,6 +82,8 @@ namespace Util
             OpenTerminals(count, godotPath, projectPath, scene);
         }
 
+        public static string GenerateObjectName(string prefix, int id) => prefix + '_' + id;
+        public static string GenerateObjectName(string prefix, int id, int number) => prefix + '_' + id + '_' + number;
 
     }
 }

@@ -9,7 +9,7 @@ namespace Util.ObjectPool
     {
         protected PackedScene poolObject;
 
-        private readonly Queue<T> pool = new Queue<T>();
+        private readonly Queue<T> pool = new();
 
         public NodeObjectPool(PackedScene poolObject, int initialSize = 0) : base(initialSize)
         {

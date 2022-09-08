@@ -6,7 +6,7 @@ namespace Util.ObjectPool
 {
     public class ObjectPoolEvents<T> : IObjectPool<T>, IDisposable where T : class
     {
-        private readonly Queue<T> pool = new Queue<T>();
+        private readonly Queue<T> pool = new();
 
         public int Count => pool.Count;
 

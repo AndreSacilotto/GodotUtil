@@ -101,7 +101,7 @@ namespace Godot
 
         public Vector4 Abs()
         {
-            return new Vector4(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
+            return new(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
         }
 
 #if GODOT
@@ -121,9 +121,9 @@ namespace Godot
             real_t den = Mathf.Sqrt(1 - q.w * q.w);
             if (den == 0)
             {
-                return new Vector4(0, 0, -1, angle);
+                return new(0, 0, -1, angle);
             }
-            return new Vector4(q.x / den, q.y / den, q.z / den, angle);
+            return new(q.x / den, q.y / den, q.z / den, angle);
         }
 
         public static Vector4 AxisAngle(Basis b)
@@ -139,7 +139,7 @@ namespace Godot
 
         public Vector4 Ceil()
         {
-            return new Vector4(Mathf.Ceil(x), Mathf.Ceil(y), Mathf.Ceil(z), Mathf.Ceil(w));
+            return new(Mathf.Ceil(x), Mathf.Ceil(y), Mathf.Ceil(z), Mathf.Ceil(w));
         }
 
         public Vector4 CubicInterpolate(Vector4 b, Vector4 preA, Vector4 postB, real_t t)
@@ -170,9 +170,9 @@ namespace Godot
         public static Vector4 DirMag(Vector3 v)
         {
 #if GODOT
-            return new Vector4(v.Normalized(), v.Length());
+            return new(v.Normalized(), v.Length());
 #elif UNITY_5_3_OR_NEWER
-            return new Vector4(v.normalized, v.magnitude);
+            return new(v.normalized, v.magnitude);
 #endif
         }
 
@@ -201,12 +201,12 @@ namespace Godot
 
         public Vector4 Floor()
         {
-            return new Vector4(Mathf.Floor(x), Mathf.Floor(y), Mathf.Floor(z), Mathf.Floor(w));
+            return new(Mathf.Floor(x), Mathf.Floor(y), Mathf.Floor(z), Mathf.Floor(w));
         }
 
         public Vector4 Inverse()
         {
-            return new Vector4(1.0f / x, 1.0f / y, 1.0f / z, 1.0f / w);
+            return new(1.0f / x, 1.0f / y, 1.0f / z, 1.0f / w);
         }
 
         public bool IsNormalized()
@@ -243,7 +243,7 @@ namespace Godot
         /// <returns>The resulting vector of the interpolation.</returns>
         public Vector4 Lerp(Vector4 to, real_t weight)
         {
-            return new Vector4
+            return new
             (
                 Mathf.Lerp(x, to.x, weight),
                 Mathf.Lerp(y, to.y, weight),
@@ -261,7 +261,7 @@ namespace Godot
         /// <returns>The resulting vector of the interpolation.</returns>
         public Vector4 Lerp(Vector4 to, Vector4 weight)
         {
-            return new Vector4
+            return new
             (
                 Mathf.Lerp(x, to.x, weight.x),
                 Mathf.Lerp(y, to.y, weight.y),
@@ -279,7 +279,7 @@ namespace Godot
         /// <returns>The resulting vector of the interpolation.</returns>
         public Vector4 LinearInterpolate(Vector4 to, real_t weight)
         {
-            return new Vector4
+            return new
             (
                 Mathf.Lerp(x, to.x, weight),
                 Mathf.Lerp(y, to.y, weight),
@@ -297,7 +297,7 @@ namespace Godot
         /// <returns>The resulting vector of the interpolation.</returns>
         public Vector4 LinearInterpolate(Vector4 to, Vector4 weight)
         {
-            return new Vector4
+            return new
             (
                 Mathf.Lerp(x, to.x, weight.x),
                 Mathf.Lerp(y, to.y, weight.y),
@@ -387,7 +387,7 @@ namespace Godot
 
         public Vector4 Round()
         {
-            return new Vector4(Mathf.Round(x), Mathf.Round(y), Mathf.Round(z), Mathf.Round(w));
+            return new(Mathf.Round(x), Mathf.Round(y), Mathf.Round(z), Mathf.Round(w));
         }
 
         public Vector4 Sign()
@@ -408,7 +408,7 @@ namespace Godot
 #if GODOT
         public Vector4 Snapped(Vector4 by)
         {
-            return new Vector4
+            return new
             (
                 Mathf.Stepify(x, by.x),
                 Mathf.Stepify(y, by.y),
@@ -433,19 +433,19 @@ namespace Godot
         }
 
         // Constants
-        private static readonly Vector4 _zero = new Vector4(0, 0, 0, 0);
-        private static readonly Vector4 _one = new Vector4(1, 1, 1, 1);
-        private static readonly Vector4 _negOne = new Vector4(-1, -1, -1, -1);
+        private static readonly Vector4 _zero = new(0, 0, 0, 0);
+        private static readonly Vector4 _one = new(1, 1, 1, 1);
+        private static readonly Vector4 _negOne = new(-1, -1, -1, -1);
 #if GODOT
-        private static readonly Vector4 _inf = new Vector4(Mathf.Inf, Mathf.Inf, Mathf.Inf, Mathf.Inf);
+        private static readonly Vector4 _inf = new(Mathf.Inf, Mathf.Inf, Mathf.Inf, Mathf.Inf);
 #elif UNITY_5_3_OR_NEWER
-        private static readonly Vector4 _inf = new Vector4(real_t.PositiveInfinity, real_t.PositiveInfinity, real_t.PositiveInfinity, real_t.PositiveInfinity);
+        private static readonly Vector4 _inf = new(real_t.PositiveInfinity, real_t.PositiveInfinity, real_t.PositiveInfinity, real_t.PositiveInfinity);
 #endif
 
-        private static readonly Vector4 _unitX = new Vector4(1, 0, 0, 0);
-        private static readonly Vector4 _unitY = new Vector4(0, 1, 0, 0);
-        private static readonly Vector4 _unitZ = new Vector4(0, 0, 1, 0);
-        private static readonly Vector4 _unitW = new Vector4(0, 0, 0, 1);
+        private static readonly Vector4 _unitX = new(1, 0, 0, 0);
+        private static readonly Vector4 _unitY = new(0, 1, 0, 0);
+        private static readonly Vector4 _unitZ = new(0, 0, 1, 0);
+        private static readonly Vector4 _unitW = new(0, 0, 0, 1);
 
         public static Vector4 Zero { get { return _zero; } }
         public static Vector4 One { get { return _one; } }
@@ -495,7 +495,7 @@ namespace Godot
 
         public static explicit operator Vector4(UnityEngine.Vector4 value)
         {
-            return new Vector4(value.x, value.y, value.z, value.w);
+            return new(value.x, value.y, value.z, value.w);
         }
 #endif
 

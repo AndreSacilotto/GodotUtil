@@ -80,7 +80,7 @@ namespace Godot
 
         public Vector4i Abs()
         {
-            return new Vector4i(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
+            return new(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
         }
 
         public int DistanceSquaredTo(Vector4i b)
@@ -198,14 +198,14 @@ namespace Godot
         }
 
         // Constants
-        private static readonly Vector4i _zero = new Vector4i(0, 0, 0, 0);
-        private static readonly Vector4i _one = new Vector4i(1, 1, 1, 1);
-        private static readonly Vector4i _negOne = new Vector4i(-1, -1, -1, -1);
+        private static readonly Vector4i _zero = new(0, 0, 0, 0);
+        private static readonly Vector4i _one = new(1, 1, 1, 1);
+        private static readonly Vector4i _negOne = new(-1, -1, -1, -1);
 
-        private static readonly Vector4i _unitX = new Vector4i(1, 0, 0, 0);
-        private static readonly Vector4i _unitY = new Vector4i(0, 1, 0, 0);
-        private static readonly Vector4i _unitZ = new Vector4i(0, 0, 1, 0);
-        private static readonly Vector4i _unitW = new Vector4i(0, 0, 0, 1);
+        private static readonly Vector4i _unitX = new(1, 0, 0, 0);
+        private static readonly Vector4i _unitY = new(0, 1, 0, 0);
+        private static readonly Vector4i _unitZ = new(0, 0, 1, 0);
+        private static readonly Vector4i _unitW = new(0, 0, 0, 1);
 
         public static Vector4i Zero { get { return _zero; } }
         public static Vector4i One { get { return _one; } }
@@ -271,7 +271,7 @@ namespace Godot
 
         public static explicit operator Vector4i(UnityEngine.Vector4 value)
         {
-            return new Vector4i((Vector4)value);
+            return new((Vector4)value);
         }
 #endif
 

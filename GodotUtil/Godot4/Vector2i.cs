@@ -291,13 +291,13 @@ namespace Godot
         }
 
         // Constants
-        private static readonly Vector2i _zero = new Vector2i(0, 0);
-        private static readonly Vector2i _one = new Vector2i(1, 1);
+        private static readonly Vector2i _zero = new(0, 0);
+        private static readonly Vector2i _one = new(1, 1);
 
-        private static readonly Vector2i _up = new Vector2i(0, -1);
-        private static readonly Vector2i _down = new Vector2i(0, 1);
-        private static readonly Vector2i _right = new Vector2i(1, 0);
-        private static readonly Vector2i _left = new Vector2i(-1, 0);
+        private static readonly Vector2i _up = new(0, -1);
+        private static readonly Vector2i _down = new(0, 1);
+        private static readonly Vector2i _right = new(1, 0);
+        private static readonly Vector2i _left = new(-1, 0);
 
         /// <summary>
         /// Zero vector, a vector with all components set to <c>0</c>.

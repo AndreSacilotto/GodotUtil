@@ -11,25 +11,25 @@ namespace Util.Vector
         public const int RIGHT = 1;
 
         /// <summary>x: 0, y: 0</summary>
-        public static Vector2i None => new Vector2i(0, 0);
+        public static Vector2i None => new(0, 0);
 
         /// <summary>x: 0, y: -1</summary>
-        public static Vector2i Top => new Vector2i(0, TOP);
+        public static Vector2i Top => new(0, TOP);
         /// <summary>x: 1, y: 0</summary>
-        public static Vector2i Right => new Vector2i(RIGHT, 0);
+        public static Vector2i Right => new(RIGHT, 0);
         /// <summary>x: 0, y: 1</summary>
-        public static Vector2i Bottom => new Vector2i(0, BOTTOM);
+        public static Vector2i Bottom => new(0, BOTTOM);
         /// <summary>x: -1, y: 0</summary>
-        public static Vector2i Left => new Vector2i(LEFT, 0);
+        public static Vector2i Left => new(LEFT, 0);
 
         /// <summary>x: -1, y: 1</summary>
-        public static Vector2i BottomLeft => new Vector2i(LEFT, BOTTOM);
+        public static Vector2i BottomLeft => new(LEFT, BOTTOM);
         /// <summary>x: 1, y: 1</summary>
-        public static Vector2i BottomRight => new Vector2i(RIGHT, BOTTOM);
+        public static Vector2i BottomRight => new(RIGHT, BOTTOM);
         /// <summary>x: -1, y: -1</summary>
-        public static Vector2i TopLeft => new Vector2i(LEFT, TOP);
+        public static Vector2i TopLeft => new(LEFT, TOP);
         /// <summary>x: 1, y: -1</summary>
-        public static Vector2i TopRight => new Vector2i(RIGHT, TOP);
+        public static Vector2i TopRight => new(RIGHT, TOP);
 
         public static bool IsDiagonal(Vector2i dir) => dir.x != 0 && dir.y != 0;
         public static bool IsStraight(Vector2i dir) => dir.x == 0 || dir.y == 0;
@@ -37,7 +37,7 @@ namespace Util.Vector
         public static Vector2i PositionToDirection(Vector2 position, Vector2 center = default)
         {
             var rad = Mathf.Atan2(center.y - position.y, center.x - position.x) + Mathf.Pi;
-            return new Vector2i(Mathf.RoundToInt(Mathf.Cos(rad)), Mathf.RoundToInt(Mathf.Sin(rad)));
+            return new(Mathf.RoundToInt(Mathf.Cos(rad)), Mathf.RoundToInt(Mathf.Sin(rad)));
         }
         public static Vector2 PositionToFloatDirection(int decimals, Vector2 position, Vector2 center = default)
         {
