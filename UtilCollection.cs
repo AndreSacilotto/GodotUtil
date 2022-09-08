@@ -9,10 +9,7 @@ namespace Util
 
         #region Array
 
-        public static T[] NewOfSameSize<T>(this T[] array) => new T[array.Length];
         public static T[,] NewOfSameSize<T>(this T[,] array) => new T[array.GetLength(0), array.GetLength(1)];
-        public static T[] Clone<T>(this T[] array) => (T[])array.Clone();
-        public static T[,] Clone<T>(this T[,] array) => (T[,])array.Clone();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ChangeCapacity<T>(ref T[] array, int newSize)
@@ -37,8 +34,255 @@ namespace Util
             return true;
         }
 
-        #endregion
+        public enum Anchor1D
+        {
+            Left,
+            Center,
+            Right,
+        }
 
+        public enum Anchor2D
+        {
+            TopLeft,
+            Top,
+            TopRight,
+            Right,
+            BottomRight,
+            Bottom,
+            BottomLeft,
+            Left,
+            Center,
+        }
+
+        public static T[] Expand<T>(this T[] array, int value, Anchor1D anchor = Anchor1D.Left)
+        {
+            if (value == 0)
+                return array;
+
+            bool isPositive = value > 0;
+            var temp = new T[array.Length + value];
+            value = Math.Abs(value);
+            if (anchor == Anchor1D.Left)
+            {
+                Array.Copy(array, temp, array.Length - value);
+            }
+            else if (anchor == Anchor1D.Center)
+            {
+                if (isPositive)
+                    Array.Copy(array, 0, temp, value / 2, array.Length);
+                else
+                    Array.Copy(array, value / 2, temp, 0, array.Length - value);
+            }
+            else if (anchor == Anchor1D.Right)
+            {
+                if (isPositive)
+                    Array.Copy(array, 0, temp, value, array.Length);
+                else
+                    Array.Copy(array, value, temp, 0, array.Length - value);
+            }
+
+            return temp;
+        }
+
+        public static T[,] Expand<T>(this T[,] array, int gr, int gc, Anchor2D anchor = Anchor2D.TopLeft)
+        {
+            bool positiveR = gr >= 0;
+            bool positiveC = gc >= 0;
+
+            array.RowsColumns(out int rows, out int cols);
+            int newRows = rows + gr;
+            int newCols = cols + gc;
+
+            T[,] newArr = new T[newRows, newCols];
+
+            gr = Math.Abs(gr);
+            gc = Math.Abs(gc);
+
+            int halfgr = gr / 2;
+            int halfgc = gc / 2;
+
+            int rmin = Math.Min(rows, newRows);
+            int cmin = Math.Min(cols, newCols);
+
+            switch (anchor)
+            {
+                case Anchor2D.TopLeft:
+                for (int r = 0; r < rmin; r++)
+                    for (int c = 0; c < cmin; c++)
+                        newArr[r, c] = array[r, c];
+                break;
+
+                case Anchor2D.Top:
+                if (positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c + halfgc] = array[r, c];
+                }
+                else
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r, c + halfgc];
+                }
+                break;
+
+                case Anchor2D.TopRight:
+                if (positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c + gc] = array[r, c];
+                }
+                else
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r, c + gc];
+                }
+                break;
+                case Anchor2D.Right:
+                if (positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + halfgr, c + gc] = array[r, c];
+                }
+                else if (positiveR && !positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + halfgr, c] = array[r, c + gc];
+                }
+                else if (!positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c + gc] = array[r + halfgr, c];
+                }
+                else //!!
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r + halfgr, c + gc];
+                }
+                break;
+
+                case Anchor2D.BottomRight:
+                if (positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + gr, c + gc] = array[r, c];
+                }
+                else if (positiveR && !positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + gr, c] = array[r, c + gc];
+                }
+                else if (!positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c + gc] = array[r + gr, c];
+                }
+                else //!!
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r + gr, c + gc];
+                }
+                break;
+
+                case Anchor2D.Bottom:
+                if (positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + gr, c + halfgc] = array[r, c];
+                }
+                else if (positiveR && !positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + gr, c] = array[r, c + halfgc];
+                }
+                else if (!positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c + halfgc] = array[r + gr, c];
+                }
+                else //!!
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r + gr, c + halfgc];
+                }
+                break;
+
+                case Anchor2D.BottomLeft:
+                if (positiveR)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + gr, c] = array[r, c];
+                }
+                else
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r + gr, c];
+                }
+                break;
+
+                case Anchor2D.Left:
+                if (positiveR)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + halfgr, c] = array[r, c];
+                }
+                else
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r + halfgr, c];
+                }
+                break;
+
+                case Anchor2D.Center:
+                if (positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + halfgr, c + halfgc] = array[r, c];
+                }
+                else if (positiveR && !positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r + halfgr, c] = array[r, c + halfgc];
+                }
+                else if (!positiveR && positiveC)
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c + halfgc] = array[r + halfgr, c];
+                }
+                else //!!
+                {
+                    for (int r = 0; r < rmin; r++)
+                        for (int c = 0; c < cmin; c++)
+                            newArr[r, c] = array[r + halfgr, c + halfgc];
+                }
+                break;
+            }
+            return newArr;
+        }
+
+        #endregion
 
         #region Row and Collums
         public static int Rows<T>(this T[,] array) => array.GetLength(0);
@@ -119,7 +363,7 @@ namespace Util
         #endregion
 
         #region List / Dict
-        public static void AddSorted<T>(List<T> list, T item) where T : IComparable<T>
+        public static void AddSorted<T>(this List<T> list, T item) where T : IComparable<T>
         {
             var index = list.BinarySearch(item);
             if (index < 0)
