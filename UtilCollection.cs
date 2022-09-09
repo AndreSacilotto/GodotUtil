@@ -363,12 +363,23 @@ namespace Util
         #endregion
 
         #region List / Dict
-        public static void AddSorted<T>(this List<T> list, T item) where T : IComparable<T>
+        public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort((a, b) => b.CompareTo(a));
+
+        public static int AddSorted<T>(this List<T> list, T item) where T : IComparable<T>
         {
             var index = list.BinarySearch(item);
             if (index < 0)
                 index = ~index;
             list.Insert(index, item);
+            return index;
+        }
+        public static int AddSorted<T>(this List<T> list, T item, IComparer<T> comparer)
+        {
+            var index = list.BinarySearch(item, comparer);
+            if (index < 0)
+                index = ~index;
+            list.Insert(index, item);
+            return index;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

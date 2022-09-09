@@ -6,7 +6,6 @@ namespace Util.Collections
 {
     public class FakeArray2D<T> : ICloneable, ICollection, IStructuralComparable, IStructuralEquatable, IReadOnlyCollection<T>
     {
-        [Godot.Export()]
         protected T[] array;
 
         public FakeArray2D(int size) : this(size, size) { }
@@ -84,12 +83,13 @@ namespace Util.Collections
         }
 
         public object Clone() => array.Clone();
-        public void CopyTo(Array array, int index) => this.array.CopyTo(array, index);
-        public IEnumerator GetEnumerator() => array.GetEnumerator();
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => array.GetEnumeratorGeneric();
+        public void CopyTo(Array arr, int index) => array.CopyTo(arr, index);
         public int CompareTo(object other, IComparer comparer) => ((IStructuralComparable)array).CompareTo(other, comparer);
         public bool Equals(object other, IEqualityComparer comparer) => ((IStructuralEquatable)array).Equals(other, comparer);
         public int GetHashCode(IEqualityComparer comparer) => ((IStructuralEquatable)array).GetHashCode(comparer);
+
+        IEnumerator IEnumerable.GetEnumerator() => array.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => (IEnumerator<T>)array.GetEnumerator();
 
     }
 }
