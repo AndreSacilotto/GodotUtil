@@ -7,28 +7,28 @@ namespace Util.Collections
     public class BinarySortedList<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable, IList, ICollection, IReadOnlyList<T>, IReadOnlyCollection<T>
     {
         protected readonly List<T> internalList;
-        protected Comparer<T> internalComparer;
+        protected IComparer<T> internalComparer;
 
         #region Constructors
 
-        protected BinarySortedList(List<T> list, Comparer<T> comparer) 
+        protected BinarySortedList(List<T> list, IComparer<T> comparer) 
         {
             internalList = list;
             internalComparer = comparer;
         }
 
         public BinarySortedList() : this(Comparer<T>.Default) { }
-        public BinarySortedList(Comparer<T> comparer) : this(new List<T>(), comparer) { }
+        public BinarySortedList(IComparer<T> comparer) : this(new List<T>(), comparer) { }
 
         public BinarySortedList(int capacity) : this(capacity, Comparer<T>.Default) { }
-        public BinarySortedList(int capacity, Comparer<T> comparer) : this(new List<T>(capacity), comparer) { }
+        public BinarySortedList(int capacity, IComparer<T> comparer) : this(new List<T>(capacity), comparer) { }
 
         public BinarySortedList(IEnumerable<T> collection) : this(collection, Comparer<T>.Default) { }
-        public BinarySortedList(IEnumerable<T> collection, Comparer<T> comparer) : this(new List<T>(collection), comparer) { }
+        public BinarySortedList(IEnumerable<T> collection, IComparer<T> comparer) : this(new List<T>(collection), comparer) { }
 
         #endregion
 
-        public Comparer<T> Comparer { 
+        public IComparer<T> Comparer { 
             get => internalComparer;
             set {
                 internalComparer = value;

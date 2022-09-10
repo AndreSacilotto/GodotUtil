@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ComparerReverse<T> : IComparer<T> where T : IComparable<T>
+namespace Util
 {
-    public int Compare(T x, T y) => y.CompareTo(x);
-}
+    public class ComparerReverse<T> : IComparer<T> where T : IComparable<T>
+    {
+        public static ComparerReverse<T> Default { get; } = new();
 
+        public int Compare(T x, T y) => y.CompareTo(x);
+    }
+}
