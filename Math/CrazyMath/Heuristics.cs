@@ -1,5 +1,6 @@
-﻿
-using Godot;
+﻿using System;
+
+using Vector2 = Godot.Vector2;
 
 namespace Util.MathC
 {
@@ -21,7 +22,7 @@ namespace Util.MathC
         /// </summary>
         public static int Manhattan(int x0, int x1, int y0, int y1)
         {
-            return Mathf.Abs(x0 - x1) + Mathf.Abs(y0 - y1);
+            return Math.Abs(x0 - x1) + Math.Abs(y0 - y1);
         }
 
         /// <summary> 
@@ -30,9 +31,9 @@ namespace Util.MathC
         /// </summary>
         public static int Chebyshev(int x0, int x1, int y0, int y1)
         {
-            int diffX = Mathf.Abs(x1 - x0);
-            int diffY = Mathf.Abs(y1 - y0);
-            return Mathf.Max(diffX, diffY);
+            int diffX = Math.Abs(x1 - x0);
+            int diffY = Math.Abs(y1 - y0);
+            return Math.Max(diffX, diffY);
         }
 
         /// <summary> 
@@ -41,10 +42,10 @@ namespace Util.MathC
         /// </summary>
         public static float Octile(int x0, int x1, int y0, int y1)
         {
-            int diffX = Mathf.Abs(x1 - x0);
-            int diffY = Mathf.Abs(y1 - y0);
+            int diffX = Math.Abs(x1 - x0);
+            int diffY = Math.Abs(y1 - y0);
 
-            return Mathf.Max(diffX, diffY) + Mathf.Sqrt2 * Mathf.Min(diffX, diffY);
+            return Math.Max(diffX, diffY) + Godot.Mathf.Sqrt2 * Math.Min(diffX, diffY);
         }
 
         /// <summary> 
@@ -54,10 +55,10 @@ namespace Util.MathC
         /// </summary>
         public static float DiagonalDistance(int x0, int x1, int y0, int y1, int straightCost, int diagonalCost)
         {
-            int diffX = Mathf.Abs(x1 - x0);
-            int diffY = Mathf.Abs(y1 - y0);
+            int diffX = Math.Abs(x1 - x0);
+            int diffY = Math.Abs(y1 - y0);
 
-            return straightCost * Mathf.Max(diffX, diffY) + (diagonalCost - straightCost) * Mathf.Min(diffX, diffY);
+            return straightCost * Math.Max(diffX, diffY) + (diagonalCost - straightCost) * Math.Min(diffX, diffY);
         }
 
 
@@ -65,9 +66,9 @@ namespace Util.MathC
         /// <summary> Absolute distance in a straight line </summary>
         public static float Euclidean(int x0, int x1, int y0, int y1)
         {
-            int diffX = Mathf.Abs(x1 - x0);
-            int diffY = Mathf.Abs(y1 - y0);
-            return Mathf.Sqrt(diffX * diffX + diffY * diffY);
+            int diffX = Math.Abs(x1 - x0);
+            int diffY = Math.Abs(y1 - y0);
+            return (float)Math.Sqrt(diffX * diffX + diffY * diffY);
         }
 
 
@@ -77,8 +78,8 @@ namespace Util.MathC
         /// </summary>
         public static int EuclideanSquared(int x0, int x1, int y0, int y1)
         {
-            int diffX = Mathf.Abs(x1 - x0);
-            int diffY = Mathf.Abs(y1 - y0);
+            int diffX = Math.Abs(x1 - x0);
+            int diffY = Math.Abs(y1 - y0);
             return diffX * diffX + diffY * diffY;
         }
 
@@ -99,9 +100,9 @@ namespace Util.MathC
         /// </summary>
         public static float Minkowski(int x0, int x1, int y0, int y1, int p)
         {
-            int diffX = Mathf.Abs(x1 - x0);
-            int diffY = Mathf.Abs(y1 - y0);
-            return Mathf.Pow(Mathf.Pow(diffX, p) + Mathf.Pow(diffY, p), 1 / p);
+            int diffX = Math.Abs(x1 - x0);
+            int diffY = Math.Abs(y1 - y0);
+            return (float)Math.Pow(Math.Pow(diffX, p) + Math.Pow(diffY, p), 1 / p);
         }
 
     }

@@ -10,7 +10,6 @@ namespace Util.Vector
 
         public static float TauAtan2(Vector2 vector) => TauAtan2(vector.y, vector.x);
         public static float TauAtan2(float y, float x) => Mathf.Atan2(y, x) + Mathf.Pi;
-
-
     }
+
 }

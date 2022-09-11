@@ -67,80 +67,35 @@ namespace Util.MathC
 
         #region IConvertible
 
-        public bool ToBoolean(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToBoolean(provider);
-        }
+        public bool ToBoolean(IFormatProvider provider) => ((IConvertible)value).ToBoolean(provider);
 
-        public byte ToByte(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToByte(provider);
-        }
+        public byte ToByte(IFormatProvider provider) => ((IConvertible)value).ToByte(provider);
 
-        public char ToChar(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToChar(provider);
-        }
+        public char ToChar(IFormatProvider provider) => ((IConvertible)value).ToChar(provider);
 
-        public DateTime ToDateTime(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToDateTime(provider);
-        }
+        public DateTime ToDateTime(IFormatProvider provider) => ((IConvertible)value).ToDateTime(provider);
 
-        public decimal ToDecimal(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToDecimal(provider);
-        }
+        public decimal ToDecimal(IFormatProvider provider) => ((IConvertible)value).ToDecimal(provider);
 
-        public double ToDouble(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToDouble(provider);
-        }
+        public double ToDouble(IFormatProvider provider) => ((IConvertible)value).ToDouble(provider);
 
-        public short ToInt16(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToInt16(provider);
-        }
+        public short ToInt16(IFormatProvider provider) => ((IConvertible)value).ToInt16(provider);
 
-        public int ToInt32(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToInt32(provider);
-        }
+        public int ToInt32(IFormatProvider provider) => ((IConvertible)value).ToInt32(provider);
 
-        public long ToInt64(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToInt64(provider);
-        }
+        public long ToInt64(IFormatProvider provider) => ((IConvertible)value).ToInt64(provider);
 
-        public sbyte ToSByte(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToSByte(provider);
-        }
+        public sbyte ToSByte(IFormatProvider provider) => ((IConvertible)value).ToSByte(provider);
 
-        public float ToSingle(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToSingle(provider);
-        }
+        public float ToSingle(IFormatProvider provider) => ((IConvertible)value).ToSingle(provider);
 
-        public object ToType(Type conversionType, IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToType(conversionType, provider);
-        }
+        public object ToType(Type conversionType, IFormatProvider provider) => ((IConvertible)value).ToType(conversionType, provider);
 
-        public ushort ToUInt16(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToUInt16(provider);
-        }
+        public ushort ToUInt16(IFormatProvider provider) => ((IConvertible)value).ToUInt16(provider);
 
-        public uint ToUInt32(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToUInt32(provider);
-        }
+        public uint ToUInt32(IFormatProvider provider) => ((IConvertible)value).ToUInt32(provider);
 
-        public ulong ToUInt64(IFormatProvider provider)
-        {
-            return ((IConvertible)value).ToUInt64(provider);
-        }
+        public ulong ToUInt64(IFormatProvider provider) => ((IConvertible)value).ToUInt64(provider);
 
         #endregion
 
@@ -150,25 +105,13 @@ namespace Util.MathC
         public static implicit operator int(Power2 p) => p.IntValue;
         public static implicit operator uint(Power2 p) => p.value;
 
-        public static bool operator <(Power2 left, Power2 right)
-        {
-            return left.CompareTo(right) < 0;
-        }
+        public static bool operator <(Power2 left, Power2 right) => left.CompareTo(right) < 0;
 
-        public static bool operator <=(Power2 left, Power2 right)
-        {
-            return left.CompareTo(right) <= 0;
-        }
+        public static bool operator <=(Power2 left, Power2 right) => left.CompareTo(right) <= 0;
 
-        public static bool operator >(Power2 left, Power2 right)
-        {
-            return left.CompareTo(right) > 0;
-        }
+        public static bool operator >(Power2 left, Power2 right) => left.CompareTo(right) > 0;
 
-        public static bool operator >=(Power2 left, Power2 right)
-        {
-            return left.CompareTo(right) >= 0;
-        }
+        public static bool operator >=(Power2 left, Power2 right) => left.CompareTo(right) >= 0;
 
     }
 

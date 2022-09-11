@@ -9,7 +9,6 @@ namespace Util
 
         #region Precision
 
-        [MethodImpl(INLINE)] public static bool Approximately(float a, float b) => Math.Abs(b - a) < EPSILON_FLOAT;//float.Epsilon;
         [MethodImpl(INLINE)] public static float CorrectPrecision(float value) => (float)Math.Round(value, 6);
 
         #endregion

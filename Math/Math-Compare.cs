@@ -6,24 +6,12 @@ namespace Util
 {
     public static partial class MathUtil
     {
+        #region Precision Float
 
-        #region Trinary
+        [MethodImpl(INLINE)] public static bool MoreThanZero(this float value) => value > EPSILON_FLOAT;
+        [MethodImpl(INLINE)] public static bool LessThanZero(this float value) => value < -EPSILON_FLOAT;
 
-        [MethodImpl(INLINE)]
-        public static T ZeroTrinary<T>(int value, T less, T equal, T more)
-        {
-            //return value == 0 ? equal : (value < 0 ? less : more);
-            if (value == 0)
-                return equal;
-            else if (value < 0)
-                return less;
-            else
-                return more;
-        }
-
-        [MethodImpl(INLINE)]
-        public static T TrinaryCmp<K, T>(K v1, K v2, T less, T equal, T more) where K : IComparable<K> =>
-            ZeroTrinary(v1.CompareTo(v2), less, equal, more);
+        [MethodImpl(INLINE)] public static bool Approximately(float a, float b) => Math.Abs(b - a) < EPSILON_FLOAT;//float.Epsilon;
 
         #endregion
 
@@ -36,32 +24,19 @@ namespace Util
         #endregion
 
         #region Min Max
+
         [MethodImpl(INLINE)]
-        public static void MinMax<T>(T v1, T v2, out T min, out T max) where T : IComparable<T>
+        public static void BigAndSmall<T>(T v1, T v2, out T smaller, out T bigger) where T : IComparable<T>
         {
             if (v1.CompareTo(v2) > 0)
             {
-                max = v1;
-                min = v2;
+                bigger = v1;
+                smaller = v2;
             }
             else
             {
-                max = v2;
-                min = v1;
-            }
-        }
-        [MethodImpl(INLINE)]
-        public static void MinMax<T>(T v1, T v2, IComparer<T> comparer, out T min, out T max)
-        {
-            if (comparer.Compare(v1, v2) > 0)
-            {
-                max = v1;
-                min = v2;
-            }
-            else
-            {
-                max = v2;
-                min = v1;
+                bigger = v2;
+                smaller = v1;
             }
         }
 
@@ -109,13 +84,6 @@ namespace Util
             b = a;
             a = temp;
         }
-
-        #endregion
-
-        #region Precision Float
-
-        [MethodImpl(INLINE)] public static bool MoreThanZero(this float value) => value >  EPSILON_FLOAT;
-        [MethodImpl(INLINE)] public static bool LessThanZero(this float value) => value < -EPSILON_FLOAT; 
 
         #endregion
 

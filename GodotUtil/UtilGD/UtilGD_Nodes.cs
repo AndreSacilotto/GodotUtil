@@ -86,14 +86,14 @@ namespace Godot
             newParent.AddChild(self);
         }
 
-        public static T[] GetChildrenOfType<T>(this Node node) where T : Node
+        public static List<T> GetChildrenOfType<T>(this Node node) where T : Node
         {
             var children = node.GetChildren();
-            var result = new T[children.Count];
+            var col = new List<T>();
             for (int i = 0; i < children.Count; i++)
                 if (children[i] is T t)
-                    children[i] = t;
-            return result;
+                    col.Add(t);
+            return col;
         }
 
         public static T GetFirstChild<T>(this Node node) where T : Node
@@ -103,7 +103,6 @@ namespace Godot
                 return null;
             return node.GetChild<T>(0);
         }
-
         public static T GetLastChild<T>(this Node node) where T : Node
         {
             var count = node.GetChildCount();
@@ -120,7 +119,6 @@ namespace Godot
                     return t;
             return null;
         }
-
         public static T GetLastChildOfType<T>(this Node node) where T : Node
         {
             var children = node.GetChildren();
