@@ -63,7 +63,7 @@ namespace Util
 
         public static string[] GetIPs()
         {
-            return UtilGD.GodotArray<string>(IP.GetLocalAddresses());
+            return UtilGD.GDArray2Array<string>(IP.GetLocalAddresses());
         }
 
         public static void OpenTerminals(int count, string godot, string project, string scene)
@@ -84,6 +84,20 @@ namespace Util
 
         public static string GenerateObjectName(string prefix, int id) => prefix + '_' + id;
         public static string GenerateObjectName(string prefix, int id, int number) => prefix + '_' + id + '_' + number;
+
+        public static T InstanciateInNetwork<T>(PackedScene prefab, int peerId, string uniqueName) where T : Node
+        {
+            var obj = prefab.Instance<T>();
+            obj.SetNetworkMaster(peerId);
+            obj.Name = uniqueName;
+            return obj;
+        }
+        public static T InstanciateInNetwork<T>(int peerId, string uniqueName) where T : Node, new()
+        {
+            var obj = new T() { Name = uniqueName };
+            obj.SetNetworkMaster(peerId);
+            return obj;
+        }
 
     }
 }

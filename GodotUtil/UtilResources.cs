@@ -36,7 +36,7 @@ namespace Godot
 
         #region Sharp Util
 
-        public static Type GetScriptType(this CSharpScript sharpScript)
+        public static Type GetCSharpScriptType(this CSharpScript sharpScript)
         {
             return Util.UtilReflection.GetType(GetResourceFileName(sharpScript));
         }
