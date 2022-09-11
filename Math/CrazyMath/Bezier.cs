@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 using Vector2 = Godot.Vector2;
 using Vector3 = Godot.Vector3;
 
@@ -16,7 +14,7 @@ namespace Util.MathC
             var o = 1f - t;
 
             return o * o * start +
-                    o * t * pivot +
+                    o * t * 2 * pivot +
                     t * t * end;
         }
         public static Vector3 QuadraticBezier(Vector3 start, Vector3 pivot, Vector3 end, float t)
@@ -24,7 +22,7 @@ namespace Util.MathC
             var o = 1f - t;
 
             return o * o * start +
-                    o * t * pivot +
+                    o * t * 2 * pivot +
                     t * t * end;
         }
 
