@@ -1,6 +1,9 @@
-﻿using Godot;
-using System;
+﻿using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using Godot;
+
+using Path = System.IO.Path;
 
 public static class SceneInstance
 {
@@ -28,7 +31,7 @@ public static class SceneInstance
 	public static T Instanciate<T>(string path) where T : Node
 	{
 		var packed = GD.Load<PackedScene>($"res://{path}.tscn");
-		Node instance = packed.Instance();
+		var instance = packed.Instance();
 		if (instance is T instanceT)
 			return instanceT;
 		throw new Exception($"The root of scene 'res://{path}.tscn' is not '{typeof(T)}'");
@@ -38,5 +41,18 @@ public static class SceneInstance
 	{
 		return rootResourcePath.Substring(0, rootResourcePath.LastIndexOfAny(dirSeparators));
 	}
+
+	// GD 4.0
+    //public static T Instantiate<T>() where T : class
+    //{
+    //	var type = typeof(T);
+    //	var attr = type.GetCustomAttribute<ScriptPathAttribute>();
+    //	if (attr == null)
+    //		throw new InvalidOperationException($"Type '{type}' does not have a ScriptPathAttribute.");
+
+    //	var path = Path.ChangeExtension(attr.Path, ".tscn");
+    //	var scene = GD.Load<PackedScene>(path);
+    //	return scene.Instantiate<T>();
+    //}
 
 }

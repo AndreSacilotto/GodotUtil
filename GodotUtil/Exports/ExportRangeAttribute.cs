@@ -13,7 +13,6 @@ namespace Godot
             base(PropertyHint.Range, ExportRangeStringInt(min, max, step, allowLess, allowGreater))
         { }
 
-
         public static string ExportRangeStringInt(int min, int max, int step, bool allowLess, bool allowGreater)
         {
             var str = $"{min},{max}";
@@ -43,7 +42,6 @@ namespace Godot
             if (allowGreater)
                 str += ",or_greater";
             
-            GD.Print(str);
             return str;
         }
 
