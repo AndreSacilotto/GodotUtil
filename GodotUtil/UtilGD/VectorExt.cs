@@ -137,8 +137,8 @@ namespace Godot
 
         #region Converting
 
-        [MethodImpl(INLINE)] public static Vector3i ToVector3i_XY0(this Vector2i vector) => new(vector.x, vector.y, 0f);
-        [MethodImpl(INLINE)] public static Vector3i ToVector3i_X0Y(this Vector2i vector) => new(vector.x, 0f, vector.y);
+        [MethodImpl(INLINE)] public static Vector3i ToVector3i_XY0(this Vector2i vector) => new(vector.x, vector.y, 0);
+        [MethodImpl(INLINE)] public static Vector3i ToVector3i_X0Y(this Vector2i vector) => new(vector.x, 0, vector.y);
         [MethodImpl(INLINE)] public static Vector2i ToVector2i_XY(this Vector3i vector) => new(vector.x, vector.y);
         [MethodImpl(INLINE)] public static Vector2i ToVector2i_XZ(this Vector3i vector) => new(vector.x, vector.z);
 
