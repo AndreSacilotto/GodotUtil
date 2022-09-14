@@ -61,7 +61,7 @@ namespace Util
 
         #region Average
 
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static int Average(IEnumerable<int> items)
         {
             int sum = 0, count = 0;
@@ -72,7 +72,7 @@ namespace Util
             }
             return sum / count;
         }
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float Average(IEnumerable<float> items)
         {
             float sum = 0;
@@ -88,7 +88,7 @@ namespace Util
 
         #region Median
 
-        [MethodImpl(INLINE)] public static float FindMedian(float[] arr) => FindMedian(arr, 0, arr.Length);
+        [MethodImpl(Util.UtilShared.INLINE)] public static float FindMedian(float[] arr) => FindMedian(arr, 0, arr.Length);
         public static float FindMedian(float[] arr, int index, int length)
         {
             Array.Sort(arr, index, length);

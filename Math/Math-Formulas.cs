@@ -7,9 +7,9 @@ namespace Util
     {
 
         #region Percent
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float ValuePercent(float value, float max) => max != 0f ? value / max : 0f;
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float ValuePercent(float value, float max, float min)
         {
             float diff = max - min;
@@ -20,19 +20,19 @@ namespace Util
 
         #region Interpolation & Remapping
 
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float Lerp(float from, float to, float weight) => from + ((to - from) * weight);
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float InverseLerp(float from, float to, float weight) => (weight - from) / (to - from);
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float InverseLerpClamped(float from, float to, float value) => Clamp01((value - from) / (to - from));
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float Remap(float fromMin, float fromMax, float toMin, float toMax, float value)
         {
             float t = InverseLerp(fromMin, fromMax, value);
             return Lerp(toMin, toMax, t);
         }
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float RemapClamped(float fromMin, float fromMax, float toMin, float toMax, float value)
         {
             float t = InverseLerpClamped(fromMin, fromMax, value);

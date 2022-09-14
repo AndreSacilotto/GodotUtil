@@ -15,9 +15,9 @@ namespace Util
 
         #region Format
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static string NumberWithSign(int value) => value.ToString("+#;-#;0");
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static string NumberWithSign(float value) => value.ToString("+#;-#;0");
 
         public static string InvariantFormat(float value) => value.ToString(NumberFormatInfo.InvariantInfo);
@@ -49,14 +49,14 @@ namespace Util
 
         #region Contains
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static bool Contains(this string source, char value, int startIdx = 0) =>
                 source.IndexOf(value, startIdx) >= 0;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static bool Contains(this string source, string value, int startIdx = 0, StringComparison strCmp = StringComparison.InvariantCultureIgnoreCase) =>
             source.IndexOf(value, startIdx, strCmp) >= 0;
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static bool Contains(this string source, string value, int startIdx, int length, StringComparison strCmp = StringComparison.InvariantCultureIgnoreCase) =>
             source.IndexOf(value, startIdx, length, strCmp) >= 0;
 

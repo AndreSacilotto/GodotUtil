@@ -4,11 +4,10 @@ namespace Util
 {
     public static partial class MathUtil
     {
-        public const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 
         #region PI
 
-        /// <summary>Same as PI / 180</summary>
+        /// <summary>Same as PI / 180, used to convert degree to radians</summary>
         public const float TAU_01 = TAU / 360f;
 
         /// <summary>Same as PI / 6</summary>

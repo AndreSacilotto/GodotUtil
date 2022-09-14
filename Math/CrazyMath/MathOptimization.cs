@@ -7,27 +7,27 @@ namespace Util.MathC
         #region Division
         /// <summary> Make a division using bitwise operator </summary>
         /// <param name="divisor">Needs to be power of two</param>
-        [MethodImpl(MathUtil.INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static int PowerOf2Division(int value, Power2 divisor) => value >> divisor.GetExponent();
 
         #endregion
 
         #region Power
         /// <summary> value * value </summary>
-        [MethodImpl(MathUtil.INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static int Pow2(int value) => value * value;
         /// <summary> value * value </summary>
-        [MethodImpl(MathUtil.INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static float Pow2(float value) => value * value;
 
-        [MethodImpl(MathUtil.INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static int ExponentOf2(int exponent) => 1 << exponent;
 
         /// <summary>IsPowerOfTwo, but return true when value == 0</summary>
-        [MethodImpl(MathUtil.INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static bool IsPowerOfTwoFast(int value) => (value & (value - 1)) == 0;
 
-        [MethodImpl(MathUtil.INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static bool IsPowerOfTwo(int value) => (value != 0) && IsPowerOfTwoFast(value);
 
         #endregion

@@ -8,24 +8,24 @@ namespace Util
     {
         #region Precision Float
 
-        [MethodImpl(INLINE)] public static bool MoreThanZero(this float value) => value > EPSILON_FLOAT;
-        [MethodImpl(INLINE)] public static bool LessThanZero(this float value) => value < -EPSILON_FLOAT;
+        [MethodImpl(Util.UtilShared.INLINE)] public static bool MoreThanZero(this float value) => value > EPSILON_FLOAT;
+        [MethodImpl(Util.UtilShared.INLINE)] public static bool LessThanZero(this float value) => value < -EPSILON_FLOAT;
 
-        [MethodImpl(INLINE)] public static bool Approximately(float a, float b) => Math.Abs(b - a) < EPSILON_FLOAT;//float.Epsilon;
+        [MethodImpl(Util.UtilShared.INLINE)] public static bool Approximately(float a, float b) => Math.Abs(b - a) < EPSILON_FLOAT;//float.Epsilon;
 
         #endregion
 
         #region Bool to Value
-        [MethodImpl(INLINE)] public static int BoolValue01(bool value) => value ? 0 : 1;
+        [MethodImpl(Util.UtilShared.INLINE)] public static int BoolValue01(bool value) => value ? 0 : 1;
 
-        [MethodImpl(INLINE)] public static int BoolValue10(bool value) => value ? 1 : 0;
+        [MethodImpl(Util.UtilShared.INLINE)] public static int BoolValue10(bool value) => value ? 1 : 0;
 
-        [MethodImpl(INLINE)] public static int BoolValue11(bool value) => value ? 1 : -1;
+        [MethodImpl(Util.UtilShared.INLINE)] public static int BoolValue11(bool value) => value ? 1 : -1;
         #endregion
 
         #region Min Max
 
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static void BigAndSmall<T>(T v1, T v2, out T smaller, out T bigger) where T : IComparable<T>
         {
             if (v1.CompareTo(v2) > 0)
@@ -66,8 +66,8 @@ namespace Util
         #endregion
 
         #region Even Odd
-        [MethodImpl(INLINE)] public static bool IsEven(int value) => value % 2 == 0;
-        [MethodImpl(INLINE)] public static bool IsOdd(int value) => value % 2 != 0;
+        [MethodImpl(Util.UtilShared.INLINE)] public static bool IsEven(int value) => value % 2 == 0;
+        [MethodImpl(Util.UtilShared.INLINE)] public static bool IsOdd(int value) => value % 2 != 0;
 
         // Do not use any of the below, trust in the compiler (He is better than you)
         //public static bool IsEvenBitwise(int value) => (value & 1) == 0;
@@ -77,7 +77,7 @@ namespace Util
 
         #region Swap
 
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static void Swap<T>(ref T a, ref T b)
         {
             var temp = b;

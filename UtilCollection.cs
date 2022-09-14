@@ -11,7 +11,7 @@ namespace Util
 
         public static T[,] NewOfSameSize<T>(this T[,] array) => new T[array.GetLength(0), array.GetLength(1)];
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static void ChangeCapacity<T>(ref T[] array, int newSize)
         {
             if (newSize < array.Length)
@@ -310,21 +310,21 @@ namespace Util
         #endregion
 
         #region Swap
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static void Swap<T>(this T[] array, int indexA, int indexB)
         {
             var temp = array[indexA];
             array[indexA] = array[indexB];
             array[indexB] = temp;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static void Swap<T, K>(this IList<T> list, int indexA, int indexB)
         {
             var temp = list[indexA];
             list[indexA] = list[indexB];
             list[indexB] = temp;
         }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static void Swap<T, K>(this IDictionary<T, K> dict, T indexA, T indexB)
         {
             var temp = dict[indexA];
@@ -382,7 +382,7 @@ namespace Util
             return index;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) =>
             dictionary.TryGetValue(key, out var value) ? value : default;
 

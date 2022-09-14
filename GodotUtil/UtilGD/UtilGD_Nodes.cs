@@ -6,21 +6,20 @@ namespace Godot
 {
     public static partial class UtilGD
     {
-        public const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
 
         #region Add Generic Cast
 
-        [MethodImpl(INLINE)] public static T GetShaderParam<T>(this ShaderMaterial sm, string uniform) => (T)sm.GetShaderParam(uniform);
+        [MethodImpl(Util.UtilShared.INLINE)] public static T GetShaderParam<T>(this ShaderMaterial sm, string uniform) => (T)sm.GetShaderParam(uniform);
 
-        [MethodImpl(INLINE)] public static T Duplicate<T>(this Resource res, bool subResources = false) where T : Resource => (T)res.Duplicate(subResources);
-        [MethodImpl(INLINE)] public static T Duplicate<T>(this Node res, Node.DuplicateFlags flags = (Node.DuplicateFlags)15) where T : Node => (T)res.Duplicate((int)flags);
+        [MethodImpl(Util.UtilShared.INLINE)] public static T Duplicate<T>(this Resource res, bool subResources = false) where T : Resource => (T)res.Duplicate(subResources);
+        [MethodImpl(Util.UtilShared.INLINE)] public static T Duplicate<T>(this Node res, Node.DuplicateFlags flags = (Node.DuplicateFlags)15) where T : Node => (T)res.Duplicate((int)flags);
 
 
         #endregion
 
         #region Node Add/Create
 
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static T CreateAndAdd<T>(this Node parent) where T : Node, new()
         {
             var newNode = new T();
@@ -28,7 +27,7 @@ namespace Godot
             return newNode;
         }
 
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static T CreateAndAdd<T>(this Node parent, string name) where T : Node, new()
         {
             var newNode = new T() { Name = name };
@@ -36,7 +35,7 @@ namespace Godot
             return newNode;
         }
 
-        [MethodImpl(INLINE)]
+        [MethodImpl(Util.UtilShared.INLINE)]
         public static T AddChild<T>(this Node parent, T node) where T : Node
         {
             parent.AddChild(node);
@@ -133,8 +132,8 @@ namespace Godot
 
         #region Node Hierarch
 
-        [MethodImpl(INLINE)] public static bool HasAnyChild(this Node node) => node.GetChildCount() > 0;
-        [MethodImpl(INLINE)] public static bool HasNoChild(this Node node) => node.GetChildCount() == 0;
+        [MethodImpl(Util.UtilShared.INLINE)] public static bool HasAnyChild(this Node node) => node.GetChildCount() > 0;
+        [MethodImpl(Util.UtilShared.INLINE)] public static bool HasNoChild(this Node node) => node.GetChildCount() == 0;
 
         public static IEnumerable<T> GetEnumeratorNodeChildren<T>(this Node node) where T : Node
         {
