@@ -7,6 +7,7 @@ namespace Util
 {
     public static class MeshHelper
     {
+
         #region Mesh Util
 
         public static void Generate(this SurfaceTool st, bool generateNormals, bool generateTangents, bool generateIndex)
@@ -171,7 +172,6 @@ namespace Util
 
             return points;
         }
-
 
         /// <param name="inner">Radius of end circle</param>
         /// <param name="outter">Radius of far circle</param>

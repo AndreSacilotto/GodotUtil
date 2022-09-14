@@ -1,5 +1,9 @@
-﻿using Godot;
-using System;
+﻿using System;
+
+using Vector2 = Godot.Vector2;
+using Vector3 = Godot.Vector3;
+using Vector2i = Godot.Vector2i;
+using Vector3i = Godot.Vector3i;
 
 namespace Util.Vector
 {
@@ -36,22 +40,22 @@ namespace Util.Vector
 
         public static Vector2i PositionToDirection(Vector2 position, Vector2 center = default)
         {
-            var rad = Mathf.Atan2(center.y - position.y, center.x - position.x) + Mathf.Pi;
-            return new(Mathf.RoundToInt(Mathf.Cos(rad)), Mathf.RoundToInt(Mathf.Sin(rad)));
+            var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
+            return new(MathUtil.RoundToInt(Math.Cos(rad)), MathUtil.RoundToInt(Math.Sin(rad)));
         }
         public static Vector2 PositionToFloatDirection(int decimals, Vector2 position, Vector2 center = default)
         {
-            var rad = Mathf.Atan2(center.y - position.y, center.x - position.x) + Mathf.Pi;
-            return new Vector2((float)Math.Round(Mathf.Cos(rad), decimals), (float)Math.Round(Mathf.Sin(rad), decimals));
+            var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
+            return new Vector2((float)Math.Round(Math.Cos(rad), decimals), (float)Math.Round(Math.Sin(rad), decimals));
         }
         public static Vector2 PositionToFloatDirection(Vector2 position, Vector2 center = default)
         {
-            var rad = Mathf.Atan2(center.y - position.y, center.x - position.x) + Mathf.Pi;
-            return new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+            var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
+            return new Vector2((float)Math.Cos(rad), (float)Math.Sin(rad));
         }
         public static Vector2i PositionToDiagonal(Vector2 position, Vector2 center = default)
         {
-            var rad = Mathf.Atan2(position.y - center.y, position.x - center.x);
+            var rad = Math.Atan2(position.y - center.y, position.x - center.x);
             if (rad < 0)
             {
                 if (rad >= -MathUtil.TAU_90)
@@ -68,7 +72,7 @@ namespace Util.Vector
 
         public static Vector2i PositionToStraight(Vector2 position, Vector2 center = default)
         {
-            var rad = Mathf.Pi - Mathf.Atan2(center.y - position.y, center.x - position.x);
+            var rad = Math.PI - Math.Atan2(center.y - position.y, center.x - position.x);
             if (rad <= MathUtil.TAU_45)
                 return Right;
             else if (rad <= MathUtil.TAU_45 * 3f)
