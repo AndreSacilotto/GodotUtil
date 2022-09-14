@@ -15,7 +15,7 @@ namespace Util.Vector
         public const int RIGHT = 1;
 
         /// <summary>x: 0, y: 0</summary>
-        public static Vector2i None => new(0, 0);
+        public static Vector2i Zero => new(0, 0);
 
         /// <summary>x: 0, y: -1</summary>
         public static Vector2i Top => new(0, TOP);

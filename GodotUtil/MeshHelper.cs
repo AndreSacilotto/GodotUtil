@@ -135,7 +135,8 @@ namespace Util
 
         /// <param name="radius">Radius/Size - Negative value flip the polygon</param>
         /// <param name="sides">Number of sides of the primivite polygon</param>
-        public static Vector2[] SimplePolygon2D(float radius, int sides)
+        /// <param name="start">The normalized vector2 of the first vertex position</param>
+        public static Vector2[] SimplePolygon2D(float radius, int sides, Vector2 start)
         {
             if (sides < 3)
                 return ErrorReturn2D();
@@ -147,7 +148,7 @@ namespace Util
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);
 
-            points[0] = new Vector2(0, -radius);
+            points[0] = start * radius;
             for (int i = 1; i < sides; i++)
                 points[i] = VectorMath.RotatedNoTrig(points[i - 1], c, s);
 
@@ -161,7 +162,7 @@ namespace Util
 
             var points = new Vector2[density];
 
-            var rad = Mathf.Pi / density;
+            var rad = Mathf.Tau / density;
 
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);

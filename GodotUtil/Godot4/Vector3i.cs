@@ -1,10 +1,11 @@
-﻿#if REAL_T_IS_DOUBLE
+﻿using System;
+using System.Runtime.InteropServices;
+
+#if REAL_T_IS_DOUBLE
 using real_t = System.Double;
 #else
 using real_t = System.Single;
 #endif
-using System;
-using System.Runtime.InteropServices;
 
 namespace Godot
 {
@@ -53,8 +54,8 @@ namespace Godot
         /// <summary>
         /// Access vector components using their <paramref name="index"/>.
         /// </summary>
-        /// <exception cref="IndexOutOfRangeException">
-        /// Thrown when the given the <paramref name="index"/> is not 0, 1 or 2.
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="index"/> is not 0, 1 or 2.
         /// </exception>
         /// <value>
         /// <c>[0]</c> is equivalent to <see cref="x"/>,
@@ -63,33 +64,45 @@ namespace Godot
         /// </value>
         public int this[int index]
         {
-            get
-            {
-                return index switch
-                {
-                    0 => x,
-                    1 => y,
-                    2 => z,
-                    _ => throw new IndexOutOfRangeException(),
-                };
-            }
-            set
-            {
+            get {
                 switch (index)
                 {
                     case 0:
-                        x = value;
-                        return;
+                    return x;
                     case 1:
-                        y = value;
-                        return;
+                    return y;
                     case 2:
-                        z = value;
-                        return;
+                    return z;
                     default:
-                        throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(index));
                 }
             }
+            set {
+                switch (index)
+                {
+                    case 0:
+                    x = value;
+                    return;
+                    case 1:
+                    y = value;
+                    return;
+                    case 2:
+                    z = value;
+                    return;
+                    default:
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper method for deconstruction into a tuple.
+        /// </summary>
+        public void Deconstruct(out int x, out int y, out int z)
+        {
+            x = this.x;
+            y = this.y;
+            z = this.z;
         }
 
         /// <summary>
@@ -98,7 +111,7 @@ namespace Godot
         /// <returns>A vector with <see cref="Mathf.Abs(int)"/> called on each component.</returns>
         public Vector3i Abs()
         {
-            return new(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z));
+            return new Vector3i(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z));
         }
 
         /// <summary>
@@ -111,7 +124,7 @@ namespace Godot
         /// <returns>The vector with all components clamped.</returns>
         public Vector3i Clamp(Vector3i min, Vector3i max)
         {
-            return new
+            return new Vector3i
             (
                 Mathf.Clamp(x, min.x, max.x),
                 Mathf.Clamp(y, min.y, max.y),
@@ -251,60 +264,60 @@ namespace Godot
         }
 
         // Constants
-        private static readonly Vector3i _zero = new(0, 0, 0);
-        private static readonly Vector3i _one = new(1, 1, 1);
+        private static readonly Vector3i _zero = new Vector3i(0, 0, 0);
+        private static readonly Vector3i _one = new Vector3i(1, 1, 1);
 
-        private static readonly Vector3i _up = new(0, 1, 0);
-        private static readonly Vector3i _down = new(0, -1, 0);
-        private static readonly Vector3i _right = new(1, 0, 0);
-        private static readonly Vector3i _left = new(-1, 0, 0);
-        private static readonly Vector3i _forward = new(0, 0, -1);
-        private static readonly Vector3i _back = new(0, 0, 1);
+        private static readonly Vector3i _up = new Vector3i(0, 1, 0);
+        private static readonly Vector3i _down = new Vector3i(0, -1, 0);
+        private static readonly Vector3i _right = new Vector3i(1, 0, 0);
+        private static readonly Vector3i _left = new Vector3i(-1, 0, 0);
+        private static readonly Vector3i _forward = new Vector3i(0, 0, -1);
+        private static readonly Vector3i _back = new Vector3i(0, 0, 1);
 
         /// <summary>
         /// Zero vector, a vector with all components set to <c>0</c>.
         /// </summary>
-        /// <value>Equivalent to <c>new(0, 0, 0)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(0, 0, 0)</c>.</value>
         public static Vector3i Zero { get { return _zero; } }
         /// <summary>
         /// One vector, a vector with all components set to <c>1</c>.
         /// </summary>
-        /// <value>Equivalent to <c>new(1, 1, 1)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(1, 1, 1)</c>.</value>
         public static Vector3i One { get { return _one; } }
 
         /// <summary>
         /// Up unit vector.
         /// </summary>
-        /// <value>Equivalent to <c>new(0, 1, 0)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(0, 1, 0)</c>.</value>
         public static Vector3i Up { get { return _up; } }
         /// <summary>
         /// Down unit vector.
         /// </summary>
-        /// <value>Equivalent to <c>new(0, -1, 0)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(0, -1, 0)</c>.</value>
         public static Vector3i Down { get { return _down; } }
         /// <summary>
         /// Right unit vector. Represents the local direction of right,
         /// and the global direction of east.
         /// </summary>
-        /// <value>Equivalent to <c>new(1, 0, 0)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(1, 0, 0)</c>.</value>
         public static Vector3i Right { get { return _right; } }
         /// <summary>
         /// Left unit vector. Represents the local direction of left,
         /// and the global direction of west.
         /// </summary>
-        /// <value>Equivalent to <c>new(-1, 0, 0)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(-1, 0, 0)</c>.</value>
         public static Vector3i Left { get { return _left; } }
         /// <summary>
         /// Forward unit vector. Represents the local direction of forward,
         /// and the global direction of north.
         /// </summary>
-        /// <value>Equivalent to <c>new(0, 0, -1)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(0, 0, -1)</c>.</value>
         public static Vector3i Forward { get { return _forward; } }
         /// <summary>
         /// Back unit vector. Represents the local direction of back,
         /// and the global direction of south.
         /// </summary>
-        /// <value>Equivalent to <c>new(0, 0, 1)</c>.</value>
+        /// <value>Equivalent to <c>new Vector3i(0, 0, 1)</c>.</value>
         public static Vector3i Back { get { return _back; } }
 
         /// <summary>
@@ -318,29 +331,6 @@ namespace Godot
             this.x = x;
             this.y = y;
             this.z = z;
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="Vector3i"/> from an existing <see cref="Vector3i"/>.
-        /// </summary>
-        /// <param name="vi">The existing <see cref="Vector3i"/>.</param>
-        public Vector3i(Vector3i vi)
-        {
-            this.x = vi.x;
-            this.y = vi.y;
-            this.z = vi.z;
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="Vector3i"/> from an existing <see cref="Vector3"/>
-        /// by rounding the components via <see cref="Mathf.RoundToInt(real_t)"/>.
-        /// </summary>
-        /// <param name="v">The <see cref="Vector3"/> to convert.</param>
-        public Vector3i(Vector3 v)
-        {
-            this.x = Mathf.RoundToInt(v.x);
-            this.y = Mathf.RoundToInt(v.y);
-            this.z = Mathf.RoundToInt(v.z);
         }
 
         /// <summary>
@@ -375,7 +365,7 @@ namespace Godot
 
         /// <summary>
         /// Returns the negative value of the <see cref="Vector3i"/>.
-        /// This is the same as writing <c>new(-v.x, -v.y, -v.z)</c>.
+        /// This is the same as writing <c>new Vector3i(-v.x, -v.y, -v.z)</c>.
         /// This operation flips the direction of the vector while
         /// keeping the same magnitude.
         /// </summary>
@@ -435,7 +425,7 @@ namespace Godot
         }
 
         /// <summary>
-        /// Multiplies each component of the <see cref="Vector3i"/>
+        /// Divides each component of the <see cref="Vector3i"/>
         /// by the given <see langword="int"/>.
         /// </summary>
         /// <param name="vec">The dividend vector.</param>
@@ -474,7 +464,7 @@ namespace Godot
         /// </summary>
         /// <example>
         /// <code>
-        /// GD.Print(new(10, -20, 30) % 7); // Prints "(3, -6, 2)"
+        /// GD.Print(new Vector3i(10, -20, 30) % 7); // Prints "(3, -6, 2)"
         /// </code>
         /// </example>
         /// <param name="vec">The dividend vector.</param>
@@ -498,7 +488,7 @@ namespace Godot
         /// </summary>
         /// <example>
         /// <code>
-        /// GD.Print(new(10, -20, 30) % new(7, 8, 9)); // Prints "(3, -4, 3)"
+        /// GD.Print(new Vector3i(10, -20, 30) % new Vector3i(7, 8, 9)); // Prints "(3, -4, 3)"
         /// </code>
         /// </example>
         /// <param name="vec">The dividend vector.</param>
@@ -675,7 +665,11 @@ namespace Godot
         /// <param name="value">The vector to convert.</param>
         public static explicit operator Vector3i(Vector3 value)
         {
-            return new(value);
+            return new Vector3i(
+                Mathf.RoundToInt(value.x),
+                Mathf.RoundToInt(value.y),
+                Mathf.RoundToInt(value.z)
+            );
         }
 
         /// <summary>
@@ -686,12 +680,7 @@ namespace Godot
         /// <returns>Whether or not the vector and the object are equal.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Vector3i i)
-            {
-                return Equals(i);
-            }
-
-            return false;
+            return obj is Vector3i other && Equals(other);
         }
 
         /// <summary>

@@ -1,10 +1,11 @@
-﻿#if REAL_T_IS_DOUBLE
+﻿using System;
+using System.Runtime.InteropServices;
+
+#if REAL_T_IS_DOUBLE
 using real_t = System.Double;
 #else
 using real_t = System.Single;
 #endif
-using System;
-using System.Runtime.InteropServices;
 
 namespace Godot
 {
@@ -44,8 +45,8 @@ namespace Godot
         /// <summary>
         /// Access vector components using their index.
         /// </summary>
-        /// <exception cref="IndexOutOfRangeException">
-        /// Thrown when the given the <paramref name="index"/> is not 0 or 1.
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="index"/> is not 0 or 1.
         /// </exception>
         /// <value>
         /// <c>[0]</c> is equivalent to <see cref="x"/>,
@@ -53,29 +54,39 @@ namespace Godot
         /// </value>
         public int this[int index]
         {
-            get
-            {
-                return index switch
-                {
-                    0 => x,
-                    1 => y,
-                    _ => throw new IndexOutOfRangeException(),
-                };
-            }
-            set
-            {
+            get {
                 switch (index)
                 {
                     case 0:
-                        x = value;
-                        return;
+                    return x;
                     case 1:
-                        y = value;
-                        return;
+                    return y;
                     default:
-                        throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(index));
                 }
             }
+            set {
+                switch (index)
+                {
+                    case 0:
+                    x = value;
+                    return;
+                    case 1:
+                    y = value;
+                    return;
+                    default:
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper method for deconstruction into a tuple.
+        /// </summary>
+        public void Deconstruct(out int x, out int y)
+        {
+            x = this.x;
+            y = this.y;
         }
 
         /// <summary>
@@ -285,19 +296,19 @@ namespace Godot
         /// compared to the original, with the same length.
         /// </summary>
         /// <returns>The perpendicular vector.</returns>
-        public Vector2i Straight()
+        public Vector2i Orthogonal()
         {
             return new Vector2i(y, -x);
         }
 
         // Constants
-        private static readonly Vector2i _zero = new(0, 0);
-        private static readonly Vector2i _one = new(1, 1);
+        private static readonly Vector2i _zero = new Vector2i(0, 0);
+        private static readonly Vector2i _one = new Vector2i(1, 1);
 
-        private static readonly Vector2i _up = new(0, -1);
-        private static readonly Vector2i _down = new(0, 1);
-        private static readonly Vector2i _right = new(1, 0);
-        private static readonly Vector2i _left = new(-1, 0);
+        private static readonly Vector2i _up = new Vector2i(0, -1);
+        private static readonly Vector2i _down = new Vector2i(0, 1);
+        private static readonly Vector2i _right = new Vector2i(1, 0);
+        private static readonly Vector2i _left = new Vector2i(-1, 0);
 
         /// <summary>
         /// Zero vector, a vector with all components set to <c>0</c>.
@@ -340,27 +351,6 @@ namespace Godot
         {
             this.x = x;
             this.y = y;
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="Vector2i"/> from an existing <see cref="Vector2i"/>.
-        /// </summary>
-        /// <param name="vi">The existing <see cref="Vector2i"/>.</param>
-        public Vector2i(Vector2i vi)
-        {
-            this.x = vi.x;
-            this.y = vi.y;
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="Vector2i"/> from an existing <see cref="Vector2"/>
-        /// by rounding the components via <see cref="Mathf.RoundToInt(real_t)"/>.
-        /// </summary>
-        /// <param name="v">The <see cref="Vector2"/> to convert.</param>
-        public Vector2i(Vector2 v)
-        {
-            this.x = Mathf.RoundToInt(v.x);
-            this.y = Mathf.RoundToInt(v.y);
         }
 
         /// <summary>
@@ -449,7 +439,7 @@ namespace Godot
         }
 
         /// <summary>
-        /// Multiplies each component of the <see cref="Vector2i"/>
+        /// Divides each component of the <see cref="Vector2i"/>
         /// by the given <see langword="int"/>.
         /// </summary>
         /// <param name="vec">The dividend vector.</param>
@@ -586,7 +576,9 @@ namespace Godot
         public static bool operator <(Vector2i left, Vector2i right)
         {
             if (left.x == right.x)
+            {
                 return left.y < right.y;
+            }
             return left.x < right.x;
         }
 
@@ -604,7 +596,9 @@ namespace Godot
         public static bool operator >(Vector2i left, Vector2i right)
         {
             if (left.x == right.x)
+            {
                 return left.y > right.y;
+            }
             return left.x > right.x;
         }
 
@@ -622,7 +616,9 @@ namespace Godot
         public static bool operator <=(Vector2i left, Vector2i right)
         {
             if (left.x == right.x)
+            {
                 return left.y <= right.y;
+            }
             return left.x < right.x;
         }
 
@@ -640,7 +636,9 @@ namespace Godot
         public static bool operator >=(Vector2i left, Vector2i right)
         {
             if (left.x == right.x)
+            {
                 return left.y >= right.y;
+            }
             return left.x > right.x;
         }
 
@@ -659,7 +657,10 @@ namespace Godot
         /// <param name="value">The vector to convert.</param>
         public static explicit operator Vector2i(Vector2 value)
         {
-            return new Vector2i(value);
+            return new Vector2i(
+                Mathf.RoundToInt(value.x),
+                Mathf.RoundToInt(value.y)
+            );
         }
 
         /// <summary>
@@ -670,9 +671,7 @@ namespace Godot
         /// <returns>Whether or not the vector and the object are equal.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Vector2i i)
-                return Equals(i);
-            return false;
+            return obj is Vector2i other && Equals(other);
         }
 
         /// <summary>

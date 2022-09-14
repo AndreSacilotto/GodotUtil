@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+#if REAL_T_IS_DOUBLE
+using real_t = System.Double;
+#else
+using real_t = System.Single;
+#endif
+
 namespace Godot
 {
     /// <summary>
@@ -11,6 +17,14 @@ namespace Godot
     [StructLayout(LayoutKind.Sequential)]
     public struct Rect2i : IEquatable<Rect2i>
     {
+        public enum Side
+        {
+            Left,
+            Top,
+            Right,
+            Bottom
+        };
+
         private Vector2i _position;
         private Vector2i _size;
 
@@ -66,7 +80,7 @@ namespace Godot
         public Rect2i Abs()
         {
             Vector2i end = End;
-            Vector2i topLeft = new(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y));
+            Vector2i topLeft = new Vector2i(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y));
             return new Rect2i(topLeft, _size.Abs());
         }
 
@@ -214,37 +228,39 @@ namespace Godot
             return g;
         }
 
-        ///// <summary>
-        ///// Returns a copy of the <see cref="Rect2i"/> grown by the specified amount
-        ///// on the specified <see cref="Side"/>.
-        ///// </summary>
-        ///// <seealso cref="Grow(int)"/>
-        ///// <seealso cref="GrowIndividual(int, int, int, int)"/>
-        ///// <param name="side">The side to grow.</param>
-        ///// <param name="by">The amount to grow by.</param>
-        ///// <returns>The grown <see cref="Rect2i"/>.</returns>
-        //public Rect2i GrowSide(Side side, int by)
-        //{
-        //    Rect2i g = this;
+        /// <summary>
+        /// Returns a copy of the <see cref="Rect2i"/> grown by the specified amount
+        /// on the specified <see cref="Side"/>.
+        /// </summary>
+        /// <seealso cref="Grow(int)"/>
+        /// <seealso cref="GrowIndividual(int, int, int, int)"/>
+        /// <param name="side">The side to grow.</param>
+        /// <param name="by">The amount to grow by.</param>
+        /// <returns>The grown <see cref="Rect2i"/>.</returns>
+        public Rect2i GrowSide(Side side, int by)
+        {
+            Rect2i g = this;
 
-        //    g = g.GrowIndividual(Side.Left == side ? by : 0,
-        //            Side.Top == side ? by : 0,
-        //            Side.Right == side ? by : 0,
-        //            Side.Bottom == side ? by : 0);
+            g = g.GrowIndividual(Side.Left == side ? by : 0,
+                    Side.Top == side ? by : 0,
+                    Side.Right == side ? by : 0,
+                    Side.Bottom == side ? by : 0);
 
-        //    return g;
-        //}
+            return g;
+        }
 
         /// <summary>
-        /// Returns <see langword="true"/> if the <see cref="Rect2i"/> is flat or empty,
-        /// or <see langword="false"/> otherwise.
+        /// Returns <see langword="true"/> if the <see cref="Rect2i"/> has
+        /// area, and <see langword="false"/> if the <see cref="Rect2i"/>
+        /// is linear, empty, or has a negative <see cref="Size"/>.
+        /// See also <see cref="GetArea"/>.
         /// </summary>
         /// <returns>
         /// A <see langword="bool"/> for whether or not the <see cref="Rect2i"/> has area.
         /// </returns>
-        public bool HasNoArea()
+        public bool HasArea()
         {
-            return _size.x <= 0 || _size.y <= 0;
+            return _size.x > 0 && _size.y > 0;
         }
 
         /// <summary>
@@ -426,12 +442,7 @@ namespace Godot
         /// <returns>Whether or not the rect and the other object are equal.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Rect2i i)
-            {
-                return Equals(i);
-            }
-
-            return false;
+            return obj is Rect2i other && Equals(other);
         }
 
         /// <summary>

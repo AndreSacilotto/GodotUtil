@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-#if GODOT_REAL_T_IS_DOUBLE
+#if REAL_T_IS_DOUBLE
 using real_t = System.Double;
 #else
 using real_t = System.Single;
@@ -16,69 +16,109 @@ namespace Godot
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector4 : IEquatable<Vector4>
     {
+        /// <summary>
+        /// Enumerated index values for the axes.
+        /// Returned by <see cref="MaxAxisIndex"/> and <see cref="MinAxisIndex"/>.
+        /// </summary>
         public enum Axis
         {
+            /// <summary>
+            /// The vector's X axis.
+            /// </summary>
             X = 0,
+            /// <summary>
+            /// The vector's Y axis.
+            /// </summary>
             Y,
+            /// <summary>
+            /// The vector's Z axis.
+            /// </summary>
             Z,
+            /// <summary>
+            /// The vector's W axis.
+            /// </summary>
             W
         }
 
+        /// <summary>
+        /// The vector's X component. Also accessible by using the index position <c>[0]</c>.
+        /// </summary>
         public real_t x;
+
+        /// <summary>
+        /// The vector's Y component. Also accessible by using the index position <c>[1]</c>.
+        /// </summary>
         public real_t y;
+
+        /// <summary>
+        /// The vector's Z component. Also accessible by using the index position <c>[2]</c>.
+        /// </summary>
         public real_t z;
+
+        /// <summary>
+        /// The vector's W component. Also accessible by using the index position <c>[3]</c>.
+        /// </summary>
         public real_t w;
 
         /// <summary>
-        /// Useful for storing and retrieving Direction in DirMag Vector4s and Axis in AxisAngle Vector4s.
+        /// Access vector components using their index.
         /// </summary>
-        public Vector3 XYZ
-        {
-            get
-            {
-                return new Vector3(x, y, z);
-            }
-            set
-            {
-                x = value.x;
-                y = value.y;
-                z = value.z;
-            }
-        }
-
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="index"/> is not 0, 1, 2 or 3.
+        /// </exception>
+        /// <value>
+        /// <c>[0]</c> is equivalent to <see cref="x"/>,
+        /// <c>[1]</c> is equivalent to <see cref="y"/>,
+        /// <c>[2]</c> is equivalent to <see cref="z"/>.
+        /// <c>[3]</c> is equivalent to <see cref="w"/>.
+        /// </value>
         public real_t this[int index]
         {
-            get
-            {
-                return index switch
-                {
-                    0 => x,
-                    1 => y,
-                    2 => z,
-                    3 => w,
-                    _ => throw new IndexOutOfRangeException(),
-                };
-            }
-            set
-            {
+            get {
                 switch (index)
                 {
                     case 0:
-                        x = value;
-                        return;
+                    return x;
                     case 1:
-                        y = value;
-                        return;
+                    return y;
                     case 2:
-                        z = value;
-                        return;
+                    return z;
                     case 3:
-                        w = value;
-                        return;
+                    return w;
                     default:
-                        throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(index));
                 }
             }
+            set {
+                switch (index)
+                {
+                    case 0:
+                    x = value;
+                    return;
+                    case 1:
+                    y = value;
+                    return;
+                    case 2:
+                    z = value;
+                    return;
+                    case 3:
+                    w = value;
+                    return;
+                    default:
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper method for deconstruction into a tuple.
+        /// </summary>
+        public void Deconstruct(out real_t x, out real_t y, out real_t z, out real_t w)
+        {
+            x = this.x;
+            y = this.y;
+            z = this.z;
+            w = this.w;
         }
 
         internal void Normalize()
@@ -99,121 +139,164 @@ namespace Godot
             }
         }
 
+        /// <summary>
+        /// Returns a new vector with all components in absolute values (i.e. positive).
+        /// </summary>
+        /// <returns>A vector with <see cref="Mathf.Abs(real_t)"/> called on each component.</returns>
         public Vector4 Abs()
         {
-            return new(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
+            return new Vector4(Mathf.Abs(x), Mathf.Abs(y), Mathf.Abs(z), Mathf.Abs(w));
         }
 
-#if GODOT
-        public Basis AxisAngleBasis()
-        {
-            return new Basis(XYZ, w);
-        }
-
-        public Quat AxisAngleQuat()
-        {
-            return new Quat(XYZ, w);
-        }
-
-        public static Vector4 AxisAngle(Quat q)
-        {
-            real_t angle = 2 * Mathf.Acos(q.w);
-            real_t den = Mathf.Sqrt(1 - q.w * q.w);
-            if (den == 0)
-            {
-                return new(0, 0, -1, angle);
-            }
-            return new(q.x / den, q.y / den, q.z / den, angle);
-        }
-
-        public static Vector4 AxisAngle(Basis b)
-        {
-            return AxisAngle(b.Quat()); // Might be a more efficient way to do this.
-        }
-#endif
-
-        public Vector4 Bounce(Vector4 n)
-        {
-            return -Reflect(n);
-        }
-
+        /// <summary>
+        /// Returns a new vector with all components rounded up (towards positive infinity).
+        /// </summary>
+        /// <returns>A vector with <see cref="Mathf.Ceil"/> called on each component.</returns>
         public Vector4 Ceil()
         {
-            return new(Mathf.Ceil(x), Mathf.Ceil(y), Mathf.Ceil(z), Mathf.Ceil(w));
-        }
-
-        public Vector4 CubicInterpolate(Vector4 b, Vector4 preA, Vector4 postB, real_t t)
-        {
-            var p0 = preA;
-            var p1 = this;
-            var p2 = b;
-            var p3 = postB;
-
-            real_t t2 = t * t;
-            real_t t3 = t2 * t;
-
-            return 0.5f * (
-                        p1 * 2.0f + (-p0 + p2) * t +
-                        (2.0f * p0 - 5.0f * p1 + 4f * p2 - p3) * t2 +
-                        (-p0 + 3.0f * p1 - 3.0f * p2 + p3) * t3
-                    );
-        }
-
-        public Vector4 DirectionTo(Vector4 b)
-        {
-            return new Vector4(b.x - x, b.y - y, b.z - z, b.w - w).Normalized();
+            return new Vector4(Mathf.Ceil(x), Mathf.Ceil(y), Mathf.Ceil(z), Mathf.Ceil(w));
         }
 
         /// <summary>
-        /// Creates a Vector4 that represents the Direction and Magnitude of a Vector3.
+        /// Returns a new vector with all components clamped between the
+        /// components of <paramref name="min"/> and <paramref name="max"/> using
+        /// <see cref="Mathf.Clamp(real_t, real_t, real_t)"/>.
         /// </summary>
-        public static Vector4 DirMag(Vector3 v)
+        /// <param name="min">The vector with minimum allowed values.</param>
+        /// <param name="max">The vector with maximum allowed values.</param>
+        /// <returns>The vector with all components clamped.</returns>
+        public Vector4 Clamp(Vector4 min, Vector4 max)
         {
-#if GODOT
-            return new(v.Normalized(), v.Length());
-#elif UNITY_5_3_OR_NEWER
-            return new(v.normalized, v.magnitude);
-#endif
+            return new Vector4
+            (
+                Mathf.Clamp(x, min.x, max.x),
+                Mathf.Clamp(y, min.y, max.y),
+                Mathf.Clamp(z, min.z, max.z),
+                Mathf.Clamp(w, min.w, max.w)
+            );
         }
 
         /// <summary>
-        /// Creates a Vector3 interpreting this Vector4's components as Direction and Magnitude.
+        /// Performs a cubic interpolation between vectors <paramref name="preA"/>, this vector,
+        /// <paramref name="b"/>, and <paramref name="postB"/>, by the given amount <paramref name="weight"/>.
         /// </summary>
-        public Vector3 DirMag()
+        /// <param name="b">The destination vector.</param>
+        /// <param name="preA">A vector before this vector.</param>
+        /// <param name="postB">A vector after <paramref name="b"/>.</param>
+        /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
+        /// <returns>The interpolated vector.</returns>
+        //public Vector4 CubicInterpolate(Vector4 b, Vector4 preA, Vector4 postB, real_t weight)
+        //{
+        //    return new Vector4
+        //    (
+        //        Mathf.CubicInterpolate(x, b.x, preA.x, postB.x, weight),
+        //        Mathf.CubicInterpolate(y, b.y, preA.y, postB.y, weight),
+        //        Mathf.CubicInterpolate(z, b.z, preA.z, postB.z, weight),
+        //        Mathf.CubicInterpolate(w, b.w, preA.w, postB.w, weight)
+        //    );
+        //}
+
+        /// <summary>
+        /// Performs a cubic interpolation between vectors <paramref name="preA"/>, this vector,
+        /// <paramref name="b"/>, and <paramref name="postB"/>, by the given amount <paramref name="weight"/>.
+        /// It can perform smoother interpolation than <see cref="CubicInterpolate"/>
+        /// by the time values.
+        /// </summary>
+        /// <param name="b">The destination vector.</param>
+        /// <param name="preA">A vector before this vector.</param>
+        /// <param name="postB">A vector after <paramref name="b"/>.</param>
+        /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
+        /// <param name="t"></param>
+        /// <param name="preAT"></param>
+        /// <param name="postBT"></param>
+        /// <returns>The interpolated vector.</returns>
+        //public Vector4 CubicInterpolateInTime(Vector4 b, Vector4 preA, Vector4 postB, real_t weight, real_t t, real_t preAT, real_t postBT)
+        //{
+        //    return new Vector4
+        //    (
+        //        Mathf.CubicInterpolateInTime(x, b.x, preA.x, postB.x, weight, t, preAT, postBT),
+        //        Mathf.CubicInterpolateInTime(y, b.y, preA.y, postB.y, weight, t, preAT, postBT),
+        //        Mathf.CubicInterpolateInTime(z, b.z, preA.z, postB.z, weight, t, preAT, postBT),
+        //        Mathf.CubicInterpolateInTime(w, b.w, preA.w, postB.w, weight, t, preAT, postBT)
+        //    );
+        //}
+
+        /// <summary>
+        /// Returns the normalized vector pointing from this vector to <paramref name="to"/>.
+        /// </summary>
+        /// <param name="to">The other vector to point towards.</param>
+        /// <returns>The direction from this vector to <paramref name="to"/>.</returns>
+        public Vector4 DirectionTo(Vector4 to)
         {
-            return w * XYZ;
+            Vector4 ret = new Vector4(to.x - x, to.y - y, to.z - z, to.w - w);
+            ret.Normalize();
+            return ret;
         }
 
-        public real_t DistanceSquaredTo(Vector4 b)
+        /// <summary>
+        /// Returns the squared distance between this vector and <paramref name="to"/>.
+        /// This method runs faster than <see cref="DistanceTo"/>, so prefer it if
+        /// you need to compare vectors or need the squared distance for some formula.
+        /// </summary>
+        /// <param name="to">The other vector to use.</param>
+        /// <returns>The squared distance between the two vectors.</returns>
+        public real_t DistanceSquaredTo(Vector4 to)
         {
-            return (b - this).LengthSquared();
+            return (to - this).LengthSquared();
         }
 
-        public real_t DistanceTo(Vector4 b)
+        /// <summary>
+        /// Returns the distance between this vector and <paramref name="to"/>.
+        /// </summary>
+        /// <param name="to">The other vector to use.</param>
+        /// <returns>The distance between the two vectors.</returns>
+        public real_t DistanceTo(Vector4 to)
         {
-            return (b - this).Length();
+            return (to - this).Length();
         }
 
-        public real_t Dot(Vector4 b)
+        /// <summary>
+        /// Returns the dot product of this vector and <paramref name="with"/>.
+        /// </summary>
+        /// <param name="with">The other vector to use.</param>
+        /// <returns>The dot product of the two vectors.</returns>
+        public real_t Dot(Vector4 with)
         {
-            return x * b.x + y * b.y + z * b.z + w * b.w;
+            return (x * with.x) + (y * with.y) + (z * with.z) + (w * with.w);
         }
 
+        /// <summary>
+        /// Returns a new vector with all components rounded down (towards negative infinity).
+        /// </summary>
+        /// <returns>A vector with <see cref="Mathf.Floor"/> called on each component.</returns>
         public Vector4 Floor()
         {
-            return new(Mathf.Floor(x), Mathf.Floor(y), Mathf.Floor(z), Mathf.Floor(w));
+            return new Vector4(Mathf.Floor(x), Mathf.Floor(y), Mathf.Floor(z), Mathf.Floor(w));
         }
 
+        /// <summary>
+        /// Returns the inverse of this vector. This is the same as <c>new Vector4(1 / v.x, 1 / v.y, 1 / v.z, 1 / v.w)</c>.
+        /// </summary>
+        /// <returns>The inverse of this vector.</returns>
         public Vector4 Inverse()
         {
-            return new(1.0f / x, 1.0f / y, 1.0f / z, 1.0f / w);
+            return new Vector4(1 / x, 1 / y, 1 / z, 1 / w);
         }
 
+        /// <summary>
+        /// Returns <see langword="true"/> if the vector is normalized, and <see langword="false"/> otherwise.
+        /// </summary>
+        /// <returns>A <see langword="bool"/> indicating whether or not the vector is normalized.</returns>
         public bool IsNormalized()
         {
             return Mathf.Abs(LengthSquared() - 1.0f) < Mathf.Epsilon;
         }
 
+        /// <summary>
+        /// Returns the length (magnitude) of this vector.
+        /// </summary>
+        /// <seealso cref="LengthSquared"/>
+        /// <returns>The length of this vector.</returns>
         public real_t Length()
         {
             real_t x2 = x * x;
@@ -224,6 +307,12 @@ namespace Godot
             return Mathf.Sqrt(x2 + y2 + z2 + w2);
         }
 
+        /// <summary>
+        /// Returns the squared length (squared magnitude) of this vector.
+        /// This method runs faster than <see cref="Length"/>, so prefer it if
+        /// you need to compare vectors or need the squared length for some formula.
+        /// </summary>
+        /// <returns>The squared length of this vector.</returns>
         public real_t LengthSquared()
         {
             real_t x2 = x * x;
@@ -236,14 +325,14 @@ namespace Godot
 
         /// <summary>
         /// Returns the result of the linear interpolation between
-        /// this vector and `to` by amount `weight`.
+        /// this vector and <paramref name="to"/> by amount <paramref name="weight"/>.
         /// </summary>
         /// <param name="to">The destination vector for interpolation.</param>
         /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
         /// <returns>The resulting vector of the interpolation.</returns>
         public Vector4 Lerp(Vector4 to, real_t weight)
         {
-            return new
+            return new Vector4
             (
                 Mathf.Lerp(x, to.x, weight),
                 Mathf.Lerp(y, to.y, weight),
@@ -253,211 +342,162 @@ namespace Godot
         }
 
         /// <summary>
-        /// Returns the result of the linear interpolation between
-        /// this vector and `to` by the vector amount `weight`.
+        /// Returns the axis of the vector's highest value. See <see cref="Axis"/>.
+        /// If all components are equal, this method returns <see cref="Axis.X"/>.
         /// </summary>
-        /// <param name="to">The destination vector for interpolation.</param>
-        /// <param name="weight">A vector with components on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
-        /// <returns>The resulting vector of the interpolation.</returns>
-        public Vector4 Lerp(Vector4 to, Vector4 weight)
+        /// <returns>The index of the highest axis.</returns>
+        public Axis MaxAxisIndex()
         {
-            return new
-            (
-                Mathf.Lerp(x, to.x, weight.x),
-                Mathf.Lerp(y, to.y, weight.y),
-                Mathf.Lerp(z, to.z, weight.z),
-                Mathf.Lerp(w, to.w, weight.w)
-            );
+            int max_index = 0;
+            real_t max_value = x;
+            for (int i = 1; i < 4; i++)
+            {
+                if (this[i] > max_value)
+                {
+                    max_index = i;
+                    max_value = this[i];
+                }
+            }
+            return (Axis)max_index;
         }
 
         /// <summary>
-        /// Returns the result of the linear interpolation between
-        /// this vector and `to` by amount `weight`.
+        /// Returns the axis of the vector's lowest value. See <see cref="Axis"/>.
+        /// If all components are equal, this method returns <see cref="Axis.W"/>.
         /// </summary>
-        /// <param name="to">The destination vector for interpolation.</param>
-        /// <param name="weight">A value on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
-        /// <returns>The resulting vector of the interpolation.</returns>
-        public Vector4 LinearInterpolate(Vector4 to, real_t weight)
+        /// <returns>The index of the lowest axis.</returns>
+        public Axis MinAxisIndex()
         {
-            return new
-            (
-                Mathf.Lerp(x, to.x, weight),
-                Mathf.Lerp(y, to.y, weight),
-                Mathf.Lerp(z, to.z, weight),
-                Mathf.Lerp(w, to.w, weight)
-            );
+            int min_index = 0;
+            real_t min_value = x;
+            for (int i = 1; i < 4; i++)
+            {
+                if (this[i] <= min_value)
+                {
+                    min_index = i;
+                    min_value = this[i];
+                }
+            }
+            return (Axis)min_index;
         }
 
         /// <summary>
-        /// Returns the result of the linear interpolation between
-        /// this vector and `to` by the vector amount `weight`.
+        /// Returns the vector scaled to unit length. Equivalent to <c>v / v.Length()</c>.
         /// </summary>
-        /// <param name="to">The destination vector for interpolation.</param>
-        /// <param name="weight">A vector with components on the range of 0.0 to 1.0, representing the amount of interpolation.</param>
-        /// <returns>The resulting vector of the interpolation.</returns>
-        public Vector4 LinearInterpolate(Vector4 to, Vector4 weight)
-        {
-            return new
-            (
-                Mathf.Lerp(x, to.x, weight.x),
-                Mathf.Lerp(y, to.y, weight.y),
-                Mathf.Lerp(z, to.z, weight.z),
-                Mathf.Lerp(w, to.w, weight.w)
-            );
-        }
-
-        public Axis MaxAxis()
-        {
-            byte index = 0;
-            for (byte i = 1; i < 4; i++)
-            {
-                if (this[i] > this[index])
-                {
-                    index = i;
-                }
-            }
-            return (Axis)index;
-        }
-
-        public Axis MinAxis()
-        {
-            byte index = 0;
-            for (byte i = 1; i < 4; i++)
-            {
-                if (this[i] < this[index])
-                {
-                    index = i;
-                }
-            }
-            return (Axis)index;
-        }
-
+        /// <returns>A normalized version of the vector.</returns>
         public Vector4 Normalized()
         {
-            var v = this;
+            Vector4 v = this;
             v.Normalize();
             return v;
         }
 
-#if GODOT
+        /// <summary>
+        /// Returns a vector composed of the <see cref="Mathf.PosMod(real_t, real_t)"/> of this vector's components
+        /// and <paramref name="mod"/>.
+        /// </summary>
+        /// <param name="mod">A value representing the divisor of the operation.</param>
+        /// <returns>
+        /// A vector with each component <see cref="Mathf.PosMod(real_t, real_t)"/> by <paramref name="mod"/>.
+        /// </returns>
         public Vector4 PosMod(real_t mod)
         {
-            Vector4 v = this;
-            v.x = Mathf.PosMod(v.x, mod);
-            v.y = Mathf.PosMod(v.y, mod);
-            v.z = Mathf.PosMod(v.z, mod);
-            v.w = Mathf.PosMod(v.w, mod);
-            return v;
-        }
-
-        public Vector4 PosMod(Vector4 modv)
-        {
-            Vector4 v = this;
-            v.x = Mathf.PosMod(v.x, modv.x);
-            v.y = Mathf.PosMod(v.y, modv.y);
-            v.z = Mathf.PosMod(v.z, modv.z);
-            v.w = Mathf.PosMod(v.w, modv.w);
-            return v;
-        }
-#endif
-
-        public Vector4 Project(Vector4 onNormal)
-        {
-            return onNormal * (Dot(onNormal) / onNormal.LengthSquared());
-        }
-
-        public Vector4 Reflect(Vector4 n)
-        {
-#if DEBUG
-            if (!n.IsNormalized())
-                throw new ArgumentException(String.Format("{0} is not normalized", n), nameof(n));
-#endif
-            return 2.0f * n * Dot(n) - this;
-        }
-
-#if GODOT
-        /// <summary>
-        /// Rotates the given Basis, interpreting this Vector4 as AxisAngle.
-        /// </summary>
-        public Basis Rotated(Basis b)
-        {
-            return b * new Basis(XYZ, w);
-        }
-#endif
-
-        public Vector4 Round()
-        {
-            return new(Mathf.Round(x), Mathf.Round(y), Mathf.Round(z), Mathf.Round(w));
-        }
-
-        public Vector4 Sign()
-        {
-            Vector4 v = this;
-            v.x = Mathf.Sign(v.x);
-            v.y = Mathf.Sign(v.y);
-            v.z = Mathf.Sign(v.z);
-            v.w = Mathf.Sign(v.w);
-            return v;
-        }
-
-        public Vector4 Slide(Vector4 n)
-        {
-            return this - n * Dot(n);
-        }
-
-#if GODOT
-        public Vector4 Snapped(Vector4 by)
-        {
-            return new
-            (
-                Mathf.Stepify(x, by.x),
-                Mathf.Stepify(y, by.y),
-                Mathf.Stepify(z, by.z),
-                Mathf.Stepify(w, by.w)
+            return new Vector4(
+                Mathf.PosMod(x, mod),
+                Mathf.PosMod(y, mod),
+                Mathf.PosMod(z, mod),
+                Mathf.PosMod(w, mod)
             );
         }
-#endif
 
-        public Vector2[] UnpackVector2()
+        /// <summary>
+        /// Returns a vector composed of the <see cref="Mathf.PosMod(real_t, real_t)"/> of this vector's components
+        /// and <paramref name="modv"/>'s components.
+        /// </summary>
+        /// <param name="modv">A vector representing the divisors of the operation.</param>
+        /// <returns>
+        /// A vector with each component <see cref="Mathf.PosMod(real_t, real_t)"/> by <paramref name="modv"/>'s components.
+        /// </returns>
+        public Vector4 PosMod(Vector4 modv)
         {
-            Vector2[] arr = new Vector2[2];
-            arr[0] = new Vector2(x, y);
-            arr[1] = new Vector2(z, w);
-            return arr;
+            return new Vector4(
+                Mathf.PosMod(x, modv.x),
+                Mathf.PosMod(y, modv.y),
+                Mathf.PosMod(z, modv.z),
+                Mathf.PosMod(w, modv.w)
+            );
         }
 
-        public void UnpackVector2(out Vector2 xy, out Vector2 zw)
+        /// <summary>
+        /// Returns this vector with all components rounded to the nearest integer,
+        /// with halfway cases rounded towards the nearest multiple of two.
+        /// </summary>
+        /// <returns>The rounded vector.</returns>
+        public Vector4 Round()
         {
-            xy = new Vector2(x, y);
-            zw = new Vector2(z, w);
+            return new Vector4(Mathf.Round(x), Mathf.Round(y), Mathf.Round(z), Mathf.Round(w));
         }
+
+        /// <summary>
+        /// Returns a vector with each component set to one or negative one, depending
+        /// on the signs of this vector's components, or zero if the component is zero,
+        /// by calling <see cref="Mathf.Sign(real_t)"/> on each component.
+        /// </summary>
+        /// <returns>A vector with all components as either <c>1</c>, <c>-1</c>, or <c>0</c>.</returns>
+        public Vector4 Sign()
+        {
+            Vector4 v;
+            v.x = Mathf.Sign(x);
+            v.y = Mathf.Sign(y);
+            v.z = Mathf.Sign(z);
+            v.w = Mathf.Sign(w);
+            return v;
+        }
+
+        /// <summary>
+        /// Returns this vector with each component snapped to the nearest multiple of <paramref name="step"/>.
+        /// This can also be used to round to an arbitrary number of decimals.
+        /// </summary>
+        /// <param name="step">A vector value representing the step size to snap to.</param>
+        /// <returns>The snapped vector.</returns>
+        //public Vector4 Snapped(Vector4 step)
+        //{
+        //    return new Vector4(
+        //        Mathf.Snapped(x, step.x),
+        //        Mathf.Snapped(y, step.y),
+        //        Mathf.Snapped(z, step.z),
+        //        Mathf.Snapped(w, step.w)
+        //    );
+        //}
 
         // Constants
-        private static readonly Vector4 _zero = new(0, 0, 0, 0);
-        private static readonly Vector4 _one = new(1, 1, 1, 1);
-        private static readonly Vector4 _negOne = new(-1, -1, -1, -1);
-#if GODOT
-        private static readonly Vector4 _inf = new(Mathf.Inf, Mathf.Inf, Mathf.Inf, Mathf.Inf);
-#elif UNITY_5_3_OR_NEWER
-        private static readonly Vector4 _inf = new(real_t.PositiveInfinity, real_t.PositiveInfinity, real_t.PositiveInfinity, real_t.PositiveInfinity);
-#endif
+        private static readonly Vector4 _zero = new Vector4(0, 0, 0, 0);
+        private static readonly Vector4 _one = new Vector4(1, 1, 1, 1);
+        private static readonly Vector4 _inf = new Vector4(Mathf.Inf, Mathf.Inf, Mathf.Inf, Mathf.Inf);
 
-        private static readonly Vector4 _unitX = new(1, 0, 0, 0);
-        private static readonly Vector4 _unitY = new(0, 1, 0, 0);
-        private static readonly Vector4 _unitZ = new(0, 0, 1, 0);
-        private static readonly Vector4 _unitW = new(0, 0, 0, 1);
-
+        /// <summary>
+        /// Zero vector, a vector with all components set to <c>0</c>.
+        /// </summary>
+        /// <value>Equivalent to <c>new Vector4(0, 0, 0, 0)</c>.</value>
         public static Vector4 Zero { get { return _zero; } }
+        /// <summary>
+        /// One vector, a vector with all components set to <c>1</c>.
+        /// </summary>
+        /// <value>Equivalent to <c>new Vector4(1, 1, 1, 1)</c>.</value>
         public static Vector4 One { get { return _one; } }
-        public static Vector4 NegOne { get { return _negOne; } }
+        /// <summary>
+        /// Infinity vector, a vector with all components set to <see cref="Mathf.Inf"/>.
+        /// </summary>
+        /// <value>Equivalent to <c>new Vector4(Mathf.Inf, Mathf.Inf, Mathf.Inf, Mathf.Inf)</c>.</value>
         public static Vector4 Inf { get { return _inf; } }
 
-        public static Vector4 UnitX { get { return _unitX; } }
-        public static Vector4 UnitY { get { return _unitY; } }
-        public static Vector4 UnitZ { get { return _unitZ; } }
-        public static Vector4 UnitW { get { return _unitW; } }
-
-        // Constructors
+        /// <summary>
+        /// Constructs a new <see cref="Vector4"/> with the given components.
+        /// </summary>
+        /// <param name="x">The vector's X component.</param>
+        /// <param name="y">The vector's Y component.</param>
+        /// <param name="z">The vector's Z component.</param>
+        /// <param name="w">The vector's W component.</param>
         public Vector4(real_t x, real_t y, real_t z, real_t w)
         {
             this.x = x;
@@ -465,40 +505,14 @@ namespace Godot
             this.z = z;
             this.w = w;
         }
-        public Vector4(Vector4 v)
-        {
-            x = v.x;
-            y = v.y;
-            z = v.z;
-            w = v.w;
-        }
-        public Vector4(Vector3 xyz, real_t w)
-        {
-            x = xyz.x;
-            y = xyz.y;
-            z = xyz.z;
-            this.w = w;
-        }
-        public Vector4(Vector2 xy, Vector2 zw)
-        {
-            x = xy.x;
-            y = xy.y;
-            z = zw.x;
-            w = zw.y;
-        }
 
-#if UNITY_5_3_OR_NEWER
-        public static implicit operator UnityEngine.Vector4(Vector4 value)
-        {
-            return new UnityEngine.Vector4(value.x, value.y, value.z, value.w);
-        }
-
-        public static explicit operator Vector4(UnityEngine.Vector4 value)
-        {
-            return new(value.x, value.y, value.z, value.w);
-        }
-#endif
-
+        /// <summary>
+        /// Adds each component of the <see cref="Vector4"/>
+        /// with the components of the given <see cref="Vector4"/>.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>The added vector.</returns>
         public static Vector4 operator +(Vector4 left, Vector4 right)
         {
             left.x += right.x;
@@ -508,6 +522,13 @@ namespace Godot
             return left;
         }
 
+        /// <summary>
+        /// Subtracts each component of the <see cref="Vector4"/>
+        /// by the components of the given <see cref="Vector4"/>.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>The subtracted vector.</returns>
         public static Vector4 operator -(Vector4 left, Vector4 right)
         {
             left.x -= right.x;
@@ -517,6 +538,15 @@ namespace Godot
             return left;
         }
 
+        /// <summary>
+        /// Returns the negative value of the <see cref="Vector4"/>.
+        /// This is the same as writing <c>new Vector4(-v.x, -v.y, -v.z, -v.w)</c>.
+        /// This operation flips the direction of the vector while
+        /// keeping the same magnitude.
+        /// With floats, the number zero can be either positive or negative.
+        /// </summary>
+        /// <param name="vec">The vector to negate/flip.</param>
+        /// <returns>The negated/flipped vector.</returns>
         public static Vector4 operator -(Vector4 vec)
         {
             vec.x = -vec.x;
@@ -526,6 +556,13 @@ namespace Godot
             return vec;
         }
 
+        /// <summary>
+        /// Multiplies each component of the <see cref="Vector4"/>
+        /// by the given <see cref="real_t"/>.
+        /// </summary>
+        /// <param name="vec">The vector to multiply.</param>
+        /// <param name="scale">The scale to multiply by.</param>
+        /// <returns>The multiplied vector.</returns>
         public static Vector4 operator *(Vector4 vec, real_t scale)
         {
             vec.x *= scale;
@@ -535,6 +572,13 @@ namespace Godot
             return vec;
         }
 
+        /// <summary>
+        /// Multiplies each component of the <see cref="Vector4"/>
+        /// by the given <see cref="real_t"/>.
+        /// </summary>
+        /// <param name="scale">The scale to multiply by.</param>
+        /// <param name="vec">The vector to multiply.</param>
+        /// <returns>The multiplied vector.</returns>
         public static Vector4 operator *(real_t scale, Vector4 vec)
         {
             vec.x *= scale;
@@ -544,6 +588,13 @@ namespace Godot
             return vec;
         }
 
+        /// <summary>
+        /// Multiplies each component of the <see cref="Vector4"/>
+        /// by the components of the given <see cref="Vector4"/>.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>The multiplied vector.</returns>
         public static Vector4 operator *(Vector4 left, Vector4 right)
         {
             left.x *= right.x;
@@ -553,24 +604,54 @@ namespace Godot
             return left;
         }
 
-        public static Vector4 operator /(Vector4 vec, real_t scale)
+        /// <summary>
+        /// Divides each component of the <see cref="Vector4"/>
+        /// by the given <see cref="real_t"/>.
+        /// </summary>
+        /// <param name="vec">The dividend vector.</param>
+        /// <param name="divisor">The divisor value.</param>
+        /// <returns>The divided vector.</returns>
+        public static Vector4 operator /(Vector4 vec, real_t divisor)
         {
-            vec.x /= scale;
-            vec.y /= scale;
-            vec.z /= scale;
-            vec.w /= scale;
+            vec.x /= divisor;
+            vec.y /= divisor;
+            vec.z /= divisor;
+            vec.w /= divisor;
             return vec;
         }
 
-        public static Vector4 operator /(Vector4 left, Vector4 right)
+        /// <summary>
+        /// Divides each component of the <see cref="Vector4"/>
+        /// by the components of the given <see cref="Vector4"/>.
+        /// </summary>
+        /// <param name="vec">The dividend vector.</param>
+        /// <param name="divisorv">The divisor vector.</param>
+        /// <returns>The divided vector.</returns>
+        public static Vector4 operator /(Vector4 vec, Vector4 divisorv)
         {
-            left.x /= right.x;
-            left.y /= right.y;
-            left.z /= right.z;
-            left.w /= right.w;
-            return left;
+            vec.x /= divisorv.x;
+            vec.y /= divisorv.y;
+            vec.z /= divisorv.z;
+            vec.w /= divisorv.w;
+            return vec;
         }
 
+        /// <summary>
+        /// Gets the remainder of each component of the <see cref="Vector4"/>
+        /// with the components of the given <see cref="real_t"/>.
+        /// This operation uses truncated division, which is often not desired
+        /// as it does not work well with negative numbers.
+        /// Consider using <see cref="PosMod(real_t)"/> instead
+        /// if you want to handle negative numbers.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// GD.Print(new Vector4(10, -20, 30, 40) % 7); // Prints "(3, -6, 2, 5)"
+        /// </code>
+        /// </example>
+        /// <param name="vec">The dividend vector.</param>
+        /// <param name="divisor">The divisor value.</param>
+        /// <returns>The remainder vector.</returns>
         public static Vector4 operator %(Vector4 vec, real_t divisor)
         {
             vec.x %= divisor;
@@ -580,6 +661,22 @@ namespace Godot
             return vec;
         }
 
+        /// <summary>
+        /// Gets the remainder of each component of the <see cref="Vector4"/>
+        /// with the components of the given <see cref="Vector4"/>.
+        /// This operation uses truncated division, which is often not desired
+        /// as it does not work well with negative numbers.
+        /// Consider using <see cref="PosMod(Vector4)"/> instead
+        /// if you want to handle negative numbers.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// GD.Print(new Vector4(10, -20, 30, 10) % new Vector4(7, 8, 9, 10)); // Prints "(3, -4, 3, 0)"
+        /// </code>
+        /// </example>
+        /// <param name="vec">The dividend vector.</param>
+        /// <param name="divisorv">The divisor vector.</param>
+        /// <returns>The remainder vector.</returns>
         public static Vector4 operator %(Vector4 vec, Vector4 divisorv)
         {
             vec.x %= divisorv.x;
@@ -589,24 +686,50 @@ namespace Godot
             return vec;
         }
 
+        /// <summary>
+        /// Returns <see langword="true"/> if the vectors are exactly equal.
+        /// Note: Due to floating-point precision errors, consider using
+        /// <see cref="IsEqualApprox"/> instead, which is more reliable.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>Whether or not the vectors are exactly equal.</returns>
         public static bool operator ==(Vector4 left, Vector4 right)
         {
             return left.Equals(right);
         }
 
+        /// <summary>
+        /// Returns <see langword="true"/> if the vectors are not equal.
+        /// Note: Due to floating-point precision errors, consider using
+        /// <see cref="IsEqualApprox"/> instead, which is more reliable.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>Whether or not the vectors are not equal.</returns>
         public static bool operator !=(Vector4 left, Vector4 right)
         {
             return !left.Equals(right);
         }
 
+        /// <summary>
+        /// Compares two <see cref="Vector4"/> vectors by first checking if
+        /// the X value of the <paramref name="left"/> vector is less than
+        /// the X value of the <paramref name="right"/> vector.
+        /// If the X values are exactly equal, then it repeats this check
+        /// with the Y, Z and finally W values of the two vectors.
+        /// This operator is useful for sorting vectors.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>Whether or not the left is less than the right.</returns>
         public static bool operator <(Vector4 left, Vector4 right)
         {
-#if GODOT
-            if (Mathf.IsEqualApprox(left.x, right.x))
+            if (left.x == right.x)
             {
-                if (Mathf.IsEqualApprox(left.y, right.y))
+                if (left.y == right.y)
                 {
-                    if (Mathf.IsEqualApprox(left.z, right.z))
+                    if (left.z == right.z)
                     {
                         return left.w < right.w;
                     }
@@ -614,31 +737,27 @@ namespace Godot
                 }
                 return left.y < right.y;
             }
-#elif UNITY_5_3_OR_NEWER
-            if (Mathf.Approximately(left.x, right.x))
-            {
-                if (Mathf.Approximately(left.y, right.y))
-                {
-                    if (Mathf.Approximately(left.z, right.z))
-                    {
-                        return left.w < right.w;
-                    }
-                    return left.z < right.z;
-                }
-                return left.y < right.y;
-            }
-#endif
             return left.x < right.x;
         }
 
+        /// <summary>
+        /// Compares two <see cref="Vector4"/> vectors by first checking if
+        /// the X value of the <paramref name="left"/> vector is greater than
+        /// the X value of the <paramref name="right"/> vector.
+        /// If the X values are exactly equal, then it repeats this check
+        /// with the Y, Z and finally W values of the two vectors.
+        /// This operator is useful for sorting vectors.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>Whether or not the left is greater than the right.</returns>
         public static bool operator >(Vector4 left, Vector4 right)
         {
-#if GODOT
-            if (Mathf.IsEqualApprox(left.x, right.x))
+            if (left.x == right.x)
             {
-                if (Mathf.IsEqualApprox(left.y, right.y))
+                if (left.y == right.y)
                 {
-                    if (Mathf.IsEqualApprox(left.z, right.z))
+                    if (left.z == right.z)
                     {
                         return left.w > right.w;
                     }
@@ -646,31 +765,27 @@ namespace Godot
                 }
                 return left.y > right.y;
             }
-#elif UNITY_5_3_OR_NEWER
-            if (Mathf.Approximately(left.x, right.x))
-            {
-                if (Mathf.Approximately(left.y, right.y))
-                {
-                    if (Mathf.Approximately(left.z, right.z))
-                    {
-                        return left.w > right.w;
-                    }
-                    return left.z > right.z;
-                }
-                return left.y > right.y;
-            }
-#endif
             return left.x > right.x;
         }
 
+        /// <summary>
+        /// Compares two <see cref="Vector4"/> vectors by first checking if
+        /// the X value of the <paramref name="left"/> vector is less than
+        /// or equal to the X value of the <paramref name="right"/> vector.
+        /// If the X values are exactly equal, then it repeats this check
+        /// with the Y, Z and finally W values of the two vectors.
+        /// This operator is useful for sorting vectors.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>Whether or not the left is less than or equal to the right.</returns>
         public static bool operator <=(Vector4 left, Vector4 right)
         {
-#if GODOT
-            if (Mathf.IsEqualApprox(left.x, right.x))
+            if (left.x == right.x)
             {
-                if (Mathf.IsEqualApprox(left.y, right.y))
+                if (left.y == right.y)
                 {
-                    if (Mathf.IsEqualApprox(left.z, right.z))
+                    if (left.z == right.z)
                     {
                         return left.w <= right.w;
                     }
@@ -678,31 +793,27 @@ namespace Godot
                 }
                 return left.y < right.y;
             }
-#elif UNITY_5_3_OR_NEWER
-            if (Mathf.Approximately(left.x, right.x))
-            {
-                if (Mathf.Approximately(left.y, right.y))
-                {
-                    if (Mathf.Approximately(left.z, right.z))
-                    {
-                        return left.w <= right.w;
-                    }
-                    return left.z < right.z;
-                }
-                return left.y < right.y;
-            }
-#endif
             return left.x < right.x;
         }
 
+        /// <summary>
+        /// Compares two <see cref="Vector4"/> vectors by first checking if
+        /// the X value of the <paramref name="left"/> vector is greater than
+        /// or equal to the X value of the <paramref name="right"/> vector.
+        /// If the X values are exactly equal, then it repeats this check
+        /// with the Y, Z and finally W values of the two vectors.
+        /// This operator is useful for sorting vectors.
+        /// </summary>
+        /// <param name="left">The left vector.</param>
+        /// <param name="right">The right vector.</param>
+        /// <returns>Whether or not the left is greater than or equal to the right.</returns>
         public static bool operator >=(Vector4 left, Vector4 right)
         {
-#if GODOT
-            if (Mathf.IsEqualApprox(left.x, right.x))
+            if (left.x == right.x)
             {
-                if (Mathf.IsEqualApprox(left.y, right.y))
+                if (left.y == right.y)
                 {
-                    if (Mathf.IsEqualApprox(left.z, right.z))
+                    if (left.z == right.z)
                     {
                         return left.w >= right.w;
                     }
@@ -710,64 +821,70 @@ namespace Godot
                 }
                 return left.y > right.y;
             }
-#elif UNITY_5_3_OR_NEWER
-            if (Mathf.Approximately(left.x, right.x))
-            {
-                if (Mathf.Approximately(left.y, right.y))
-                {
-                    if (Mathf.Approximately(left.z, right.z))
-                    {
-                        return left.w >= right.w;
-                    }
-                    return left.z > right.z;
-                }
-                return left.y > right.y;
-            }
-#endif
             return left.x > right.x;
         }
 
+        /// <summary>
+        /// Returns <see langword="true"/> if the vector is exactly equal
+        /// to the given object (<see paramref="obj"/>).
+        /// Note: Due to floating-point precision errors, consider using
+        /// <see cref="IsEqualApprox"/> instead, which is more reliable.
+        /// </summary>
+        /// <param name="obj">The object to compare with.</param>
+        /// <returns>Whether or not the vector and the object are equal.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is Vector4 vector)
-                return Equals(vector);
-            return false;
+            return obj is Vector4 other && Equals(other);
         }
 
+        /// <summary>
+        /// Returns <see langword="true"/> if the vectors are exactly equal.
+        /// Note: Due to floating-point precision errors, consider using
+        /// <see cref="IsEqualApprox"/> instead, which is more reliable.
+        /// </summary>
+        /// <param name="other">The other vector.</param>
+        /// <returns>Whether or not the vectors are exactly equal.</returns>
         public bool Equals(Vector4 other)
         {
-#if GODOT
-            return Mathf.IsEqualApprox(x, other.x) && Mathf.IsEqualApprox(y, other.y) && Mathf.IsEqualApprox(z, other.z) && Mathf.IsEqualApprox(w, other.w);
-#elif UNITY_5_3_OR_NEWER
-            return Mathf.Approximately(x, other.x) && Mathf.Approximately(y, other.y) && Mathf.Approximately(z, other.z) && Mathf.Approximately(w, other.w);
-#endif
+            return x == other.x && y == other.y && z == other.z && w == other.w;
         }
 
+        /// <summary>
+        /// Returns <see langword="true"/> if this vector and <paramref name="other"/> are approximately equal,
+        /// by running <see cref="Mathf.IsEqualApprox(real_t, real_t)"/> on each component.
+        /// </summary>
+        /// <param name="other">The other vector to compare.</param>
+        /// <returns>Whether or not the vectors are approximately equal.</returns>
+        public bool IsEqualApprox(Vector4 other)
+        {
+            return Mathf.IsEqualApprox(x, other.x) && Mathf.IsEqualApprox(y, other.y) && Mathf.IsEqualApprox(z, other.z) && Mathf.IsEqualApprox(w, other.w);
+        }
+
+        /// <summary>
+        /// Serves as the hash function for <see cref="Vector4"/>.
+        /// </summary>
+        /// <returns>A hash code for this vector.</returns>
         public override int GetHashCode()
         {
             return y.GetHashCode() ^ x.GetHashCode() ^ z.GetHashCode() ^ w.GetHashCode();
         }
 
+        /// <summary>
+        /// Converts this <see cref="Vector4"/> to a string.
+        /// </summary>
+        /// <returns>A string representation of this vector.</returns>
         public override string ToString()
         {
-            return String.Format("({0}, {1}, {2}, {3})", new object[]
-            {
-                x.ToString(),
-                y.ToString(),
-                z.ToString(),
-                w.ToString()
-            });
+            return $"({x}, {y}, {z}, {w})";
         }
 
+        /// <summary>
+        /// Converts this <see cref="Vector4"/> to a string with the given <paramref name="format"/>.
+        /// </summary>
+        /// <returns>A string representation of this vector.</returns>
         public string ToString(string format)
         {
-            return String.Format("({0}, {1}, {2}, {3})", new object[]
-            {
-                x.ToString(format),
-                y.ToString(format),
-                z.ToString(format),
-                w.ToString(format)
-            });
+            return $"({x.ToString(format)}, {y.ToString(format)}, {z.ToString(format)}, {w.ToString(format)})";
         }
     }
 }

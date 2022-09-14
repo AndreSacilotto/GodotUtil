@@ -26,8 +26,8 @@ namespace Util
         public static int[,] TilemapToGetCellsArray(this TileMap tilemap)
         {
             var rect = tilemap.GetUsedRect();
-            var pos = new Vector2i(rect.Position);
-            var size = new Vector2i(rect.Size);
+            var pos = (Vector2i)rect.Position;
+            var size = (Vector2i)rect.Size;
 
             var arr = new int[size.y, size.x];
             for (int r = 0; r < size.y; r++)
