@@ -75,19 +75,14 @@ namespace Godot
         public real_t this[int index]
         {
             get {
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                    return x;
-                    case 1:
-                    return y;
-                    case 2:
-                    return z;
-                    case 3:
-                    return w;
-                    default:
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                }
+                    0 => x,
+                    1 => y,
+                    2 => z,
+                    3 => w,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index)),
+                };
             }
             set {
                 switch (index)
@@ -228,7 +223,7 @@ namespace Godot
         /// <returns>The direction from this vector to <paramref name="to"/>.</returns>
         public Vector4 DirectionTo(Vector4 to)
         {
-            Vector4 ret = new Vector4(to.x - x, to.y - y, to.z - z, to.w - w);
+            Vector4 ret = new(to.x - x, to.y - y, to.z - z, to.w - w);
             ret.Normalize();
             return ret;
         }
@@ -471,9 +466,9 @@ namespace Godot
         //}
 
         // Constants
-        private static readonly Vector4 _zero = new Vector4(0, 0, 0, 0);
-        private static readonly Vector4 _one = new Vector4(1, 1, 1, 1);
-        private static readonly Vector4 _inf = new Vector4(Mathf.Inf, Mathf.Inf, Mathf.Inf, Mathf.Inf);
+        private static readonly Vector4 _zero = new(0, 0, 0, 0);
+        private static readonly Vector4 _one = new(1, 1, 1, 1);
+        private static readonly Vector4 _inf = new(Mathf.Inf, Mathf.Inf, Mathf.Inf, Mathf.Inf);
 
         /// <summary>
         /// Zero vector, a vector with all components set to <c>0</c>.

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace Util
 {
 
-    public static partial class MathUtil
+    public static partial class UtilMath
     {
 
         #region Precision

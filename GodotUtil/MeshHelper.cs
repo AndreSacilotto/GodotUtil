@@ -1,5 +1,7 @@
 ﻿
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Godot;
 using Util.Vector;
 
@@ -28,28 +30,26 @@ namespace Util
         {
             var b = new Basis(axis, rotation);
             for (int i = 0; i < points.Length; i++) 
-            {
-                //points[i] = points[i].Rotated(axis, rotation);
                 points[i] = b.Mult(points[i]);
-            }
+                //points[i] = points[i].Rotated(axis, rotation);
         }
 
-        public static void RotateVectorArray(Vector2[] points, float rotation)
+        //2D ROT
+
+        public static void RotateVectors(Vector2[] points, float rotation)
         {
             var s = Mathf.Sin(rotation);
             var c = Mathf.Cos(rotation);
-            for (int i = 0; i < points.Length; i++) 
+            for (int i = 0; i < points.Length; i++)
                 points[i] = VectorMath.RotatedNoTrig(points[i], c, s);
         }
-
-        public static void RotateVectorArray(Vector2[] points, Vector2 pivot, float rotation)
+        public static void RotateVectors(Vector2[] points, Vector2 pivot, float rotation)
         {
             var s = Mathf.Sin(rotation);
             var c = Mathf.Cos(rotation);
             for (int i = 0; i < points.Length; i++)
                 points[i] = VectorMath.RotatedNoTrig(points[i], pivot, c, s);
         }
-
         #endregion
 
         public static Vector2[] ErrorReturn2D()
@@ -68,94 +68,65 @@ namespace Util
 
         #region Create 2D
 
-        /// <param name="r">Radius/Size</param>
-        public static Vector2[] Square(float r) 
+        /// <summary> https://math.stackexchange.com/a/1344707 </summary>
+        /// <param name="radius">Radius/Size - Negative value flip the polygon</param>
+        public static Vector2[] TriangleEquilateral(float radius)
         {
-            var rn = -r;
+            var t = Mathf.Tan(UtilMath.TAU_30) * radius;
+            return new Vector2[3] {
+                new Vector2(0f, t * -2f),
+                new Vector2(radius, t),
+                new Vector2(-radius, t),
+            };
+        }
+
+        /// <param name="size">Radius/Size/Diagonal</param>
+        public static Vector2[] Square(float size) 
+        {
+            var rn = -size;
             return new Vector2[4] {
                 new Vector2(rn, rn),
-                new Vector2(r, rn),
-                new Vector2(r, r),
-                new Vector2(rn, r),
+                new Vector2(size, rn),
+                new Vector2(size, size),
+                new Vector2(rn, size),
             };
         }
 
-        /// <param name="h">Horizontal Size</param>
-        /// <param name="v">Vertical Size</param>
-        public static Vector2[] Retangle(float h, float v)
+        public static Vector2[] Retangle(float width, float height)
         {
-            var vn = -v;
-            var hn = -h;
             return new Vector2[4] {
-                new Vector2(hn, vn),
-                new Vector2(h, vn),
-                new Vector2(h, v),
-                new Vector2(hn, v),
+                new Vector2(-width, -height),
+                new Vector2(width, -height),
+                new Vector2(width, height),
+                new Vector2(-width, height),
             };
         }
 
-        /// <param name="h">Horizontal Size</param>
-        /// <param name="v">Vertical Size</param>
-        public static Vector2[] Rhombus(float h, float v)
+        public static Vector2[] Rhombus(float width, float height)
         {
             return new Vector2[4] {
-                new Vector2(0f, -v),
-                new Vector2(h, 0f),
-                new Vector2(0f, v),
-                new Vector2(-h, 0f),
+                new Vector2(0f, -height),
+                new Vector2(width, 0f),
+                new Vector2(0f, height),
+                new Vector2(-width, 0f),
             };
         }
         
-        /// <param name="n">Near - bottom width</param>
-        /// <param name="f">Far - top width</param>
-        public static Vector2[] Trapezoid(float n, float f, float height)
+        /// <param name="near">Near - bottom width</param>
+        /// <param name="far">Far - top width</param>
+        public static Vector2[] Trapezoid(float near, float far, float height)
         {
             return new Vector2[4] {
-                new Vector2(-f, -height),
-                new Vector2(f, -height),
-                new Vector2(n, height),
-                new Vector2(-n, height),
-            };
-        }
-
-        /// <summary> 
-        /// https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
-        /// </summary>
-        /// <param name="r">Radius/Size - Negative value flip the polygon</param>
-        public static Vector2[] TriangleEquilateral(float r)
-        {
-            var t = Mathf.Tan(MathUtil.TAU_30) * r;
-
-            return new Vector2[3] {
-                new Vector2(0f, t * -2f),
-                new Vector2(r, t),
-                new Vector2(-r, t),
+                new Vector2(-far, -height),
+                new Vector2(far, -height),
+                new Vector2(near, height),
+                new Vector2(-near, height),
             };
         }
 
         /// <param name="radius">Radius/Size - Negative value flip the polygon</param>
-        /// <param name="sides">Number of sides of the primivite polygon</param>
-        /// <param name="start">The normalized vector2 of the first vertex position</param>
-        public static Vector2[] SimplePolygon2D(float radius, int sides, Vector2 start)
-        {
-            if (sides < 3)
-                return ErrorReturn2D();
-
-            var points = new Vector2[sides];
-
-            var rad = Mathf.Tau / sides;
-
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
-
-            points[0] = start * radius;
-            for (int i = 1; i < sides; i++)
-                points[i] = VectorMath.RotatedNoTrig(points[i - 1], c, s);
-
-            return points;
-        }
-
-        public static Vector2[] SemiCircle(float radius, int density = 10)
+        /// <param name="density">Number of sides of the primivite polygon</param>
+        public static Vector2[] Circle(float radius, int density)
         {
             if (density < 2)
                 return ErrorReturn2D();
@@ -163,16 +134,163 @@ namespace Util
             var points = new Vector2[density];
 
             var rad = Mathf.Tau / density;
-
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);
 
-            points[0] = new Vector2(-radius, 0f);
-            for (int i = 1; i < density; i++)
-                points[i] = VectorMath.RotatedNoTrig(points[i - 1], c, s);
+            var v = Vector2.Left;
+            for (int i = 0; i < density; i++)
+            {
+                points[i] = v * radius;
+                v = VectorMath.RotatedNoTrig(v, c, s);
+            }
 
             return points;
         }
+
+        /// <summary> https://stackoverflow.com/a/34735255 </summary>
+        /// <param name="width">Radius/Size</param>
+        /// <param name="height">Radius/Size</param>
+        /// <param name="density">Number of sides of the primivite polygon</param>
+        public static Vector2[] Ellipse(float width, float height, int density = 10)
+        {
+            if (density < 2)
+                return ErrorReturn2D();
+
+            var points = new Vector2[density];
+
+            var rad = Mathf.Tau / density;
+            var s = Mathf.Sin(rad);
+            var c = Mathf.Cos(rad);
+
+            var v = Vector2.Left;
+            for (int i = 0; i < density; i++) 
+            {
+                points[i] = new(v.x * width, v.y * height);
+                v = VectorMath.RotatedNoTrig(v, c, s);
+            }
+
+            return points;
+        }
+
+        /// <param name="radius">Radius/Size - Negative value flip the polygon</param>
+        /// <param name="sides">Number of points used to draw it</param>
+        public static Vector2[] SemiCircle(float radius, int density = 10)
+        {
+            if (density < 2)
+                return ErrorReturn2D();
+
+            var points = new Vector2[density];
+
+            var rad = UtilMath.TAU_180 / (density-1);
+            var s = Mathf.Sin(rad);
+            var c = Mathf.Cos(rad);
+
+            var v = Vector2.Left;
+            for (int i = 0; i < density; i++)
+            {
+                points[i] = v * radius;
+                v = VectorMath.RotatedNoTrig(v, c, s);
+            }
+
+            return points;
+        }
+
+        /// <param name="height"></param>
+        /// <param name="radius">How steep is the curve</param>
+        /// <param name="arc">How much of tau the arc covers - 0..PI</param>
+        /// <param name="density">Number of point on the arc</param>
+        public static Vector2[] Arc(float width, float height, float radius, float arc, int density = 10)
+        {
+            var h = height - radius;
+
+            if (height < 0 || radius < 0 || arc < 0)
+                return ErrorReturn2D();
+
+            var points = new Vector2[1 + density];
+
+            var rad = arc / (density-1);
+            var s = Mathf.Sin(rad);
+            var c = Mathf.Cos(rad);
+
+            var v = VectorMath.RadianToVector2(arc + UtilMath.TAU_90);
+            for (int i = 0; i < density; i++)
+            {
+                points[i] = new(v.x * width, v.y * radius - h);
+                v = VectorMath.RotatedNoTrig(v, c, s);
+            }
+
+            points[points.Length - 1] = new Vector2(0f, height);
+
+            return points;
+        }
+
+        public static Vector2[] DoubleArc2D(float radius, int density = 10)
+        {
+            var points = new Vector2[density];
+
+            return points;
+        }
+
+
+        /// <summary>=D</summary>
+        /// <param name="width">Horizontal size</param>
+        /// <param name="bodyHeight">Vertical size not including the arc</param>
+        /// <param name="headRadius">Arc size</param>
+        /// <param name="density">Number of points used  on the arc</param>
+        public static Vector2[] Bullet(float width, float bodyHeight, float headRadius, int density = 10)
+        {
+            var h = bodyHeight - headRadius;
+
+            if (width < 0 || bodyHeight < 0 || headRadius < 0 || h < 0)
+                return ErrorReturn2D();
+
+            var points = new Vector2[2+density];
+
+            var rad = UtilMath.TAU_180 / (density-1);
+            var s = Mathf.Sin(rad);
+            var c = Mathf.Cos(rad);
+
+            var v = Vector2.Left;
+            for (int i = 0; i < density; i++)
+            {
+                points[i] = new(v.x * width, v.y * headRadius - h);
+                v = VectorMath.RotatedNoTrig(v, c, s);
+            }
+
+            var len = points.Length - 1;
+            points[len--] = new Vector2(-width, bodyHeight);
+            points[len] = new Vector2(width, bodyHeight);
+
+            return points;
+        }
+
+        public static Vector2[] Capsule(float width, float bodyHeight, float radius, int density = 10)
+        {
+            var h = bodyHeight - radius; 
+
+            if (width < 0 || bodyHeight < 0 || radius < 0 || h < 0)
+                return ErrorReturn2D();
+
+            var points = new Vector2[density * 2];
+
+            var rad = UtilMath.TAU_180 / (density - 1);
+            var s = Mathf.Sin(rad);
+            var c = Mathf.Cos(rad);
+
+            var v = Vector2.Left;
+            for (int i = 0, j = density; i < density; i++, j++)
+            {
+                var p = new Vector2(v.x * width, v.y * radius - h);
+                points[i] = -p;
+                points[j] = p;
+                v = VectorMath.RotatedNoTrig(v, c, s);
+            }
+            return points;
+        }
+
+        #region 2D Non-Continuos
+
+        private const float SAFE_THRESHOLD = 0.0001f;
 
         /// <param name="inner">Radius of end circle</param>
         /// <param name="outter">Radius of far circle</param>
@@ -180,19 +298,27 @@ namespace Util
         public static Vector2[] Donut(float inner, float outter, int density = 10)
         {
             var points = new Vector2[density * 2];
-            var secondCircle = density;
 
-            var rad = Mathf.Tau / density;
+            var rad = Mathf.Tau / (density - 1);
+            var s = Mathf.Sin(rad);
+            var c = Mathf.Cos(rad);
 
-            points[0] = new Vector2(0, -inner);
-            points[0] = new Vector2(0, -inner);
-            for (int i = 1; i < density; i++)
-                points[i] = points[i - 1].Rotated(rad);
+            var v1 = Vector2.Left;
+            var v2 = Vector2.Left;
+            for (int i = 0, j = density; i < density; i++, j++)
+            {
+                points[i] = v1 * inner;
+                points[j] = v2 * outter;
+                v1 = VectorMath.RotatedNoTrig(v1, c, s);
+                v2 = VectorMath.RotatedNoTrig(v2, c, -s);
+            }
 
+            var safe = new Vector2(0f, SAFE_THRESHOLD);
+            points[0] -= safe;
+            points[points.Length - 1] -= safe;
 
             return points;
         }
-
 
         /// <param name="h">Horizontal Size</param>
         /// <param name="v">Vertical Size</param>
@@ -201,7 +327,6 @@ namespace Util
         /// <param name="position01">position of interscetion in percentage (0f..1f)</param>
         public static Vector2[] HolyCross2D(float h, float v, float th, float tv, float position01 = 0.75f)
         {
-            const float SAFE_THRESHOLD = 0.0001f;
             var c = (v - th - SAFE_THRESHOLD) * (2f * position01 - 1f);
 
             var ctp = c + th;
@@ -226,28 +351,8 @@ namespace Util
             };
         }
 
-        //public static Vector2[] DoubleArc2D(float radius, int density = 10)
-        //{
-        //    var points = new Vector2[density];
 
-        //    return points;
-        //}
-
-        //public static Vector2[] Arc2D(float radius, int density = 10)
-        //{
-        //    var points = new Vector2[density];
-
-        //    return points;
-        //}
-
-        ///// <summary>=D</summary>
-        ///// <param name="radius"></param>
-        //public static Vector2[] Bullet(float radius)
-        //{
-        //    var points = new Vector2[density];
-
-        //    return points;
-        //}
+        #endregion
 
 
         #endregion

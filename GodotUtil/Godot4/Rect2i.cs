@@ -80,7 +80,7 @@ namespace Godot
         public Rect2i Abs()
         {
             Vector2i end = End;
-            Vector2i topLeft = new Vector2i(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y));
+            Vector2i topLeft = new(Mathf.Min(_position.x, end.x), Mathf.Min(_position.y, end.y));
             return new Rect2i(topLeft, _size.Abs());
         }
 
@@ -365,7 +365,7 @@ namespace Godot
         public Rect2i(Vector2i position, int width, int height)
         {
             _position = position;
-            _size = new Vector2i(width, height);
+            _size = new(width, height);
         }
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace Godot
         /// <param name="size">The size.</param>
         public Rect2i(int x, int y, Vector2i size)
         {
-            _position = new Vector2i(x, y);
+            _position = new(x, y);
             _size = size;
         }
 
@@ -389,8 +389,8 @@ namespace Godot
         /// <param name="height">The height.</param>
         public Rect2i(int x, int y, int width, int height)
         {
-            _position = new Vector2i(x, y);
-            _size = new Vector2i(width, height);
+            _position = new(x, y);
+            _size = new(width, height);
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace Util.Vector
         public static Vector2i PositionToDirection(Vector2 position, Vector2 center = default)
         {
             var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
-            return new(MathUtil.RoundToInt(Math.Cos(rad)), MathUtil.RoundToInt(Math.Sin(rad)));
+            return new(UtilMath.RoundToInt(Math.Cos(rad)), UtilMath.RoundToInt(Math.Sin(rad)));
         }
         public static Vector2 PositionToFloatDirection(int decimals, Vector2 position, Vector2 center = default)
         {
@@ -58,13 +58,13 @@ namespace Util.Vector
             var rad = Math.Atan2(position.y - center.y, position.x - center.x);
             if (rad < 0)
             {
-                if (rad >= -MathUtil.TAU_90)
+                if (rad >= -UtilMath.TAU_90)
                     return TopRight;
                 return TopLeft;
             }
             else
             {
-                if (rad <= MathUtil.TAU_90)
+                if (rad <= UtilMath.TAU_90)
                     return BottomRight;
                 return BottomLeft;
             }
@@ -73,13 +73,13 @@ namespace Util.Vector
         public static Vector2i PositionToStraight(Vector2 position, Vector2 center = default)
         {
             var rad = Math.PI - Math.Atan2(center.y - position.y, center.x - position.x);
-            if (rad <= MathUtil.TAU_45)
+            if (rad <= UtilMath.TAU_45)
                 return Right;
-            else if (rad <= MathUtil.TAU_45 * 3f)
+            else if (rad <= UtilMath.TAU_45 * 3f)
                 return Top;
-            else if (rad <= MathUtil.TAU_45 * 5f)
+            else if (rad <= UtilMath.TAU_45 * 5f)
                 return Left;
-            else if (rad <= MathUtil.TAU_45 * 7f)
+            else if (rad <= UtilMath.TAU_45 * 7f)
                 return Bottom;
             return Right;
         }

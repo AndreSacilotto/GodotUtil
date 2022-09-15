@@ -75,19 +75,14 @@ namespace Godot
         public int this[int index]
         {
             get {
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                    return x;
-                    case 1:
-                    return y;
-                    case 2:
-                    return z;
-                    case 3:
-                    return w;
-                    default:
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                }
+                    0 => x,
+                    1 => y,
+                    2 => z,
+                    3 => w,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index)),
+                };
             }
             set {
                 switch (index)
@@ -232,8 +227,8 @@ namespace Godot
         }
 
         // Constants
-        private static readonly Vector4i _zero = new Vector4i(0, 0, 0, 0);
-        private static readonly Vector4i _one = new Vector4i(1, 1, 1, 1);
+        private static readonly Vector4i _zero = new(0, 0, 0, 0);
+        private static readonly Vector4i _one = new(1, 1, 1, 1);
 
         /// <summary>
         /// Zero vector, a vector with all components set to <c>0</c>.

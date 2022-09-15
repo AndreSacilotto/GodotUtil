@@ -55,15 +55,12 @@ namespace Godot
         public int this[int index]
         {
             get {
-                switch (index)
+                return index switch
                 {
-                    case 0:
-                    return x;
-                    case 1:
-                    return y;
-                    default:
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                }
+                    0 => x,
+                    1 => y,
+                    _ => throw new ArgumentOutOfRangeException(nameof(index)),
+                };
             }
             set {
                 switch (index)
@@ -95,7 +92,7 @@ namespace Godot
         /// <returns>A vector with <see cref="Mathf.Abs(int)"/> called on each component.</returns>
         public Vector2i Abs()
         {
-            return new Vector2i(Mathf.Abs(x), Mathf.Abs(y));
+            return new(Mathf.Abs(x), Mathf.Abs(y));
         }
 
         /// <summary>
@@ -149,7 +146,7 @@ namespace Godot
         /// <returns>The vector with all components clamped.</returns>
         public Vector2i Clamp(Vector2i min, Vector2i max)
         {
-            return new Vector2i
+            return new
             (
                 Mathf.Clamp(x, min.x, max.x),
                 Mathf.Clamp(y, min.y, max.y)
@@ -298,48 +295,48 @@ namespace Godot
         /// <returns>The perpendicular vector.</returns>
         public Vector2i Orthogonal()
         {
-            return new Vector2i(y, -x);
+            return new(y, -x);
         }
 
         // Constants
-        private static readonly Vector2i _zero = new Vector2i(0, 0);
-        private static readonly Vector2i _one = new Vector2i(1, 1);
+        private static readonly Vector2i _zero = new(0, 0);
+        private static readonly Vector2i _one = new(1, 1);
 
-        private static readonly Vector2i _up = new Vector2i(0, -1);
-        private static readonly Vector2i _down = new Vector2i(0, 1);
-        private static readonly Vector2i _right = new Vector2i(1, 0);
-        private static readonly Vector2i _left = new Vector2i(-1, 0);
+        private static readonly Vector2i _up = new(0, -1);
+        private static readonly Vector2i _down = new(0, 1);
+        private static readonly Vector2i _right = new(1, 0);
+        private static readonly Vector2i _left = new(-1, 0);
 
         /// <summary>
         /// Zero vector, a vector with all components set to <c>0</c>.
         /// </summary>
-        /// <value>Equivalent to <c>new Vector2i(0, 0)</c>.</value>
+        /// <value>Equivalent to <c>new(0, 0)</c>.</value>
         public static Vector2i Zero { get { return _zero; } }
         /// <summary>
         /// One vector, a vector with all components set to <c>1</c>.
         /// </summary>
-        /// <value>Equivalent to <c>new Vector2i(1, 1)</c>.</value>
+        /// <value>Equivalent to <c>new(1, 1)</c>.</value>
         public static Vector2i One { get { return _one; } }
 
         /// <summary>
         /// Up unit vector. Y is down in 2D, so this vector points -Y.
         /// </summary>
-        /// <value>Equivalent to <c>new Vector2i(0, -1)</c>.</value>
+        /// <value>Equivalent to <c>new(0, -1)</c>.</value>
         public static Vector2i Up { get { return _up; } }
         /// <summary>
         /// Down unit vector. Y is down in 2D, so this vector points +Y.
         /// </summary>
-        /// <value>Equivalent to <c>new Vector2i(0, 1)</c>.</value>
+        /// <value>Equivalent to <c>new(0, 1)</c>.</value>
         public static Vector2i Down { get { return _down; } }
         /// <summary>
         /// Right unit vector. Represents the direction of right.
         /// </summary>
-        /// <value>Equivalent to <c>new Vector2i(1, 0)</c>.</value>
+        /// <value>Equivalent to <c>new(1, 0)</c>.</value>
         public static Vector2i Right { get { return _right; } }
         /// <summary>
         /// Left unit vector. Represents the direction of left.
         /// </summary>
-        /// <value>Equivalent to <c>new Vector2i(-1, 0)</c>.</value>
+        /// <value>Equivalent to <c>new(-1, 0)</c>.</value>
         public static Vector2i Left { get { return _left; } }
 
         /// <summary>
@@ -383,7 +380,7 @@ namespace Godot
 
         /// <summary>
         /// Returns the negative value of the <see cref="Vector2i"/>.
-        /// This is the same as writing <c>new Vector2i(-v.x, -v.y)</c>.
+        /// This is the same as writing <c>new(-v.x, -v.y)</c>.
         /// This operation flips the direction of the vector while
         /// keeping the same magnitude.
         /// </summary>
@@ -476,7 +473,7 @@ namespace Godot
         /// </summary>
         /// <example>
         /// <code>
-        /// GD.Print(new Vector2i(10, -20) % 7); // Prints "(3, -6)"
+        /// GD.Print(new(10, -20) % 7); // Prints "(3, -6)"
         /// </code>
         /// </example>
         /// <param name="vec">The dividend vector.</param>
@@ -499,7 +496,7 @@ namespace Godot
         /// </summary>
         /// <example>
         /// <code>
-        /// GD.Print(new Vector2i(10, -20) % new Vector2i(7, 8)); // Prints "(3, -4)"
+        /// GD.Print(new(10, -20) % new(7, 8)); // Prints "(3, -4)"
         /// </code>
         /// </example>
         /// <param name="vec">The dividend vector.</param>
@@ -657,7 +654,7 @@ namespace Godot
         /// <param name="value">The vector to convert.</param>
         public static explicit operator Vector2i(Vector2 value)
         {
-            return new Vector2i(
+            return new(
                 Mathf.RoundToInt(value.x),
                 Mathf.RoundToInt(value.y)
             );

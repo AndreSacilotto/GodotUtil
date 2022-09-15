@@ -3,7 +3,7 @@
 namespace Util
 {
 
-    public static partial class MathUtil
+    public static partial class UtilMath
     {
 
         #region Percent
