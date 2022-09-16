@@ -38,6 +38,9 @@ namespace Godot
 
         #endregion
 
+        /// <summary>Returns new Vector(y, x)</summary>
+        public static Vector2 Invert(this Vector2 v) => new(v.y, v.x);
+
         #endregion
 
         #region FLOAT VERSION

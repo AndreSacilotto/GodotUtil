@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Vector2 = Godot.Vector2;
 using Vector3 = Godot.Vector3;
 using Quarternion = Godot.Quat;
+using Basis = Godot.Basis;
 
 namespace Util.Vector
 {
@@ -19,6 +20,9 @@ namespace Util.Vector
         public static float TauAtan2(Vector2 vector) => TauAtan2(vector.y, vector.x);
         public static float TauAtan2(float y, float x) => (float)Math.Atan2(y, x) + UtilMath.TAU_180;
 
+
+        #region Rotate
+
         [MethodImpl(UtilShared.INLINE)]
         public static Vector2 RotatedNoTrig(in Vector2 vec, in float cos, in float sin) => 
             new(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos);
@@ -30,6 +34,30 @@ namespace Util.Vector
             var y = vec.y - pivot.y;
             return new Vector2(pivot.x + x * cos - y * sin, pivot.y + x * sin + y * cos);
         }
+
+        public static void RotateVectors(Vector3[] points, float rotation, Vector3 axis)
+        {
+            var b = new Basis(axis, rotation);
+            for (int i = 0; i < points.Length; i++)
+                points[i] = Godot.VectorExt.Mult(b, points[i]);
+        }
+
+        public static void RotateVectors(Vector2[] points, float rotation)
+        {
+            var s = (float)Math.Sin(rotation);
+            var c = (float)Math.Cos(rotation);
+            for (int i = 0; i < points.Length; i++)
+                points[i] = RotatedNoTrig(points[i], c, s);
+        }
+        public static void RotateVectors(Vector2[] points, Vector2 pivot, float rotation)
+        {
+            var s = (float)Math.Sin(rotation);
+            var c = (float)Math.Cos(rotation);
+            for (int i = 0; i < points.Length; i++)
+                points[i] = RotatedNoTrig(points[i], pivot, c, s);
+        }
+
+        #endregion
 
     }
 
