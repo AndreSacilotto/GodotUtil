@@ -22,24 +22,19 @@ namespace Util.Vector
 
 
         #region Rotate
+        // CW = Clockwise | CC = CounterClockwise
+
 
         [MethodImpl(UtilShared.INLINE)]
-        public static Vector2 RotatedNoTrig(in Vector2 vec, in float cos, in float sin) => 
+        public static Vector2 RotatedNoTrigCW(in Vector2 vec, in float cos, in float sin) => 
             new(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos);
 
         [MethodImpl(UtilShared.INLINE)]
-        public static Vector2 RotatedNoTrig(in Vector2 vec, in Vector2 pivot, in float cos, in float sin)
+        public static Vector2 RotatedNoTrigCW(in Vector2 vec, in Vector2 pivot, in float cos, in float sin)
         {
             var x = vec.x - pivot.x;
             var y = vec.y - pivot.y;
             return new Vector2(pivot.x + x * cos - y * sin, pivot.y + x * sin + y * cos);
-        }
-
-        public static void RotateVectors(Vector3[] points, float rotation, Vector3 axis)
-        {
-            var b = new Basis(axis, rotation);
-            for (int i = 0; i < points.Length; i++)
-                points[i] = Godot.VectorExt.Mult(b, points[i]);
         }
 
         public static void RotateVectors(Vector2[] points, float rotation)
@@ -47,14 +42,21 @@ namespace Util.Vector
             var s = (float)Math.Sin(rotation);
             var c = (float)Math.Cos(rotation);
             for (int i = 0; i < points.Length; i++)
-                points[i] = RotatedNoTrig(points[i], c, s);
+                points[i] = RotatedNoTrigCW(points[i], c, s);
         }
         public static void RotateVectors(Vector2[] points, Vector2 pivot, float rotation)
         {
             var s = (float)Math.Sin(rotation);
             var c = (float)Math.Cos(rotation);
             for (int i = 0; i < points.Length; i++)
-                points[i] = RotatedNoTrig(points[i], pivot, c, s);
+                points[i] = RotatedNoTrigCW(points[i], pivot, c, s);
+        }
+
+        public static void RotateVectors(Vector3[] points, float rotation, Vector3 axis)
+        {
+            var b = new Basis(axis, rotation);
+            for (int i = 0; i < points.Length; i++)
+                points[i] = Godot.VectorExt.Mult(b, points[i]);
         }
 
         #endregion

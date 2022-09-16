@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Util
+namespace Util.GDNode
 {
     //https://docs.godotengine.org/en/stable/tutorials/gui/bbcode_in_richtextlabel.html
     public static class UtilBBCode

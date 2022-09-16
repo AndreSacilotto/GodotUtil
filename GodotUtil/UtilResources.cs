@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Godot;
 using io = System.IO;
 
-namespace Godot
+namespace Util
 {
     public static class UtilResources
     {
-
         public static string GetResourceFileName(this Resource res) =>
             io.Path.GetFileNameWithoutExtension(res.ResourcePath);
 

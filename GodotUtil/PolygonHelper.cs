@@ -9,7 +9,7 @@ namespace Util
 {
     public static class PolygonHelper
     {
-        // GODOT seems to use CLOCKWISE
+        // GODOT uses CLOCKWISE
 
         #region Mesh Util
 
@@ -43,6 +43,9 @@ namespace Util
 
         #endregion
 
+        /// <summary>GODOT uses CLOCKWISE</summary>
+        public const bool IS_CLOCKWISE = true;
+
         public const int DEFAULT_DENSITY = 10;
 
         #region Create 2D - Linear
@@ -59,7 +62,6 @@ namespace Util
             };
         }
 
-        /// <param name="size">Radius/Size/Diagonal</param>
         public static Vector2[] Square(float size)
         {
             var rn = -size;
@@ -103,37 +105,6 @@ namespace Util
             };
         }
 
-        /// <param name="h">Horizontal Size</param>
-        /// <param name="v">Vertical Size</param>
-        /// <param name="th">Thickness of the Horizontal Line</param>
-        /// <param name="tv">Thickness of the Vertical Line</param>
-        /// <param name="position01">position of interscetion in percentage (0f..1f)</param>
-        public static Vector2[] HolyCross2D(float h, float v, float th, float tv, float position01 = 0.75f)
-        {
-            var c = (v - th - SAFE_THRESHOLD) * (2f * position01 - 1f);
-
-            var ctp = c + th;
-            var ctn = c - th;
-
-            return new Vector2[12]
-            {
-                new Vector2(-h, ctn), //0
-                new Vector2(-tv, ctn), //1
-                new Vector2(-tv, -v), //2
-                new Vector2(tv, -v), //3
-
-                new Vector2(tv, ctn), //4
-                new Vector2(h, ctn), //5
-                new Vector2(h, ctp), //6
-                new Vector2(tv, ctp), //7
-
-                new Vector2(tv, v), //8
-                new Vector2(-tv, v), //9
-                new Vector2(-tv, ctp), //10
-                new Vector2(-h, ctp), //11
-            };
-        }
-
         public static Vector2[] Hexagon(float size, bool rotated = false)
         {
             if (rotated)
@@ -162,9 +133,41 @@ namespace Util
             }
         }
 
+        /// <param name="hSize">Horizontal Size</param>
+        /// <param name="vSize">Vertical Size</param>
+        /// <param name="hThickness">Thickness of the Horizontal Line</param>
+        /// <param name="vThickness">Thickness of the Vertical Line</param>
+        /// <param name="crossPos01">Position of the interscetion in percentage (0f..1f)</param>
+        public static Vector2[] HolyCross2D(float hSize, float vSize, float hThickness, float vThickness, float crossPos01 = 0.75f)
+        {
+            var c = (vSize - hThickness - SAFE_THRESHOLD) * (2f * crossPos01 - 1f);
+
+            var ctp = c + hThickness;
+            var ctn = c - hThickness;
+
+            return new Vector2[12]
+            {
+                new Vector2(-hSize, ctn), //0
+                new Vector2(-vThickness, ctn), //1
+                new Vector2(-vThickness, -vSize), //2
+                new Vector2(vThickness, -vSize), //3
+
+                new Vector2(vThickness, ctn), //4
+                new Vector2(hSize, ctn), //5
+                new Vector2(hSize, ctp), //6
+                new Vector2(vThickness, ctp), //7
+
+                new Vector2(vThickness, vSize), //8
+                new Vector2(-vThickness, vSize), //9
+                new Vector2(-vThickness, ctp), //10
+                new Vector2(-hSize, ctp), //11
+            };
+        }
+
+
         #endregion
 
-        #region Create 2D - Curve
+        #region Create 2D - Circle
 
         public static Vector2[] Polygon2D(float size, int sides = 3) => Circle(size, sides); 
 
@@ -185,7 +188,7 @@ namespace Util
             for (int i = 0; i < density; i++)
             {
                 points[i] = v * radius;
-                v = VectorMath.RotatedNoTrig(v, c, s);
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
             return points;
@@ -210,7 +213,7 @@ namespace Util
             for (int i = 0; i < density; i++)
             {
                 points[i] = new(v.x * width, v.y * height);
-                v = VectorMath.RotatedNoTrig(v, c, s);
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
             return points;
@@ -232,22 +235,51 @@ namespace Util
             var v = Vector2.Left;
             for (int i = 0; i < density; i++)
             {
-                points[i] = v * radius;
-                v = VectorMath.RotatedNoTrig(v, c, s);
+                points[i] = new(v.x * radius, (v.y + 0.5f) * radius);
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
             return points;
         }
 
-        /// <param name="height"></param>
-        /// <param name="radius">How steep is the curve</param>
-        /// <param name="arc">How much of tau the arc covers - 0..PI</param>
-        /// <param name="density">Number of point on the arc</param>
-        public static Vector2[] Arc(float width, float height, float radius, float arc, int density = DEFAULT_DENSITY)
+        /// <param name="inner">Radius of end circle</param>
+        /// <param name="outter">Radius of far circle</param>
+        /// <param name="density">Number of points on ONE circle</param>
+        public static Vector2[] Donut(float inner, float outter, int density = DEFAULT_DENSITY)
         {
-            var h = height - radius;
+            if (inner <= 0f || inner >= outter)
+                return ErrorReturn2D();
 
-            if (height < 0 || radius < 0 || arc < 0)
+            var points = new Vector2[density * 2];
+
+            var rad = Mathf.Tau / (density - 1);
+            var s = Mathf.Sin(rad);
+            var c = Mathf.Cos(rad);
+
+            var v = Vector2.Left;
+            for (int i = 0, j = density; i < density; i++, j++)
+            {
+                points[i] = v * inner;
+                points[j] = v.NegY() * outter;
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
+            }
+
+            var safe = new Vector2(0f, SAFE_THRESHOLD);
+            points[0] -= safe;
+            points[points.Length - 1] -= safe;
+
+            return points;
+        }
+
+        #endregion
+
+        #region Create 2D - Arc
+
+        /// <param name="arc">How much of tau the arc covers - 0..TAU</param>
+        /// <param name="density">Number of point on the arc</param>
+        public static Vector2[] Cone(float width, float height, float arc, int density = DEFAULT_DENSITY)
+        {
+            if (width <= 0f || height < 0f || arc < 0f)
                 return ErrorReturn2D();
 
             var points = new Vector2[1 + density];
@@ -256,18 +288,17 @@ namespace Util
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);
 
-            var v = VectorMath.RadianToVector2(arc + UtilMath.TAU_90);
+            var v = Vector2.Up.RotatedCC(arc * 0.5f);
             for (int i = 0; i < density; i++)
             {
-                points[i] = new(v.x * width, v.y * radius - h);
-                v = VectorMath.RotatedNoTrig(v, c, s);
+                points[i] = new Vector2(v.x * width, v.y * height);
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
             points[points.Length - 1] = new Vector2(0f, height);
 
             return points;
         }
-
 
         /// <summary>=D</summary>
         /// <param name="width">Horizontal size</param>
@@ -291,7 +322,7 @@ namespace Util
             for (int i = 0; i < density; i++)
             {
                 points[i] = new(v.x * width, v.y * headRadius - h);
-                v = VectorMath.RotatedNoTrig(v, c, s);
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
             var len = points.Length - 1;
@@ -320,10 +351,14 @@ namespace Util
                 var p = new Vector2(v.x * width, v.y * radius - h);
                 points[i] = -p;
                 points[j] = p;
-                v = VectorMath.RotatedNoTrig(v, c, s);
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
             return points;
         }
+
+        /// <param name="radius">How steep is the curve</param>
+        /// <param name="density">Number of point on the arc</param>
+        public static Vector2[] Curve2D(float width, float bodyHeight, float radius, int density = DEFAULT_DENSITY) => DoubleArc(width, bodyHeight, radius, radius, density);
 
         public static Vector2[] DoubleArc(float width, float bodyHeight, float upperRadius, float lowerRadius, int density = DEFAULT_DENSITY)
         {
@@ -336,46 +371,18 @@ namespace Util
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);
 
+            var h = bodyHeight + upperRadius - lowerRadius;
             var v = Vector2.Left;
             for (int i = 0, j = density; i < density; i++, j++)
             {
-                points[i] = new(v.x * width, -v.y * upperRadius + bodyHeight);
-                points[j] = new(-v.x * width, v.y * lowerRadius - bodyHeight);
-                v = VectorMath.RotatedNoTrig(v, c, s);
+                points[i] = new(v.x * width, v.y * upperRadius - h);
+                points[j] = new(-v.x * width, v.y * lowerRadius + h);
+                v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
             return points;
         }
 
-        /// <param name="inner">Radius of end circle</param>
-        /// <param name="outter">Radius of far circle</param>
-        /// <param name="density">Number of points on ONE circle</param>
-        public static Vector2[] Donut(float inner, float outter, int density = DEFAULT_DENSITY)
-        {
-            if (inner <= 0f || inner >= outter)
-                return ErrorReturn2D();
-
-            var points = new Vector2[density * 2];
-
-            var rad = Mathf.Tau / (density - 1);
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
-
-            var v = Vector2.Left;
-            for (int i = 0, j = density; i < density; i++, j++)
-            {
-                points[i] = v * inner;
-                points[j] = v.NegY() * outter;
-                v = VectorMath.RotatedNoTrig(v, c, s);
-            }
-
-            var safe = new Vector2(0f, SAFE_THRESHOLD);
-            points[0] -= safe;
-            points[points.Length - 1] -= safe;
-
-            return points;
-        }
-        
         #endregion
 
         #region 3D

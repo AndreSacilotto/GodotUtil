@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Util
+namespace Util.GDNode
 {
     public static class UtilTilemap
     {
