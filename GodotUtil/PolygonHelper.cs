@@ -43,8 +43,9 @@ namespace Util
 
         #endregion
 
-        /// <summary>GODOT uses CLOCKWISE</summary>
-        public const bool IS_CLOCKWISE = true;
+        /// <summary>GODOT uses CLOCKWISE for Geometry and Rotations</summary>
+        public const bool IS_CLOCKWISE_CW = true;
+        public const bool IS_COUNTER_CLOCKWISE_CC = false;
 
         public const int DEFAULT_DENSITY = 10;
 
@@ -275,11 +276,11 @@ namespace Util
 
         #region Create 2D - Arc
 
-        /// <param name="arc">How much of tau the arc covers - 0..TAU</param>
+        /// <param name="arc">How much of tau the cone covers - 0..TAU</param>
         /// <param name="density">Number of point on the arc</param>
         public static Vector2[] Cone(float width, float height, float arc, int density = DEFAULT_DENSITY)
         {
-            if (width <= 0f || height < 0f || arc < 0f)
+            if (width < 0f || height < 0f || arc < 0f)
                 return ErrorReturn2D();
 
             var points = new Vector2[1 + density];
@@ -300,17 +301,13 @@ namespace Util
             return points;
         }
 
-        /// <summary>=D</summary>
-        /// <param name="width">Horizontal size</param>
-        /// <param name="bodyHeight">Vertical size not including the arc</param>
-        /// <param name="headRadius">Arc size</param>
+        /// <param name="curvature">How much of the height the curve covers - 0..1</param>
         /// <param name="density">Number of points used  on the arc</param>
-        public static Vector2[] Bullet(float width, float bodyHeight, float headRadius, int density = DEFAULT_DENSITY)
+        public static Vector2[] Bullet(float width, float height, float curvature, int density = DEFAULT_DENSITY)
         {
-            var h = bodyHeight - headRadius;
-
-            if (width < 0 || bodyHeight < 0 || headRadius < 0 || h < 0)
+            if (width < 0f || height < 0f)
                 return ErrorReturn2D();
+            curvature = Mathf.Clamp(curvature, 0f, 1f);
 
             var points = new Vector2[2 + density];
 
@@ -318,26 +315,28 @@ namespace Util
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);
 
+            var h1 = height * curvature;
+            var h2 = height * (1f - curvature);
+
             var v = Vector2.Left;
             for (int i = 0; i < density; i++)
             {
-                points[i] = new(v.x * width, v.y * headRadius - h);
+                points[i] = new(v.x * width, v.y * h1 - h2);
                 v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
-            var len = points.Length - 1;
-            points[len--] = new Vector2(-width, bodyHeight);
-            points[len] = new Vector2(width, bodyHeight);
+            points[points.Length - 2] = new(width, height);
+            points[points.Length - 1] = new(-width, height);
 
             return points;
         }
 
-        public static Vector2[] Capsule(float width, float bodyHeight, float radius, int density = DEFAULT_DENSITY)
+        /// <param name="curvature">How much of the height the curve covers - 0..1</param>
+        public static Vector2[] Capsule(float width, float height, float curvature, int density = DEFAULT_DENSITY)
         {
-            var h = bodyHeight - radius;
-
-            if (width < 0 || bodyHeight < 0 || radius < 0 || h < 0)
+            if (width < 0f || height < 0f)
                 return ErrorReturn2D();
+            curvature = Mathf.Clamp(curvature, 0f, 1f - SAFE_THRESHOLD);
 
             var points = new Vector2[density * 2];
 
@@ -345,10 +344,13 @@ namespace Util
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);
 
+            var h1 = height * curvature;
+            var h2 = height * (1f - curvature);
+
             var v = Vector2.Left;
             for (int i = 0, j = density; i < density; i++, j++)
             {
-                var p = new Vector2(v.x * width, v.y * radius - h);
+                var p = new Vector2(v.x * width, v.y * h1 - h2);
                 points[i] = -p;
                 points[j] = p;
                 v = VectorMath.RotatedNoTrigCW(v, c, s);
@@ -356,14 +358,18 @@ namespace Util
             return points;
         }
 
-        /// <param name="radius">How steep is the curve</param>
+        /// <param name="curvature">How much of the height the curve covers - 0..1</param>
         /// <param name="density">Number of point on the arc</param>
-        public static Vector2[] Curve2D(float width, float bodyHeight, float radius, int density = DEFAULT_DENSITY) => DoubleArc(width, bodyHeight, radius, radius, density);
+        public static Vector2[] Curve2D(float width, float height, float curvature, int density = DEFAULT_DENSITY) => DoubleArc(width, height, curvature, curvature, density);
 
-        public static Vector2[] DoubleArc(float width, float bodyHeight, float upperRadius, float lowerRadius, int density = DEFAULT_DENSITY)
+        /// <param name="upperCur">How much of the height the upper curve covers - 0..1</param>
+        /// <param name="lowerCur">How much of the height the lower curve covers - 0..1</param>
+        public static Vector2[] DoubleArc(float width, float height, float upperCur, float lowerCur, int density = DEFAULT_DENSITY)
         {
-            if (width <= 0f || bodyHeight <= 0f)
+            if (width < 0f || height < 0f)
                 return ErrorReturn2D();
+            upperCur = Mathf.Clamp(upperCur, 0f, 1f - SAFE_THRESHOLD);
+            lowerCur = Mathf.Clamp(lowerCur, 0f, 1f - SAFE_THRESHOLD);
 
             var points = new Vector2[density * 2];
 
@@ -371,12 +377,18 @@ namespace Util
             var s = Mathf.Sin(rad);
             var c = Mathf.Cos(rad);
 
-            var h = bodyHeight + upperRadius - lowerRadius;
+            var hU1 = height * upperCur;
+            var hU2 = height * (1f - upperCur);
+
+            var hL1 = height * lowerCur;
+            //TODO
+
             var v = Vector2.Left;
             for (int i = 0, j = density; i < density; i++, j++)
             {
-                points[i] = new(v.x * width, v.y * upperRadius - h);
-                points[j] = new(-v.x * width, v.y * lowerRadius + h);
+                var w = v.x * width;
+                points[i] = new(w, v.y * hU1 - hU2);
+                points[j] = new(-w, v.y * hL1 + height);
                 v = VectorMath.RotatedNoTrigCW(v, c, s);
             }
 
