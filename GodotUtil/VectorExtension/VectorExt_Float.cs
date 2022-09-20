@@ -26,9 +26,9 @@ namespace Godot
 
         #region New
 
-        [MethodImpl(UtilShared.INLINE)] public static Vector3 NewVec3(float x, float y, float z = 0f) => new(x, y, z);
-
         [MethodImpl(UtilShared.INLINE)] public static Vector2 CreateVec2(float value) => new(value, value);
+
+        [MethodImpl(UtilShared.INLINE)] public static Vector3 CreateVec3(float x, float y, float z = 0f) => new(x, y, z);
         [MethodImpl(UtilShared.INLINE)] public static Vector3 CreateVec3(float value) => new(value, value, value);
 
 

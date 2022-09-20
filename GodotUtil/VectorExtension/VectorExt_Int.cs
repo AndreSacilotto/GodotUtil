@@ -7,15 +7,47 @@ namespace Godot
     {
         #region INT UNIQUE
 
+        public static bool IsDiagonal(this Vector2i dir) => dir.x != 0 && dir.y != 0;
+        public static bool IsStraight(this Vector2i dir) => dir.x == 0 || dir.y == 0;
+
+        public static Vector2i PositionToDiagonal(Vector2 position, Vector2 center = default)
+        {
+            var rad = Mathf.Atan2(position.y - center.y, position.x - center.x);
+            if (rad < 0)
+            {
+                if (rad >= -UtilMath.TAU_90)
+                    return TopRight;
+                return TopLeft;
+            }
+            else
+            {
+                if (rad <= UtilMath.TAU_90)
+                    return BottomRight;
+                return BottomLeft;
+            }
+        }
+        public static Vector2i PositionToStraight(Vector2 position, Vector2 center = default)
+        {
+            var rad = Mathf.Pi - Mathf.Atan2(center.y - position.y, center.x - position.x);
+            if (rad <= UtilMath.TAU_45)
+                return Right;
+            else if (rad <= UtilMath.TAU_45 * 3f)
+                return Top;
+            else if (rad <= UtilMath.TAU_45 * 5f)
+                return Left;
+            else if (rad <= UtilMath.TAU_45 * 7f)
+                return Bottom;
+            return Right;
+        }
+
         #endregion INT UNIQUE
 
         #region New
 
-        [MethodImpl(UtilShared.INLINE)] public static Vector3i NewVec3(int x, int y, int z = 0) => new(x, y, z);
-
         [MethodImpl(UtilShared.INLINE)] public static Vector2i CreateVec2(int value) => new(value, value);
-        [MethodImpl(UtilShared.INLINE)] public static Vector3i CreateVec3(int value) => new(value, value, value);
 
+        [MethodImpl(UtilShared.INLINE)] public static Vector3i CreateVec3(int x, int y, int z = 0) => new(x, y, z);
+        [MethodImpl(UtilShared.INLINE)] public static Vector3i CreateVec3(int value) => new(value, value, value);
 
         #endregion
 

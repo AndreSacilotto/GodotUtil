@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 
 using Vector2 = Godot.Vector2;
 using Vector3 = Godot.Vector3;
+using Vector2i = Godot.Vector2i;
+using Vector3i = Godot.Vector3i;
 using Quarternion = Godot.Quat;
 using Basis = Godot.Basis;
 
@@ -23,7 +25,6 @@ namespace Util.Vector
 
         #region Rotate
         // CW = Clockwise | CC = CounterClockwise
-
 
         [MethodImpl(UtilShared.INLINE)]
         public static Vector2 RotatedNoTrigCW(in Vector2 vec, in float cos, in float sin) => 
@@ -56,7 +57,22 @@ namespace Util.Vector
         {
             var b = new Basis(axis, rotation);
             for (int i = 0; i < points.Length; i++)
-                points[i] = Godot.VectorExt.Mult(b, points[i]);
+                points[i] = Godot.Godot.VectorExt.Mult(b, points[i]);
+        }
+
+        #endregion
+
+        #region Direction2D
+
+        public static Vector2 PositionToFloatDirection(Vector2 position, Vector2 center = default)
+        {
+            var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
+            return new Vector2((float)Math.Cos(rad), (float)Math.Sin(rad));
+        }
+        public static Vector2i PositionToDirection(Vector2 position, Vector2 center = default)
+        {
+            var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
+            return new(UtilMath.RoundToInt(Math.Cos(rad)), UtilMath.RoundToInt(Math.Sin(rad)));
         }
 
         #endregion

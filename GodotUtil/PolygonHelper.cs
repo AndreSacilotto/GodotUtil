@@ -9,8 +9,6 @@ namespace Util
 {
     public static class PolygonHelper
     {
-        // GODOT uses CLOCKWISE
-
         #region Mesh Util
 
         public static void Generate(this SurfaceTool st, bool generateNormals, bool generateTangents, bool generateIndex)

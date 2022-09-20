@@ -7,6 +7,18 @@ namespace Util
     public static partial class UtilMath
     {
 
+        #region Pow
+
+        [MethodImpl(Util.UtilShared.INLINE)] public static int Pow2(int value) => value * value;
+        [MethodImpl(Util.UtilShared.INLINE)] public static float Pow2(float value) => value * value;
+        [MethodImpl(Util.UtilShared.INLINE)] public static double Pow2(double value) => value * value;
+
+        [MethodImpl(Util.UtilShared.INLINE)] public static int Pow3(int value) => value * value * value;
+        [MethodImpl(Util.UtilShared.INLINE)] public static float Pow3(float value) => value * value * value;
+        [MethodImpl(Util.UtilShared.INLINE)] public static double Pow3(double value) => value * value * value;
+
+        #endregion
+
         #region Precision
 
         [MethodImpl(Util.UtilShared.INLINE)] public static float CorrectPrecision(float value) => (float)Math.Round(value, 6);
@@ -65,7 +77,11 @@ namespace Util
 
         #endregion
 
+        #region Digit
+        
         public static int GetDigit(int value, int power, int radix) => (int)(value / Math.Pow(radix, power)) % radix;
+        
+        #endregion
 
     }
 
