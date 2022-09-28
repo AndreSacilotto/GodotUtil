@@ -1,7 +1,5 @@
 ﻿
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using Godot;
 using Util.Vector;
 
@@ -33,11 +31,11 @@ namespace Util
             //return null;
         }
 
-        private static Vector3[] ErrorReturn3D()
-        {
-            return Array.Empty<Vector3>();
-            //return null;
-        }
+        //private static Vector3[] ErrorReturn3D()
+        //{
+        //    return Array.Empty<Vector3>();
+        //    //return null;
+        //}
 
         #endregion
 
@@ -46,6 +44,14 @@ namespace Util
         public const bool IS_COUNTER_CLOCKWISE_CC = false;
 
         public const int DEFAULT_DENSITY = 10;
+
+        public static Vector2[] AppendLast(Vector2[] points)
+        {
+            var arr = new Vector2[points.Length+1];
+            points.CopyTo(arr, 0);
+            arr[points.Length] = points[0];
+            return arr;
+        }
 
         #region Create 2D - Linear
 

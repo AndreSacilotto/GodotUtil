@@ -57,7 +57,7 @@ namespace Util.Vector
         {
             var b = new Basis(axis, rotation);
             for (int i = 0; i < points.Length; i++)
-                points[i] = Godot.Godot.VectorExt.Mult(b, points[i]);
+                points[i] = Godot.VectorExt.Mult(b, points[i]);
         }
 
         #endregion

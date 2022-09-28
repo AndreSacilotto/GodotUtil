@@ -58,6 +58,7 @@ namespace Util
 
         #endregion
 
+        /* Colors class exist
         #region Basic Colors
 
         /// <summary>255 255 255</summary>
@@ -128,6 +129,6 @@ namespace Util
         public static Color Gold => new(1, 0.84f, 0, 1);
 
         #endregion
-
+        */
     }
 }

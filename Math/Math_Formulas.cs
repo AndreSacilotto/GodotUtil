@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Util
 {
@@ -7,9 +8,9 @@ namespace Util
     {
 
         #region Percent
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float ValuePercent(float value, float max) => max != 0f ? value / max : 0f;
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float ValuePercent(float value, float max, float min)
         {
             float diff = max - min;
@@ -20,26 +21,48 @@ namespace Util
 
         #region Interpolation & Remapping
 
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float Lerp(float from, float to, float weight) => from + ((to - from) * weight);
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float LerpClamped(float from, float to, float weight) => Clamp01(from + ((to - from) * weight));
 
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float InverseLerp(float from, float to, float weight) => (weight - from) / (to - from);
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float InverseLerpClamped(float from, float to, float value) => Clamp01((value - from) / (to - from));
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float Remap(float fromMin, float fromMax, float toMin, float toMax, float value)
         {
             float t = InverseLerp(fromMin, fromMax, value);
             return Lerp(toMin, toMax, t);
         }
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static float RemapClamped(float fromMin, float fromMax, float toMin, float toMax, float value)
         {
             float t = InverseLerpClamped(fromMin, fromMax, value);
             return Lerp(toMin, toMax, t);
+        }
+
+        [MethodImpl(UtilShared.INLINE)]
+        public static float Smoothstep(float min, float max, float value)
+        {
+            if (value < min) return 0;
+            if (value >= max) return 1;
+            float t = (value - min) / (max - min);
+            return t * t * (3f - 2f * t);
+        }
+
+        [MethodImpl(UtilShared.INLINE)]
+        public static float Smootherstep(float min, float max, float x)
+        {
+            x = Clamp01((x - min) / (max - min));
+            return x * x * x * (x * (x * 6 - 15) + 10);
+        }
+
+        [MethodImpl(UtilShared.INLINE)]
+        public static float InverseSmoothstep(float x)
+        {
+            return (float)(0.5 - Math.Sin(Math.Asin(1.0 - 2.0 * x) / 3.0));
         }
 
         #endregion

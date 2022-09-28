@@ -11,7 +11,7 @@ namespace Util
 
         public static T[,] NewOfSameSize<T>(this T[,] array) => new T[array.GetLength(0), array.GetLength(1)];
 
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static void ChangeCapacity<T>(ref T[] array, int newSize)
         {
             if (newSize < array.Length)
@@ -23,15 +23,6 @@ namespace Util
                     newCapactiy = int.MaxValue;
                 Array.Resize(ref array, (int)newCapactiy);
             }
-        }
-
-        public static bool ArrayOfSameSize(this object[][] arrays)
-        {
-            int size = arrays[0].Length;
-            for (int i = 1; i < arrays.Length; i++)
-                if (size == arrays[i].Length)
-                    return false;
-            return true;
         }
 
         public enum Anchor1D
@@ -310,21 +301,21 @@ namespace Util
         #endregion
 
         #region Swap
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static void Swap<T>(this T[] array, int indexA, int indexB)
         {
             var temp = array[indexA];
             array[indexA] = array[indexB];
             array[indexB] = temp;
         }
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static void Swap<T, K>(this IList<T> list, int indexA, int indexB)
         {
             var temp = list[indexA];
             list[indexA] = list[indexB];
             list[indexB] = temp;
         }
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static void Swap<T, K>(this IDictionary<T, K> dict, T indexA, T indexB)
         {
             var temp = dict[indexA];
@@ -365,6 +356,8 @@ namespace Util
         #region List / Dict
         public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort((a, b) => b.CompareTo(a));
 
+        public static void AddItems<T>(this List<T> list, params T[] items) => list.AddRange(items);
+
         public static int AddSorted<T>(this List<T> list, T item) where T : IComparable<T>
         {
             var index = list.BinarySearch(item);
@@ -382,7 +375,7 @@ namespace Util
             return index;
         }
 
-        [MethodImpl(Util.UtilShared.INLINE)]
+        [MethodImpl(UtilShared.INLINE)]
         public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) =>
             dictionary.TryGetValue(key, out var value) ? value : default;
 
