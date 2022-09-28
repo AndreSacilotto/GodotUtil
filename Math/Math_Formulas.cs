@@ -43,7 +43,6 @@ namespace Util
             return Lerp(toMin, toMax, t);
         }
 
-        [MethodImpl(UtilShared.INLINE)]
         public static float Smoothstep(float min, float max, float value)
         {
             if (value < min) return 0;
@@ -51,18 +50,10 @@ namespace Util
             float t = (value - min) / (max - min);
             return t * t * (3f - 2f * t);
         }
-
-        [MethodImpl(UtilShared.INLINE)]
         public static float Smootherstep(float min, float max, float x)
         {
             x = Clamp01((x - min) / (max - min));
-            return x * x * x * (x * (x * 6 - 15) + 10);
-        }
-
-        [MethodImpl(UtilShared.INLINE)]
-        public static float InverseSmoothstep(float x)
-        {
-            return (float)(0.5 - Math.Sin(Math.Asin(1.0 - 2.0 * x) / 3.0));
+            return x * x * x * (x * (x * 6f - 15f) + 10f);
         }
 
         #endregion
