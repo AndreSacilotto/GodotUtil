@@ -68,7 +68,7 @@ namespace Util.MathC
         {
             int diffX = Math.Abs(x1 - x0);
             int diffY = Math.Abs(y1 - y0);
-            return (float)Math.Sqrt(diffX * diffX + diffY * diffY);
+            return MathF.Sqrt(diffX * diffX + diffY * diffY);
         }
 
 
@@ -102,7 +102,7 @@ namespace Util.MathC
         {
             int diffX = Math.Abs(x1 - x0);
             int diffY = Math.Abs(y1 - y0);
-            return (float)Math.Pow(Math.Pow(diffX, p) + Math.Pow(diffY, p), 1 / p);
+            return MathF.Pow(MathF.Pow(diffX, p) + MathF.Pow(diffY, p), 1f / p);
         }
 
     }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 using static Util.UtilShared;
 
@@ -20,10 +16,10 @@ namespace Util.MathC
         #region Polynomial Smoothstep
 
         [MethodImpl(INLINE)] public static float CubicSmoothstep(float x) => x * x * (3f - 2f * x);
-        [MethodImpl(INLINE)] public static float CubicInvSmoothstep(float x) => (float)(0.5 - Math.Sin(Math.Asin(1.0 - 2.0 * x) / 3.0));
+        [MethodImpl(INLINE)] public static float CubicInvSmoothstep(float x) => (float)(0.5 - MathF.Sin(MathF.Asin(1f - 2f * x) / 3f));
 
         [MethodImpl(INLINE)] public static float QuarticSmoothstep(float x) => x * x * (2f - x * x);
-        [MethodImpl(INLINE)] public static float QuarticInvSmoothstep(float x) => (float)Math.Sqrt(1.0 - Math.Sqrt(1.0 - x));
+        [MethodImpl(INLINE)] public static float QuarticInvSmoothstep(float x) => MathF.Sqrt(1f - MathF.Sqrt(1f - x));
 
         [MethodImpl(INLINE)] public static float QuinticSmoothstep(float x) => x * x * x * (x * (x * 6f - 15f) + 10f);
 
@@ -32,18 +28,18 @@ namespace Util.MathC
         #region Rational Smoothstep
 
         [MethodImpl(INLINE)] public static float RatQuadraticSmoothstep(float x) => x * x / (2f * x * x - 2f * x + 1f);
-        [MethodImpl(INLINE)] public static float RatQuadraticInvSmoothstep(float x) => (x - (float)Math.Sqrt(x * (1.0 - x))) / (2f * x - 1f);
+        [MethodImpl(INLINE)] public static float RatQuadraticInvSmoothstep(float x) => (x - MathF.Sqrt(x * (1f - x))) / (2f * x - 1f);
 
         [MethodImpl(INLINE)] public static float RatCubicSmoothstep(float x) => x * x * x / (3f * x * x - 3f * x + 1f);
         [MethodImpl(INLINE)]
         public static float RatCubicInvSmoothstep(float x)
         {
-            var a = (float)Math.Pow(x, 1.0 / 3.0);
-            var b = (float)Math.Pow(1.0 - x, 1.0 / 3.0);
+            var a = MathF.Pow(x, 1f / 3f);
+            var b = MathF.Pow(1f - x, 1f / 3f);
             return a / (a + b);
         }
 
-        [MethodImpl(INLINE)] public static float RationalSmoothstep(float x, float n) => (float)(Math.Pow(x, n) / (Math.Pow(x, n) + Math.Pow(1.0 - x, n)));
+        [MethodImpl(INLINE)] public static float RationalSmoothstep(float x, float n) => MathF.Pow(x, n) / (MathF.Pow(x, n) + MathF.Pow(1f - x, n));
         [MethodImpl(INLINE)] public static float RationalInvSmoothstep(float x, float n) => RationalSmoothstep(x, 1f / n);
 
         #endregion
@@ -51,17 +47,17 @@ namespace Util.MathC
         #region Piecewise Smoothstep
 
         [MethodImpl(INLINE)] public static float PiecewiseQuadraticSmoothstep(float x) => (x < 0.5f) ? 2f * x * x : 2f * x * (2f - x) - 1f;
-        [MethodImpl(INLINE)] public static float PiecewiseQuadraticInvSmoothstep(float x) => (x < 0.5f) ? (float)Math.Sqrt(0.5 * x) : 1f - (float)Math.Sqrt(0.5 - 0.5 * x);
+        [MethodImpl(INLINE)] public static float PiecewiseQuadraticInvSmoothstep(float x) => (x < 0.5f) ? MathF.Sqrt(0.5f * x) : 1f - MathF.Sqrt(0.5f - 0.5f * x);
 
-        [MethodImpl(INLINE)] public static float PiecewisePolynomialSmoothstep(float x, float n) => (x < 0.5f) ? 0.5f * (float)Math.Pow(2.0 * x, n) : 1.0f - 0.5f * (float)Math.Pow(2.0 * (1.0 - x), n);
-        [MethodImpl(INLINE)] public static float PiecewisePolynomialInvSmoothstep(float x, float n) => (x < 0.5f) ? 0.5f * (float)Math.Pow(2.0 * x, 1.0 / n) : 1.0f - 0.5f * (float)Math.Pow(2.0 * (1.0 - x), 1.0 / n);
+        [MethodImpl(INLINE)] public static float PiecewisePolynomialSmoothstep(float x, float n) => (x < 0.5f) ? 0.5f * MathF.Pow(2f * x, n) : 1f - 0.5f * MathF.Pow(2f * (1f - x), n);
+        [MethodImpl(INLINE)] public static float PiecewisePolynomialInvSmoothstep(float x, float n) => (x < 0.5f) ? 0.5f * MathF.Pow(2f * x, 1f / n) : 1f - 0.5f * MathF.Pow(2f * (1f - x), 1f / n);
 
         #endregion
 
         #region Trigonometric Smoothstep
 
-        [MethodImpl(INLINE)] public static float TrigonometricSmoothstep(float x) => 0.5f - 0.5f * (float)Math.Cos(Math.PI * x);
-        [MethodImpl(INLINE)] public static float TrigonometricInvSmoothstep(float x) => (float)(Math.Acos(1.0 - 2.0 * x) / Math.PI);
+        [MethodImpl(INLINE)] public static float TrigonometricSmoothstep(float x) => 0.5f - 0.5f * MathF.Cos(UtilMath.TAU_180 * x);
+        [MethodImpl(INLINE)] public static float TrigonometricInvSmoothstep(float x) => MathF.Acos(1f - 2f * x) / UtilMath.TAU_180;
 
         #endregion
 
@@ -79,7 +75,7 @@ namespace Util.MathC
             return (a * t + b) * t * t + n;
         }
 
-        public static float AlmostIdentity2(float x, float n) => (float)Math.Sqrt(x * x + n);
+        public static float AlmostIdentity2(float x, float n) => MathF.Sqrt(x * x + n);
 
         public static float AlmostUnitIdentity(float x) => x * x * (2f - x);
         public static float IntegralSmoothstep(float x, float t)
@@ -92,16 +88,16 @@ namespace Util.MathC
         public static float ExpImpulse(float x, float k)
         {
             float h = k * x;
-            return h * (float)Math.Exp(1.0 - h);
+            return h * MathF.Exp(1f - h);
         }
 
-        public static float QuaImpulse(float x, float k) => 2f * (float)Math.Sqrt(k) * x / (1f + k * x * x);
-        public static float PolyImpulse(float k, float n, float x) => n / (n - 1f) * (float)Math.Pow((n - 1.0) * k, 1.0 / n) * x / (1f + k * (float)Math.Pow(x, n));
+        public static float QuaImpulse(float x, float k) => 2f * MathF.Sqrt(k) * x / (1f + k * x * x);
+        public static float PolyImpulse(float k, float n, float x) => n / (n - 1f) * MathF.Pow((n - 1f) * k, 1f / n) * x / (1f + k * MathF.Pow(x, n));
 
         public static float ExpSustainedImpulse(float x, float f, float k)
         {
             float s = Math.Max(x - f, 0f);
-            return Math.Min(x * x / (f * f), 1 + 2f / f * s * (float)Math.Exp(-k * s));
+            return Math.Min(x * x / (f * f), 1f + 2f / f * s * MathF.Exp(-k * s));
         }
 
         public static float CubicPulse(float c, float w, float x)
@@ -113,26 +109,26 @@ namespace Util.MathC
             return 1f - x * x * (3f - 2f * x);
         }
 
-        public static float ExpStep(float x, float k, float n) => (float)Math.Exp(-k * (float)Math.Pow(x, n));
+        public static float ExpStep(float x, float k, float n) => MathF.Exp(-k * MathF.Pow(x, n));
 
         public static float Gain(float x, float k)
         {
-            float a = 0.5f * (float)Math.Pow(2.0 * ((x < 0.5) ? x : 1.0 - x), k);
+            float a = 0.5f * MathF.Pow(2f * ((x < 0.5) ? x : 1f - x), k);
             return (x < 0.5f) ? a : 1f - a;
         }
 
-        public static float Parabola(float x, float k) => (float)Math.Pow(4.0 * x * (1.0 - x), k);
+        public static float Parabola(float x, float k) => MathF.Pow(4f * x * (1f - x), k);
 
         public static float Pcurve(float x, float a, float b)
         {
-            float k = (float)Math.Pow(a + b, a + b) / ((float)Math.Pow(a, a) * (float)Math.Pow(b, b));
-            return k * (float)Math.Pow(x, a) * (float)Math.Pow(1.0 - x, b);
+            float k = MathF.Pow(a + b, a + b) / (MathF.Pow(a, a) * MathF.Pow(b, b));
+            return k * MathF.Pow(x, a) * MathF.Pow(1f - x, b);
         }
 
         public static float Sinc(float x, float k)
         {
-            float a = (float)Math.PI * (k * x - 1f);
-            return (float)Math.Sin(a) / a;
+            float a = UtilMath.TAU_180 * (k * x - 1f);
+            return MathF.Sin(a) / a;
         }
 
         #endregion

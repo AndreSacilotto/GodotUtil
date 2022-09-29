@@ -38,7 +38,7 @@ namespace Util
         public const float TAU_270 = TAU / 4f;
 
         /// <summary>Same as 2*PI</summary>
-        public const float TAU = (float)System.Math.PI * 2f;
+        public const float TAU = (float)(System.Math.PI * 2.0);
 
         #endregion
 

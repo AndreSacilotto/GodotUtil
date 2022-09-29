@@ -113,13 +113,13 @@ namespace Util
         #region Average Related
         public static float StandardDeviation(IEnumerable<int> values)
         {
-            double avg = Average(values);
-            return (float)Math.Sqrt(values.Average(v => Math.Pow(v - avg, 2)));
+            var avg = Average(values);
+            return MathF.Sqrt((float)values.Average(v => PowSquare(v - avg)));
         }
         public static float StandardDeviation(IEnumerable<float> values)
         {
-            double avg = Average(values);
-            return (float)Math.Sqrt(values.Average(v => Math.Pow(v - avg, 2)));
+            var avg = Average(values);
+            return MathF.Sqrt(values.Average(v => PowSquare(v - avg)));
         }
         #endregion
 

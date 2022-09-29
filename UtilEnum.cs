@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Util
 {
-    public static class UtilEnum<T> where T : Enum
+    public static class UtilEnum
     {
-        public static T StringToEnum(string value) => (T)Enum.Parse(typeof(T), value);
+        [MethodImpl(UtilShared.INLINE)] public static string EnumName<T>() where T : Enum => typeof(T).Name;
+        [MethodImpl(UtilShared.INLINE)] public static string[] EnumToString<T>() where T : Enum => typeof(T).GetEnumNames();
 
-        public static int EnumCount() => Enum.GetValues(typeof(T)).Length;
+        public static T StringToEnum<T>(string value) where T : Enum => (T)Enum.Parse(typeof(T), value);
 
-        public static int FlagsSetCount(T enumValue)
+        public static int EnumCount<T>() where T : Enum => Enum.GetValues(typeof(T)).Length;
+
+        public static int FlagsSetCount<T>(T enumValue) where T : Enum
         {
             if (!typeof(T).IsEnum) return -1;
 
@@ -22,9 +26,6 @@ namespace Util
             }
             return setBits;
         }
-
-        public static string EnumName() => typeof(T).Name;
-        public static string[] EnumToString() => typeof(T).GetEnumNames();
 
     }
 }

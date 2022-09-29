@@ -106,7 +106,7 @@ namespace Util
 
         public static void PopupMenuAddEnum<T>(this PopupMenu popup, string separator = "separator") where T : Enum
         {
-            var items = UtilEnum<T>.EnumToString();
+            var items = UtilEnum.EnumToString<T>();
             for (int i = 0; i < items.Length; i++)
             {
                 if (UtilString.Contains(items[i], separator))

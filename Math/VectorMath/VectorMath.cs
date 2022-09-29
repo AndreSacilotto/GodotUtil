@@ -12,7 +12,7 @@ namespace Util.Vector
 {
     public static class VectorMath
     {
-        public static Vector2 RadianToVector2(float radian) => new((float)Math.Cos(radian), (float)Math.Sin(radian));
+        public static Vector2 RadianToVector2(float radian) => new(MathF.Cos(radian), MathF.Sin(radian));
 
         public static Vector2 DegreeToVector(float degree) => RadianToVector2(UtilMath.TAU_01 * degree);
 
@@ -20,7 +20,7 @@ namespace Util.Vector
         public static Vector3 DegreeToVector(float degree, Vector3 axis) => new Quarternion(axis, degree).GetEuler();
 
         public static float TauAtan2(Vector2 vector) => TauAtan2(vector.y, vector.x);
-        public static float TauAtan2(float y, float x) => (float)Math.Atan2(y, x) + UtilMath.TAU_180;
+        public static float TauAtan2(float y, float x) => MathF.Atan2(y, x) + UtilMath.TAU_180;
 
 
         #region Rotate
@@ -40,15 +40,15 @@ namespace Util.Vector
 
         public static void RotateVectors(Vector2[] points, float rotation)
         {
-            var s = (float)Math.Sin(rotation);
-            var c = (float)Math.Cos(rotation);
+            var s = MathF.Sin(rotation);
+            var c = MathF.Cos(rotation);
             for (int i = 0; i < points.Length; i++)
                 points[i] = RotatedNoTrigCW(points[i], c, s);
         }
         public static void RotateVectors(Vector2[] points, Vector2 pivot, float rotation)
         {
-            var s = (float)Math.Sin(rotation);
-            var c = (float)Math.Cos(rotation);
+            var s = MathF.Sin(rotation);
+            var c = MathF.Cos(rotation);
             for (int i = 0; i < points.Length; i++)
                 points[i] = RotatedNoTrigCW(points[i], pivot, c, s);
         }
@@ -66,13 +66,13 @@ namespace Util.Vector
 
         public static Vector2 PositionToFloatDirection(Vector2 position, Vector2 center = default)
         {
-            var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
-            return new Vector2((float)Math.Cos(rad), (float)Math.Sin(rad));
+            var rad = MathF.Atan2(center.y - position.y, center.x - position.x) + UtilMath.TAU_180;
+            return new Vector2(MathF.Cos(rad), MathF.Sin(rad));
         }
         public static Vector2i PositionToDirection(Vector2 position, Vector2 center = default)
         {
-            var rad = Math.Atan2(center.y - position.y, center.x - position.x) + Math.PI;
-            return new(UtilMath.RoundToInt(Math.Cos(rad)), UtilMath.RoundToInt(Math.Sin(rad)));
+            var rad = MathF.Atan2(center.y - position.y, center.x - position.x) + UtilMath.TAU_180;
+            return new(UtilMath.RoundToInt(MathF.Cos(rad)), UtilMath.RoundToInt(MathF.Sin(rad)));
         }
 
         #endregion
