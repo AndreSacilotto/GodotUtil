@@ -2,12 +2,12 @@
 using Vector2 = Godot.Vector2;
 using Vector3 = Godot.Vector3;
 
-namespace Util.MathC
+namespace Util.Interpolation
 {
     public static class Bezier
     {
-        public static Vector2 LinearBezier(Vector2 start, Vector2 end, float t) => (1f - t) * start + t * end;
-        public static Vector3 LinearBezier(Vector3 start, Vector3 end, float t) => (1f - t) * start + t * end;
+        public static Vector2 LinearBezier(Vector2 start, Vector2 end, float t) => start + (end - start) * t;
+        public static Vector3 LinearBezier(Vector3 start, Vector3 end, float t) => start + (end - start) * t;
 
         public static Vector2 QuadraticBezier(Vector2 start, Vector2 pivot, Vector2 end, float t)
         {

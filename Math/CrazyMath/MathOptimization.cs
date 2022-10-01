@@ -13,17 +13,11 @@ namespace Util.MathC
         #endregion
 
         #region Power
-        /// <summary> value * value </summary>
-        [MethodImpl(UtilShared.INLINE)]
-        public static int Pow2(int value) => value * value;
-        /// <summary> value * value </summary>
-        [MethodImpl(UtilShared.INLINE)]
-        public static float Pow2(float value) => value * value;
 
         [MethodImpl(UtilShared.INLINE)]
         public static int ExponentOf2(int exponent) => 1 << exponent;
 
-        /// <summary>IsPowerOfTwo, but return true when value == 0</summary>
+        /// <summary>IsPowerOfTwo, but it also return true when value is 0</summary>
         [MethodImpl(UtilShared.INLINE)]
         public static bool IsPowerOfTwoFast(int value) => (value & (value - 1)) == 0;
 

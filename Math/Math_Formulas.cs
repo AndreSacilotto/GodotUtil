@@ -16,8 +16,8 @@ namespace Util
 
         #region Interpolation & Remapping
 
-        [MethodImpl(UtilShared.INLINE)] public static float Lerp(float from, float to, float weight) => from + ((to - from) * weight);
-        [MethodImpl(UtilShared.INLINE)] public static float LerpClamped(float from, float to, float weight) => Clamp01(from + ((to - from) * weight));
+        [MethodImpl(UtilShared.INLINE)] public static float Lerp(float from, float to, float weight) => from + (to - from) * weight;
+        [MethodImpl(UtilShared.INLINE)] public static float LerpClamped(float from, float to, float weight) => Clamp01(from + (to - from) * weight);
 
         [MethodImpl(UtilShared.INLINE)] public static float InverseLerp(float from, float to, float weight) => (weight - from) / (to - from);
         [MethodImpl(UtilShared.INLINE)] public static float InverseLerpClamped(float from, float to, float value) => Clamp01((value - from) / (to - from));
