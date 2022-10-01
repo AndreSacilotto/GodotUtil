@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Util.Interpolation
 {
-    public partial class TweenSharp : IDisposable
+    public partial class TweenSharp : IDisposable, IRequireGameLoop
     {
-        public event Action TweenSharpEnd;
-        public event Action<TweenerSharp> TweenerSharpEnd;
+        public event Action OnTweenFinish;
+        public event Action<TweenerSharp> OnTweenerEnd;
 
         #region Vars
 
@@ -15,7 +16,7 @@ namespace Util.Interpolation
 
         private TweenerSharp current;
         private int currentIndex;
-        public bool Running { get; set; } = false;
+        public bool Paused { get; set; } = true;
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace Util.Interpolation
         public int CurrentTweenerIndex => currentIndex;
         public int Count => tweeners.Count;
 
-        /// <summary>Current time of animation between</summary>
+        /// <summary>Total time that passed animatiing the tween</summary>
         public float Time => totalDuration;
         
         #endregion
@@ -42,20 +43,20 @@ namespace Util.Interpolation
 
         public void Step(float delta)
         {
-            if (Running)
-            {
-                totalDuration += delta;
-                current.Step(delta);
-            }
+            if (Paused)
+                return;
+            totalDuration += delta;
+            current.Step(delta);
         }
 
         public void Reset()
         {
             currentIndex = 0;
-            totalDuration = 0;
+            totalDuration = 0f;
             foreach (var item in tweeners)
                 item.Reset();
-            current = tweeners[0];
+            if(tweeners.Count > 0)
+                current = tweeners[0];
         }
 
         public void Clear()
@@ -66,14 +67,16 @@ namespace Util.Interpolation
             DisposeTweeners();
         }
 
+        /// <summary>Time needed to all tweeners to end</summary>
+        public float GetCompletationTime() => tweeners.Sum(x => x.Duration);
+
         private void TweenerEnd(TweenerSharp tweener)
         {
             current = tweeners[++currentIndex];
-            TweenerSharpEnd?.Invoke(tweener);
+            OnTweenerEnd?.Invoke(tweener);
             if (currentIndex == tweeners.Count)
-                TweenSharpEnd?.Invoke();
+                OnTweenFinish?.Invoke();
         }
-
 
         #region Dispose
 
@@ -98,8 +101,8 @@ namespace Util.Interpolation
             if (_disposed)
                 return;
 
-            TweenSharpEnd = null;
-            TweenerSharpEnd = null;
+            OnTweenFinish = null;
+            OnTweenerEnd = null;
             DisposeTweeners();
             tweeners = null;
 

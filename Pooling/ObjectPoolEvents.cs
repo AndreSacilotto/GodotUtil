@@ -56,12 +56,31 @@ namespace Util.ObjectPool
         public IEnumerator<T> GetEnumerator() => pool.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => pool.GetEnumerator();
 
+        #region Dispose
+
+        ~ObjectPoolEvents() => Dispose(false);
+
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected bool _disposed;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
             CreateFunc = null;
             OnTakeFromPool = null;
             OnReturnToPool = null;
             OnDestroyFromPool = null;
+
+            _disposed = true;
         }
+
+        #endregion
+
     }
 }

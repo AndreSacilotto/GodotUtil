@@ -3,6 +3,8 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+using static Util.UtilShared;
+
 namespace Util
 {
     public static class UtilString
@@ -15,12 +17,9 @@ namespace Util
 
         #region Format
 
-        [MethodImpl(UtilShared.INLINE)]
-        public static string NumberWithSign(int value) => value.ToString("+#;-#;0");
-        [MethodImpl(UtilShared.INLINE)]
-        public static string NumberWithSign(float value) => value.ToString("+#;-#;0");
-
-        public static string InvariantFormat(float value) => value.ToString(NumberFormatInfo.InvariantInfo);
+        [MethodImpl(INLINE)] public static string NumberWithSign(int value) => value.ToString("+#;-#;0");
+        [MethodImpl(INLINE)] public static string NumberWithSign(float value) => value.ToString("+#;-#;0");
+        [MethodImpl(INLINE)] public static string InvariantFormat(float value) => value.ToString(NumberFormatInfo.InvariantInfo);
 
         #endregion
 
@@ -49,19 +48,16 @@ namespace Util
 
         #region Contains
 
-        [MethodImpl(UtilShared.INLINE)]
-        public static bool Contains(this string source, char value, int startIdx = 0) =>
-                source.IndexOf(value, startIdx) >= 0;
+        [MethodImpl(INLINE)] public static bool Contains(this string source, char value, int startIdx = 0) => source.IndexOf(value, startIdx) >= 0;
 
-        [MethodImpl(UtilShared.INLINE)]
+        [MethodImpl(INLINE)]
         public static bool Contains(this string source, string value, int startIdx = 0, StringComparison strCmp = StringComparison.InvariantCultureIgnoreCase) =>
             source.IndexOf(value, startIdx, strCmp) >= 0;
-        [MethodImpl(UtilShared.INLINE)]
+        [MethodImpl(INLINE)]
         public static bool Contains(this string source, string value, int startIdx, int length, StringComparison strCmp = StringComparison.InvariantCultureIgnoreCase) =>
             source.IndexOf(value, startIdx, length, strCmp) >= 0;
 
         #endregion
-
 
         #region Replace
 

@@ -19,6 +19,14 @@ namespace Util
         [MethodImpl(INLINE)] public static float PowCubic(float value) => value * value * value;
         [MethodImpl(INLINE)] public static double PowCubic(double value) => value * value * value;
 
+        [MethodImpl(INLINE)] public static int PowQuartic(int value) => value * value * value * value;
+        [MethodImpl(INLINE)] public static float PowQuartic(float value) => value * value * value * value;
+        [MethodImpl(INLINE)] public static double PowQuartic(double value) => value * value * value * value;
+
+        [MethodImpl(INLINE)] public static int PowQuintic(int value) => value * value * value * value * value;
+        [MethodImpl(INLINE)] public static float PowQuintic(float value) => value * value * value * value * value;
+        [MethodImpl(INLINE)] public static double PowQuintic(double value) => value * value * value * value * value;
+
         #endregion
 
         #region Precision
