@@ -17,29 +17,22 @@ namespace Util.Interpolation
         private TweenerSharp current;
         private int currentIndex;
         public bool Paused { get; set; } = true;
+        public bool Repeat { get; set; } = false;
+
+        public Interpolation.EaseFunc DefaultEaseFunc { get; set; } = Interpolation.LinearIn;
 
         #endregion
 
         #region Props
-        
+
         public TweenerSharp CurrentTweener => current;
-        public int CurrentTweenerIndex => currentIndex;
         public int Count => tweeners.Count;
+        public bool HasTweeners => tweeners.Count > 0;
 
-        /// <summary>Total time that passed animatiing the tween</summary>
+        /// <summary>Total time that passed animating the tween</summary>
         public float Time => totalDuration;
-        
-        #endregion
 
-        public void AddTweener(TweenerSharp tweener)
-        {
-            if (current == null)
-            {
-                currentIndex = 0;
-                current = tweener;
-            }
-            tweeners.Add(tweener);
-        }
+        #endregion
 
         public void Step(float delta)
         {
@@ -49,13 +42,35 @@ namespace Util.Interpolation
             current.Step(delta);
         }
 
+        public TweenerSharp CreateTweener()
+        {
+            var tweener = new TweenerSharp(this);
+            if (current == null)
+            {
+                currentIndex = 0;
+                current = tweener;
+            }
+            tweeners.Add(tweener);
+            return tweener;
+        }
+
+        /// <summary>Remove the an tweener and reset the animation</summary>
+        public void RemoveTweener(TweenerSharp tweener, bool dispose = false)
+        {
+            if (tweeners.Remove(tweener)) { 
+                Reset();
+                if(dispose)
+                    tweener.Dispose();
+            }
+        }
+
         public void Reset()
         {
             currentIndex = 0;
             totalDuration = 0f;
             foreach (var item in tweeners)
                 item.Reset();
-            if(tweeners.Count > 0)
+            if (tweeners.Count > 0)
                 current = tweeners[0];
         }
 
@@ -65,6 +80,7 @@ namespace Util.Interpolation
             current = null;
             totalDuration = 0;
             DisposeTweeners();
+            Paused = true;
         }
 
         /// <summary>Time needed to all tweeners to end</summary>
@@ -72,10 +88,18 @@ namespace Util.Interpolation
 
         private void TweenerEnd(TweenerSharp tweener)
         {
-            current = tweeners[++currentIndex];
-            OnTweenerEnd?.Invoke(tweener);
-            if (currentIndex == tweeners.Count)
+            currentIndex++;
+            if (currentIndex == tweeners.Count) { 
                 OnTweenFinish?.Invoke();
+                Reset();
+                Paused = !Repeat;
+            }
+            else
+            {
+                current = tweeners[currentIndex];
+                current.Reset();
+            }
+            OnTweenerEnd?.Invoke(tweener);
         }
 
         #region Dispose

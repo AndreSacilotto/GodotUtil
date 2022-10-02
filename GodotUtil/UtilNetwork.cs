@@ -72,7 +72,7 @@ namespace Util
             var args = new string[] { "--path", project, scene };
             for (int i = 0; i < count; i++)
                 OS.Execute(godot, args, false);
-        }        
+        }
         
         public static void OpenTerminals(int count, string scene = "")
         {
