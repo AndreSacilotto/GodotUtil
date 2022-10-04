@@ -4,97 +4,114 @@ using System.Linq;
 
 namespace Util.Interpolation
 {
-    public class TweenSharpMult : TweenSharp
-    {
-        public event Action<TweenerSharp> OnTweenerEnd;
+	public class TweenSharpMult : TweenSharpBase
+	{
+		public event Action<TweenerSharpBase> OnTweenerEnd;
 
-        protected List<TweenerSharp> tweeners = new(1);
+		protected List<TweenerSharpBase> tweeners = new(1);
 
-        private int currentIndex;
+		private int currentIndex;
 
-        public int Count => tweeners.Count;
-        public bool HasTweeners => tweeners.Count > 0;
+		public int Count => tweeners.Count;
+		public bool HasTweeners => tweeners.Count > 0;
 
-        public override TweenerSharp CreateTweener()
-        {
-            var tweener = new TweenerSharp(this);
-            if (current == null)
-            {
-                currentIndex = 0;
-                current = tweener;
-            }
-            tweeners.Add(tweener);
-            return tweener;
-        }
+		public TweenerSharp CreateTweener()
+		{
+			var tweener = new TweenerSharp(this);
+			AddTweenerInternal(tweener);
+			return tweener;
+		}
+		public TweenerDelaySharp CreateTweenerDelay()
+		{
+			var tweener = new TweenerDelaySharp(this);
+			AddTweenerInternal(tweener);
+			return tweener;
+		}
 
-        /// <summary>Remove the an tweener and reset the animation</summary>
-        public void RemoveTweener(TweenerSharp tweener, bool dispose = false)
-        {
-            if (tweeners.Remove(tweener)) 
-            { 
-                Reset();
-                if(dispose)
-                    tweener.Dispose();
-            }
-        }
+		public TweenerSharpBase AddTweenerInternal(TweenerSharpBase tweener)
+		{
+			if (current == null)
+			{
+				currentIndex = 0;
+				current = tweener;
+			}
+			tweeners.Add(tweener);
+			return tweener;
+		}
 
-        public override void Reset(bool pause = false)
-        {
-            currentIndex = 0;
-            totalDuration = 0f;
-            foreach (var item in tweeners)
-                item.Reset();
-            if (tweeners.Count > 0)
-                current = tweeners[0];
-            Paused = pause;
-        }
+		/// <summary>Remove the an tweener and reset the animation if exist</summary>
+		public void RemoveTweener(TweenerSharpBase tweener, bool dispose = false)
+		{
+			if (tweeners.Remove(tweener))
+			{
+				Reset();
+				if (dispose)
+					tweener.Dispose();
+			}
+		}
 
-        public override void Clear()
-        {
-            totalDuration = 0f;
-            currentIndex = -1;
-            current = null;
-            ReleaseTweeners();
-            Paused = true;
-        }
+		public override void Reset()
+		{
+			currentIndex = 0;
+			totalDuration = 0f;
+			if (HasTweeners)
+			{
+				foreach (var item in tweeners)
+					item.Reset();
+				current = tweeners[0];
+			}
+			else
+				current = null;
+			Paused = true;
+		}
 
-        public override float GetCompletationTime() => tweeners.Sum(x => x.Duration);
+		public override void Clear()
+		{
+			totalDuration = 0f;
+			currentIndex = -1;
+			DisposeTweeners();
+			Paused = true;
+		}
 
-        protected override void TweenerEnd(TweenerSharp tweener)
-        {
-            currentIndex++;
-            if (currentIndex == tweeners.Count) {
-                CallOnTweenFinish();
-                Reset();
-                Paused = !Repeat;
-            }
-            else
-            {
-                current = tweeners[currentIndex];
-                current.Reset();
-            }
-            OnTweenerEnd?.Invoke(tweener);
-        }
+		public override float GetCompletationTime() => tweeners.Sum(x => x.Duration);
 
-        #region Dispose
+		public override void TweenerEnd(TweenerSharpBase tweener)
+		{
+			currentIndex++;
+			if (currentIndex == tweeners.Count)
+			{
+				CallOnTweenFinish();
+				Reset();
+				Paused = !Repeat;
+			}
+			else
+			{
+				current = tweeners[currentIndex];
+				current.Reset();
+			}
+			OnTweenerEnd?.Invoke(tweener);
+		}
 
-        protected void ReleaseTweeners()
-        {
-            foreach (var item in tweeners)
-                item.Dispose();
-            tweeners.Clear();
-        }
+		#region Dispose
 
-        protected override void Disposing()
-        {
-            base.Disposing();
-            OnTweenerEnd = null;
-            ReleaseTweeners();
-            tweeners = null;
-        }
+		private void DisposeTweeners()
+		{
+			foreach (var item in tweeners)
+				item.Dispose();
+			tweeners.Clear();
+			current = null;
+		}
 
-        #endregion
+		protected override void Disposing()
+		{
+			base.Disposing();
+			OnTweenerEnd = null;
+			DisposeTweeners();
+			tweeners = null;
+		}
+
+		#endregion
 
 
-    }
+	}
 }

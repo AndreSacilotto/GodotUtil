@@ -2,13 +2,13 @@
 
 namespace Util.Interpolation
 {
-	public abstract partial class TweenSharp : IRequireGameLoop, IDisposable
+	public abstract partial class TweenSharpBase : IRequireGameLoop, IDisposable
 	{
 		public event Action OnTweenFinish;
 		public Interpolation.EaseFunc DefaultEaseFunc { get; set; }
 
 		protected float totalDuration;
-		protected TweenerSharp current;
+		protected TweenerSharpBase current;
 
 		public bool Paused { get; set; } = true;
 		public bool Repeat { get; set; } = false;
@@ -16,10 +16,10 @@ namespace Util.Interpolation
 		/// <summary>Total time that passed animating the tween</summary>
 		public float Time => totalDuration;
 
-		public TweenerSharp CurrentTweener => current;
+		public TweenerSharpBase Current => current;
+		public T GetCurrent<T>() where T : TweenerSharpBase => (T)current;
 
 		protected void CallOnTweenFinish() => OnTweenFinish?.Invoke();
-		public void PauseOrResume() => Paused = !Paused;
 		public void Step(float delta)
 		{
 			if (Paused)
@@ -31,15 +31,14 @@ namespace Util.Interpolation
 		/// <summary>Time needed to all tweeners to end</summary>
 		public abstract float GetCompletationTime();
 
-		public abstract TweenerSharp CreateTweener();
-		protected abstract void TweenerEnd(TweenerSharp tweener);
-
-		public abstract void Reset(bool pause);
+		public abstract void Reset();
 		public abstract void Clear();
+		public abstract void TweenerEnd(TweenerSharpBase tweener);
+
 
 		#region Dispose
 
-		~TweenSharp() 
+		~TweenSharpBase() 
 		{
 			if (_disposed)
 				return;
@@ -66,7 +65,6 @@ namespace Util.Interpolation
 				current = null;
 			}
 		}
-
 
 		#endregion
 

@@ -3,21 +3,23 @@ using System.Collections.Generic;
 
 namespace Util.Interpolation
 {
-	public class TweenSharpSingle : TweenSharp
+	public class TweenSharpSingle : TweenSharpBase
 	{
-		public override TweenerSharp CreateTweener()
+		public TweenerSharp Current => (TweenerSharp)current;
+
+		public TweenerSharp CreateTweener()
 		{
 			var tweener = new TweenerSharp(this);
 			if (current != null)
 				current.Dispose();
-			return current = tweener;
+			current = tweener;
+			return tweener;
 		}
 
-		public override void Reset(bool pause = false)
+		public override void Reset()
 		{
 			totalDuration = 0f;
 			current.Reset();
-			Paused = pause;
 		}
 
 		public override void Clear()
@@ -33,7 +35,7 @@ namespace Util.Interpolation
 
 		public override float GetCompletationTime() => current.Duration;
 
-		protected override void TweenerEnd(TweenerSharp tweener)
+		public override void TweenerEnd(TweenerSharpBase tweener)
 		{
 			CallOnTweenFinish();
 			Reset();
