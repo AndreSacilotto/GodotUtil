@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -89,6 +90,17 @@ namespace Godot
             return dic;
         }
 
+
+        #endregion
+
+        #region InputEvent
+
+        public static void DisposeInputEventImmediately(this InputEvent inputEvent) 
+        {
+            inputEvent.Dispose();
+            GC.Collect(GC.MaxGeneration);
+            GC.WaitForPendingFinalizers();
+        }
 
         #endregion
 

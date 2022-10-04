@@ -25,21 +25,21 @@ namespace Godot
 
         #region Rounding
 
-        public static Vector2i Round(float x, float y) => new(Mathf.RoundToInt(x), Mathf.RoundToInt(y));
-        public static Vector2i Floor(float x, float y) => new(Mathf.FloorToInt(x), Mathf.FloorToInt(y));
-        public static Vector2i Ceil(float x, float y) => new(Mathf.CeilToInt(x), Mathf.CeilToInt(y));
+        public static Vector2i Round(float x, float y) => new(UtilMath.RoundToInt(x), UtilMath.RoundToInt(y));
+        public static Vector2i Floor(float x, float y) => new(UtilMath.FloorToInt(x), UtilMath.FloorToInt(y));
+        public static Vector2i Ceil(float x, float y) => new(UtilMath.CeilToInt(x), UtilMath.CeilToInt(y));
 
-        public static Vector3i Round(float x, float y, float z) => new(Mathf.RoundToInt(x), Mathf.RoundToInt(y), Mathf.RoundToInt(z));
-        public static Vector3i Floor(float x, float y, float z) => new(Mathf.FloorToInt(x), Mathf.FloorToInt(y), Mathf.FloorToInt(z));
-        public static Vector3i Ceil(float x, float y, float z) => new(Mathf.CeilToInt(x), Mathf.CeilToInt(y), Mathf.FloorToInt(z));
+        public static Vector3i Round(float x, float y, float z) => new(UtilMath.RoundToInt(x), UtilMath.RoundToInt(y), UtilMath.RoundToInt(z));
+        public static Vector3i Floor(float x, float y, float z) => new(UtilMath.FloorToInt(x), UtilMath.FloorToInt(y), UtilMath.FloorToInt(z));
+        public static Vector3i Ceil(float x, float y, float z) => new(UtilMath.CeilToInt(x), UtilMath.CeilToInt(y), UtilMath.FloorToInt(z));
 
         #endregion
 
         #region Invert
         /// <summary>Returns new Vector(y, x)</summary>
-        public static Vector2 Invert(this Vector2 v) => new(v.y, v.x);
+        public static Vector2 SwapXY(this Vector2 v) => new(v.y, v.x);
         /// <summary>Returns new Vector(y, x)</summary>
-        public static Vector2i Invert(this Vector2i v) => new(v.y, v.x);
+        public static Vector2i SwapXY(this Vector2i v) => new(v.y, v.x);
         #endregion
 
     }

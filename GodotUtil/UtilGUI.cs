@@ -137,14 +137,11 @@ namespace Util
 
         #endregion
 
-        public static IEnumerable<T> GetEnumeratorControlChildren<T>(this Control node) where T : Control
+        public static IEnumerable<T> GetEnumeratorVisibleControlChildren<T>(this Control node) where T : Control
         {
             foreach (var item in node.GetChildren())
-            {
-                if (item is not Control c || !c.Visible)
-                    continue;
-                yield return (T)c;
-            }
+                if (item is Control c && c.Visible)
+                    yield return (T)c;
         }
 
     }

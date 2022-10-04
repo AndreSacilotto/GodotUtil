@@ -99,10 +99,11 @@ namespace Godot
 
         #region Converting
 
-        [MethodImpl(UtilShared.INLINE)] public static Vector3i ToVector3i_XY0(this Vector2i vector) => new(vector.x, vector.y, 0);
-        [MethodImpl(UtilShared.INLINE)] public static Vector3i ToVector3i_X0Y(this Vector2i vector) => new(vector.x, 0, vector.y);
+        [MethodImpl(UtilShared.INLINE)] public static Vector3i ToVector3i_X0Y(this Vector2i vector, int y = 0) => new(vector.x, y, vector.y);
+        [MethodImpl(UtilShared.INLINE)] public static Vector3i ToVector3i_XY0(this Vector2i vector, int z = 0) => new(vector.x, vector.y, z);
         [MethodImpl(UtilShared.INLINE)] public static Vector2i ToVector2i_XY(this Vector3i vector) => new(vector.x, vector.y);
         [MethodImpl(UtilShared.INLINE)] public static Vector2i ToVector2i_XZ(this Vector3i vector) => new(vector.x, vector.z);
+        [MethodImpl(UtilShared.INLINE)] public static Vector2i ToVector2i_ZY(this Vector3i vector) => new(vector.z, vector.y);
 
         #endregion
 
