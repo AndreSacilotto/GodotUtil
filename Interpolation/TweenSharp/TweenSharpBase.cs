@@ -38,22 +38,20 @@ namespace Util.Interpolation
 
 		#region Dispose
 
-		~TweenSharpBase() 
-		{
-			if (_disposed)
-				return;
-			Disposing();
-			_disposed = true;
-		} 
-
-		private bool _disposed;
+		~TweenSharpBase() => DisposeInternal();
 		public void Dispose()
 		{
+			DisposeInternal();
+			GC.SuppressFinalize(this);
+		}
+
+		private bool _disposed;
+		private void DisposeInternal()
+		{
 			if (_disposed)
 				return;
 			Disposing();
 			_disposed = true;
-			GC.SuppressFinalize(this);
 		}
 
 		protected virtual void Disposing()

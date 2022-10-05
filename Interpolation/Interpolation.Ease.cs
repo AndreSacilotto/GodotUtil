@@ -194,7 +194,7 @@ namespace Util.Interpolation
             percent -= 1f;
             float p = duration * 0.3f;
 
-            return -(delta * MathF.Pow(2f, 10 * percent) * MathF.Sin((percent * duration - p * 0.25f) * UtilMath.TAU / p)) + initial;
+            return -(delta * MathF.Pow(2f, 10 * percent) * MathF.Sin((percent * duration - p * 0.25f) * UtilMath.TAU_360 / p)) + initial;
         }
 
         public static float ElasticOut(float percent, float initial, float delta, float duration)
@@ -207,7 +207,7 @@ namespace Util.Interpolation
                 return initial + delta;
 
             float p = duration * 0.3f;
-            return delta * (MathF.Pow(2f, -10 * percent) * MathF.Sin((percent * duration - p * 0.25f) * UtilMath.TAU / p) + 1f) + initial;
+            return delta * (MathF.Pow(2f, -10 * percent) * MathF.Sin((percent * duration - p * 0.25f) * UtilMath.TAU_360 / p) + 1f) + initial;
         }
 
         public static float ElasticInOut(float percent, float initial, float delta, float duration)
@@ -224,9 +224,9 @@ namespace Util.Interpolation
 
             percent -= 1f;
             if (percent < 0f)
-                return -0.5f * delta * MathF.Pow(2f, 10 * percent) * MathF.Sin((percent * duration - s) * UtilMath.TAU / p) + initial;
+                return -0.5f * delta * MathF.Pow(2f, 10 * percent) * MathF.Sin((percent * duration - s) * UtilMath.TAU_360 / p) + initial;
 
-            return delta * (0.5f * MathF.Pow(2f, -10 * percent) * MathF.Sin((percent * duration - s) * UtilMath.TAU / p) + 1f) + initial;
+            return delta * (0.5f * MathF.Pow(2f, -10 * percent) * MathF.Sin((percent * duration - s) * UtilMath.TAU_360 / p) + 1f) + initial;
         }
 
         public static float ElasticOutIn(float percent, float initial, float delta, float duration)

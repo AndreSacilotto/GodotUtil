@@ -11,7 +11,13 @@ namespace Util
     /// </summary>
     public static class MathF
     {
-        [MethodImpl(INLINE)] public static float Acos(float value) => (float)Math.Acos(value);
+        public const float E = (float)Math.E;
+        public const float PI = (float)Math.PI;
+#pragma warning disable IDE1006 // Naming Styles
+		public const float Tau = (float)(Math.PI * 2.0);
+#pragma warning restore IDE1006 // Naming Styles
+
+		[MethodImpl(INLINE)] public static float Acos(float value) => (float)Math.Acos(value);
         //[MethodImpl(INLINE)] public static float Acosh(float value) => (float)Math.Acosh(value); //.NET6
         [MethodImpl(INLINE)] public static float Asin(float value) => (float)Math.Asin(value);
         //[MethodImpl(INLINE)] public static float Asinh(float value) => (float)Math.Asinh(value); //.NET6

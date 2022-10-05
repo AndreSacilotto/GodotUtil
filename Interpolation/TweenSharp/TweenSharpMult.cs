@@ -104,10 +104,10 @@ namespace Util.Interpolation
 
 		protected override void Disposing()
 		{
-			base.Disposing();
 			OnTweenerEnd = null;
 			DisposeTweeners();
 			tweeners = null;
+			base.Disposing();
 		}
 
 		#endregion

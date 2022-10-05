@@ -58,26 +58,29 @@ namespace Util.ObjectPool
 
         #region Dispose
 
-        ~ObjectPoolEvents() => Dispose(false);
+        ~ObjectPoolEvents() => DisposeInternal();
 
-        public void Dispose()
+		public void Dispose()
         {
-            Dispose(true);
+            DisposeInternal();
             GC.SuppressFinalize(this);
         }
 
-        protected bool _disposed;
-        protected virtual void Dispose(bool disposing)
+        private bool _disposed;
+        private void DisposeInternal()
         {
             if (_disposed)
                 return;
+            Disposing();
+            _disposed = true;
+        }
 
+        protected virtual void Disposing()
+        {
             CreateFunc = null;
             OnTakeFromPool = null;
             OnReturnToPool = null;
             OnDestroyFromPool = null;
-
-            _disposed = true;
         }
 
         #endregion

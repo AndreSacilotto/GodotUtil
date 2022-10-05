@@ -56,23 +56,25 @@ namespace Util
 
         #region Dispose
 
-        ~TimerSharp() => Dispose(false);
-
+        ~TimerSharp() => DisposeInternal();
         public void Dispose()
         {
-            Dispose(true);
+            DisposeInternal();
             GC.SuppressFinalize(this);
         }
 
-        protected bool _disposed;
-        protected virtual void Dispose(bool disposing)
+        private bool _disposed;
+        private void DisposeInternal()
         {
             if (_disposed)
                 return;
-
-            onTimeout = null;
-
+            Disposing();
             _disposed = true;
+        }
+
+        protected virtual void Disposing()
+        {
+            onTimeout = null;
         }
 
         #endregion

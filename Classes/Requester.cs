@@ -38,12 +38,32 @@ namespace Util
                 OnNoRequest();
         }
 
+		#region Dispose
+
+		~Requester() => DisposeInternal();
+
         public void Dispose()
         {
-            requestCount = 0;
-            OnFirstRequest = null;
-            OnNoRequest = null;
+            DisposeInternal();
+            GC.SuppressFinalize(this);
         }
 
-    }
+        private bool _disposed;
+        private void DisposeInternal()
+        {
+            if (_disposed)
+                return;
+            Disposing();
+            _disposed = true;
+        }
+
+		private void Disposing()
+		{
+            OnFirstRequest = null;
+            OnNoRequest = null;
+		}
+
+		#endregion
+
+	}
 }

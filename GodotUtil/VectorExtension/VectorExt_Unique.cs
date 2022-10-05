@@ -21,17 +21,56 @@ namespace Godot
             );
         }
 
+		#endregion
+
+		#region INT UNIQUE
+
+		#region Direction
+
+		public static bool IsDiagonal(this Vector2i dir) => dir.x != 0 && dir.y != 0;
+        public static bool IsStraight(this Vector2i dir) => dir.x == 0 || dir.y == 0;
+
+        public static Vector2i PositionToDiagonal(Vector2 position, Vector2 center = default)
+        {
+            var rad = Mathf.Atan2(position.y - center.y, position.x - center.x);
+            if (rad < 0)
+            {
+                if (rad >= -UtilMath.TAU_90)
+                    return TopRight;
+                return TopLeft;
+            }
+            else
+            {
+                if (rad <= UtilMath.TAU_90)
+                    return BottomRight;
+                return BottomLeft;
+            }
+        }
+        public static Vector2i PositionToStraight(Vector2 position, Vector2 center = default)
+        {
+            var rad = Mathf.Pi - Mathf.Atan2(center.y - position.y, center.x - position.x);
+            if (rad <= UtilMath.TAU_45)
+                return Right;
+            else if (rad <= UtilMath.TAU_135)
+                return Top;
+            else if (rad <= UtilMath.TAU_45 * 5f)
+                return Left;
+            else if (rad <= UtilMath.TAU_45 * 7f)
+                return Bottom;
+            return Right;
+        }
+
         #endregion
 
         #region Rounding
 
-        public static Vector2i Round(float x, float y) => new(UtilMath.RoundToInt(x), UtilMath.RoundToInt(y));
-        public static Vector2i Floor(float x, float y) => new(UtilMath.FloorToInt(x), UtilMath.FloorToInt(y));
-        public static Vector2i Ceil(float x, float y) => new(UtilMath.CeilToInt(x), UtilMath.CeilToInt(y));
+        public static Vector2i RoundToInt(float x, float y) => new(UtilMath.RoundToInt(x), UtilMath.RoundToInt(y));
+        public static Vector2i FloorToInt(float x, float y) => new(UtilMath.FloorToInt(x), UtilMath.FloorToInt(y));
+        public static Vector2i CeilToInt(float x, float y) => new(UtilMath.CeilToInt(x), UtilMath.CeilToInt(y));
 
-        public static Vector3i Round(float x, float y, float z) => new(UtilMath.RoundToInt(x), UtilMath.RoundToInt(y), UtilMath.RoundToInt(z));
-        public static Vector3i Floor(float x, float y, float z) => new(UtilMath.FloorToInt(x), UtilMath.FloorToInt(y), UtilMath.FloorToInt(z));
-        public static Vector3i Ceil(float x, float y, float z) => new(UtilMath.CeilToInt(x), UtilMath.CeilToInt(y), UtilMath.FloorToInt(z));
+        public static Vector3i RoundToInt(float x, float y, float z) => new(UtilMath.RoundToInt(x), UtilMath.RoundToInt(y), UtilMath.RoundToInt(z));
+        public static Vector3i FloorToInt(float x, float y, float z) => new(UtilMath.FloorToInt(x), UtilMath.FloorToInt(y), UtilMath.FloorToInt(z));
+        public static Vector3i CeilToInt(float x, float y, float z) => new(UtilMath.CeilToInt(x), UtilMath.CeilToInt(y), UtilMath.FloorToInt(z));
 
         #endregion
 
@@ -41,6 +80,26 @@ namespace Godot
         /// <summary>Returns new Vector(y, x)</summary>
         public static Vector2i SwapXY(this Vector2i v) => new(v.y, v.x);
         #endregion
+
+        #endregion INT UNIQUE
+
+        #region FLOAT UNIQUE
+
+        #region Rotation
+        // CC = Counter-Clockwise
+
+        public static Vector2 RotatedCC(this Vector2 vec, float angle)
+        {
+            var sin = -MathF.Sin(angle);
+            var cos = MathF.Cos(angle);
+            return new(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos);
+        }
+
+        public static Vector3 RotatedCC(this Vector3 vec, Vector3 axis, float angle) => new Basis(axis, -angle).Mult(vec);
+
+        #endregion
+
+        #endregion FLOAT UNIQUE
 
     }
 }

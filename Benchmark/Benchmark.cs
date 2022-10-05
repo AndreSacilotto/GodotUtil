@@ -99,7 +99,7 @@ namespace Util.Test
 
         private static void CollectGarbage()
         {
-            GC.Collect();
+            GC.Collect(GC.MaxGeneration);
             GC.WaitForPendingFinalizers();
             GC.Collect();
         }

@@ -5,8 +5,6 @@ namespace Util.Interpolation
 {
 	public class TweenSharpSingle : TweenSharpBase
 	{
-		public TweenerSharp Current => (TweenerSharp)current;
-
 		public TweenerSharp CreateTweener()
 		{
 			var tweener = new TweenerSharp(this);

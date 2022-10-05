@@ -41,23 +41,21 @@ namespace Util.Interpolation
 		public abstract void Step(float delta);
 
 		#region Dispose
-
-		~TweenerSharpBase()
+		
+		~TweenerSharpBase() => DisposeInternal();
+		public void Dispose()
 		{
-			if (_disposed)
-				return;
-			Disposing();
-			_disposed = true;
+			DisposeInternal();
+			GC.SuppressFinalize(this);
 		}
 
 		private bool _disposed;
-		public void Dispose()
+		private void DisposeInternal()
 		{
 			if (_disposed)
 				return;
 			Disposing();
 			_disposed = true;
-			GC.SuppressFinalize(this);
 		}
 
 		protected abstract void Disposing();
