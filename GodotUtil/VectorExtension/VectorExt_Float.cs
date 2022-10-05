@@ -13,18 +13,28 @@ namespace Godot
 
 	public static partial class VectorExt
 	{
-		// REF
+		// ----------------------- REF -----------------------
 
 		#region Adding
 
-		[MethodImpl(INLINE)] public static vector2_t AddRef(this ref vector2_t item, number_t value) => new(item.x + value, item.y + value);
-		[MethodImpl(INLINE)] public static vector2_t AddXRef(this ref vector2_t item, number_t x) => new(item.x + x, item.y);
-		[MethodImpl(INLINE)] public static vector2_t AddYRef(this ref vector2_t item, number_t y) => new(item.x, item.y + y);
+		[MethodImpl(INLINE)]
+		public static void AddRef(this ref vector2_t item, number_t value)
+		{
+			item.x += value;
+			item.y += value;
+		}
+		[MethodImpl(INLINE)] public static void AddXRef(this ref vector2_t item, number_t x) => item.x += x;
+		[MethodImpl(INLINE)] public static void AddYRef(this ref vector2_t item, number_t y) => item.y += y;
 
-		[MethodImpl(INLINE)] public static vector3_t AddRef(this ref vector3_t item, number_t value) => new(item.x + value, item.y + value, item.z + value);
-		[MethodImpl(INLINE)] public static vector3_t AddXRef(this ref vector3_t item, number_t x) => new(item.x + x, item.y, item.z);
-		[MethodImpl(INLINE)] public static vector3_t AddYRef(this ref vector3_t item, number_t y) => new(item.x, item.y + y, item.z);
-		[MethodImpl(INLINE)] public static vector3_t AddZRef(this ref vector3_t item, number_t z) => new(item.x, item.y, item.z + z);
+		[MethodImpl(INLINE)] public static void AddRef(this ref vector3_t item, number_t value)
+		{
+			item.x += value;
+			item.y += value;
+			item.z += value;
+		}
+		[MethodImpl(INLINE)] public static void AddXRef(this ref vector3_t item, number_t x) => item.x += x;
+		[MethodImpl(INLINE)] public static void AddYRef(this ref vector3_t item, number_t y) => item.y += y;
+		[MethodImpl(INLINE)] public static void AddZRef(this ref vector3_t item, number_t z) => item.y += z;
 
 		#endregion
 
@@ -46,7 +56,7 @@ namespace Godot
 
 		#endregion
 
-		// NON REF
+		// ----------------------- NON REF -----------------------
 
 		#region Setting
 
