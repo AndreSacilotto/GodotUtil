@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public abstract partial class TweenSharpBase : IRequireGameLoop, IDisposable
+	public abstract partial class TweenSharpBase : IRequireGameLoop
 	{
 		public event Action OnTweenFinish;
 		public Interpolation.EaseFunc DefaultEaseFunc { get; set; }
@@ -34,37 +34,6 @@ namespace Util.Interpolation
 		public abstract void Reset();
 		public abstract void Clear();
 		public abstract void TweenerEnd(TweenerSharpBase tweener);
-
-
-		#region Dispose
-
-		~TweenSharpBase() => DisposeInternal();
-		public void Dispose()
-		{
-			DisposeInternal();
-			GC.SuppressFinalize(this);
-		}
-
-		private bool _disposed;
-		private void DisposeInternal()
-		{
-			if (_disposed)
-				return;
-			Disposing();
-			_disposed = true;
-		}
-
-		protected virtual void Disposing()
-		{
-			OnTweenFinish = null;
-			if (current != null)
-			{
-				current.Dispose();
-				current = null;
-			}
-		}
-
-		#endregion
 
 	}
 }

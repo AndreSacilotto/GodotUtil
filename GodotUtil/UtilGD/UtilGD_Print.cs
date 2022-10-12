@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Godot
 {
@@ -12,6 +15,7 @@ namespace Godot
             return isnull;
         }
 
+        [Conditional("DEBUG")]
         public static void PrintCollection<TK, TV>(IEnumerable<KeyValuePair<TK, TV>> ie, string separator = " ")
         {
             string str = "";
@@ -20,6 +24,7 @@ namespace Godot
             GD.Print(str);
         }
 
+        [Conditional("DEBUG")]
         public static void PrintCollection<T>(IEnumerable<T> ie, string separator = " ")
         {
             string str = "";
@@ -29,12 +34,24 @@ namespace Godot
             GD.Print(str);
         }
 
+        [Conditional("DEBUG")]
         public static void PrintTree(SceneTree tree, bool pretty = false) 
         {
             if (pretty)
                 tree.Root.PrintTree();
             else
                 tree.Root.PrintTreePretty();
+        }
+
+        [Conditional("DEBUG")]
+        public static void Assert(bool assertion, string message, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
+        {
+            if (assertion)
+                return;
+            GD.PrintErr($"Assertion failed: {message} at {file}:{line}");
+            var stackTrace = new StackTrace();
+            GD.PrintErr(stackTrace.ToString());
+            throw new ApplicationException($"Assertion failed: {message}");
         }
 
     }

@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public abstract class TweenerSharpBase : IRequireGameLoop, IDisposable
+	public abstract class TweenerSharpBase : IRequireGameLoop
 	{
 		protected readonly TweenSharpBase owner;
 
@@ -39,28 +39,6 @@ namespace Util.Interpolation
 		}
 
 		public abstract void Step(float delta);
-
-		#region Dispose
-		
-		~TweenerSharpBase() => DisposeInternal();
-		public void Dispose()
-		{
-			DisposeInternal();
-			GC.SuppressFinalize(this);
-		}
-
-		private bool _disposed;
-		private void DisposeInternal()
-		{
-			if (_disposed)
-				return;
-			Disposing();
-			_disposed = true;
-		}
-
-		protected abstract void Disposing();
-
-		#endregion
 
 	}
 

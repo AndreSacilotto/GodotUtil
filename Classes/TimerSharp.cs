@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Util
 {
-    public class TimerSharp : IDisposable, IRequireGameLoop
+    public class TimerSharp : IRequireGameLoop
     {
         #region Event
 
@@ -53,32 +53,6 @@ namespace Util
             TimeoutTime = delay;
             Paused = false;
         }
-
-        #region Dispose
-
-        ~TimerSharp() => DisposeInternal();
-        public void Dispose()
-        {
-            DisposeInternal();
-            GC.SuppressFinalize(this);
-        }
-
-        private bool _disposed;
-        private void DisposeInternal()
-        {
-            if (_disposed)
-                return;
-            Disposing();
-            _disposed = true;
-        }
-
-        protected virtual void Disposing()
-        {
-            onTimeout = null;
-        }
-
-        #endregion
-
 
     }
 }

@@ -8,8 +8,6 @@ namespace Util.Interpolation
 		public TweenerSharp CreateTweener()
 		{
 			var tweener = new TweenerSharp(this);
-			if (current != null)
-				current.Dispose();
 			current = tweener;
 			return tweener;
 		}
@@ -23,11 +21,7 @@ namespace Util.Interpolation
 		public override void Clear()
 		{
 			totalDuration = 0f;
-			if (current != null)
-			{
-				current.Dispose();
-				current = null;
-			}
+			current = null;
 			Paused = true;
 		}
 

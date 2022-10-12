@@ -40,14 +40,10 @@ namespace Util.Interpolation
 		}
 
 		/// <summary>Remove the an tweener and reset the animation if exist</summary>
-		public void RemoveTweener(TweenerSharpBase tweener, bool dispose = false)
+		public void RemoveTweener(TweenerSharpBase tweener)
 		{
 			if (tweeners.Remove(tweener))
-			{
 				Reset();
-				if (dispose)
-					tweener.Dispose();
-			}
 		}
 
 		public override void Reset()
@@ -69,7 +65,6 @@ namespace Util.Interpolation
 		{
 			totalDuration = 0f;
 			currentIndex = -1;
-			DisposeTweeners();
 			Paused = true;
 		}
 
@@ -91,27 +86,6 @@ namespace Util.Interpolation
 			}
 			OnTweenerEnd?.Invoke(tweener);
 		}
-
-		#region Dispose
-
-		private void DisposeTweeners()
-		{
-			foreach (var item in tweeners)
-				item.Dispose();
-			tweeners.Clear();
-			current = null;
-		}
-
-		protected override void Disposing()
-		{
-			OnTweenerEnd = null;
-			DisposeTweeners();
-			tweeners = null;
-			base.Disposing();
-		}
-
-		#endregion
-
 
 	}
 }

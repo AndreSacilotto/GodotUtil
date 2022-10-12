@@ -13,9 +13,6 @@ namespace Util.Interpolation
 			Accumulator += delta;
 			TryEnd();
 		}
-
-		protected override void Disposing() { }
-
 	}
 
 }

@@ -1,16 +1,43 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Util
 {
-    public class Requester : IDisposable
+    public class Requester
+    {
+        private bool requested;
+        private int requestCount;
+
+        public int Count => requestCount;
+        public bool InRequest => requested;
+
+        public void AddRequest()
+        {
+            requestCount++;
+            requested = true;
+        }
+
+        public void RemoveRequest()
+        {
+            if (--requestCount <= 0)
+            { 
+                requestCount = 0;
+                requested = false;
+            }
+        }
+
+    }
+
+    public class RequesterEvents
     {
         public event Action OnFirstRequest;
         public event Action OnNoRequest;
 
+        private bool requested;
         private int requestCount;
 
-        public Requester() { }
-        public Requester(Action first, Action no)
+        public RequesterEvents() { }
+        public RequesterEvents(Action first, Action no)
         {
             if(first != null)
                 OnFirstRequest = first;
@@ -19,51 +46,28 @@ namespace Util
         }
 
         public int Count => requestCount;
-        public bool InRequest => requestCount > 0;
+        public bool InRequest => requested;
 
         public void AddRequest()
         {
             requestCount++;
+            requested = true;
             if (OnFirstRequest != null && requestCount == 1)
                 OnFirstRequest();
         }
 
         public void RemoveRequest()
         {
-            if (requestCount == 0)
-                return;
-
             requestCount--;
             if (OnNoRequest != null && requestCount == 0)
                 OnNoRequest();
+            if (requestCount <= 0)
+            { 
+                requestCount = 0;
+                requested = false;
+            }
         }
-
-		#region Dispose
-
-		~Requester() => DisposeInternal();
-
-        public void Dispose()
-        {
-            DisposeInternal();
-            GC.SuppressFinalize(this);
-        }
-
-        private bool _disposed;
-        private void DisposeInternal()
-        {
-            if (_disposed)
-                return;
-            Disposing();
-            _disposed = true;
-        }
-
-		private void Disposing()
-		{
-            OnFirstRequest = null;
-            OnNoRequest = null;
-		}
-
-		#endregion
 
 	}
+
 }

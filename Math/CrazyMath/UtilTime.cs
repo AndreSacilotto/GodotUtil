@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Util
+namespace Util.MathC
 {
     public static class UtilTime
     {

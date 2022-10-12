@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Util.ObjectPool
 {
-    public class ObjectPoolEvents<T> : IObjectPool<T>, IDisposable where T : class
+    public class ObjectPoolEvents<T> : IObjectPool<T> where T : class
     {
         private readonly Queue<T> pool = new();
 
@@ -55,35 +55,6 @@ namespace Util.ObjectPool
 
         public IEnumerator<T> GetEnumerator() => pool.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => pool.GetEnumerator();
-
-        #region Dispose
-
-        ~ObjectPoolEvents() => DisposeInternal();
-
-		public void Dispose()
-        {
-            DisposeInternal();
-            GC.SuppressFinalize(this);
-        }
-
-        private bool _disposed;
-        private void DisposeInternal()
-        {
-            if (_disposed)
-                return;
-            Disposing();
-            _disposed = true;
-        }
-
-        protected virtual void Disposing()
-        {
-            CreateFunc = null;
-            OnTakeFromPool = null;
-            OnReturnToPool = null;
-            OnDestroyFromPool = null;
-        }
-
-        #endregion
 
     }
 }

@@ -68,12 +68,6 @@ namespace Util.Interpolation
 
 		#endregion
 
-		protected override void Disposing()
-		{
-			Interpolation = null;
-			EasingFunction = null;
-		}
-
 	}
 
 }

@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 namespace Util.Test
 {
-
     public class Benchmark
     {
         public delegate void BenchmarkFunc(int i);
