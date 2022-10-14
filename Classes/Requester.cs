@@ -28,7 +28,7 @@ namespace Util
 
     }
 
-    public class RequesterEvents
+    public class RequesterEvents : IClose
     {
         public event Action OnFirstRequest;
         public event Action OnNoRequest;
@@ -66,6 +66,12 @@ namespace Util
                 requestCount = 0;
                 requested = false;
             }
+        }
+
+        public void Close() 
+        {
+            OnFirstRequest = null;
+            OnNoRequest = null;
         }
 
 	}

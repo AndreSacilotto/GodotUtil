@@ -63,9 +63,13 @@ namespace Util.Interpolation
 
 		public override void Clear()
 		{
+			Paused = true;
 			totalDuration = 0f;
 			currentIndex = -1;
-			Paused = true;
+			current = null;
+			foreach (var item in tweeners)
+				item.Close();
+			tweeners.Clear();
 		}
 
 		public override float GetCompletationTime() => tweeners.Sum(x => x.Duration);
@@ -85,6 +89,12 @@ namespace Util.Interpolation
 				current.Reset();
 			}
 			OnTweenerEnd?.Invoke(tweener);
+		}
+
+		public override void Close()
+		{
+			Clear();
+			base.Close();
 		}
 
 	}

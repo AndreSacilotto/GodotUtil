@@ -44,7 +44,7 @@ namespace Godot
         }
 
         [Conditional("DEBUG")]
-        public static void Assert(bool assertion, string message, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
+        public static void PrintAssert(bool assertion, string message, [CallerFilePath] string file = "", [CallerLineNumber] int line = 0)
         {
             if (assertion)
                 return;
@@ -52,6 +52,12 @@ namespace Godot
             var stackTrace = new StackTrace();
             GD.PrintErr(stackTrace.ToString());
             throw new ApplicationException($"Assertion failed: {message}");
+        }
+
+        [Conditional("DEBUG")]
+        public static void PrintTrace(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
+        {
+            GD.Print($"Called from {memberName}\tMessage: {message}\tFile: {filePath}\tLine: {lineNumber}");
         }
 
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Util
 {
-    public class TimerSharp : IRequireGameLoop
+    public class TimerSharp : IRequireGameLoop, IClose
     {
         #region Event
 
@@ -29,8 +29,17 @@ namespace Util
         private int refCount;
 
         private float accumulator;
-        public float TimeoutTime { get; set; } = 1f;
+
+		public TimerSharp(bool autostart = false, bool repeat = false)
+		{
+			Repeat = repeat;
+            if (autostart)
+                Start();
+		}
+
+		public float Delay { get; set; } = 1f;
         public bool Paused { get; set; } = true;
+        public bool Repeat { get; set; }
 
         public float Time => accumulator;
 
@@ -39,19 +48,32 @@ namespace Util
             if (Paused)
                 return;
             accumulator += delta;
-            if (accumulator > TimeoutTime)
+            if (accumulator > Delay)
             {
                 onTimeout?.Invoke();
-                Reset();
+                if(Repeat)
+                    Reset();
+                Paused = !Repeat;
             }
         }
 
         public void Reset() => accumulator = 0f;
 
+
+        public void Start()
+        {
+            Reset();
+            Paused = false;
+        }
         public void Start(float delay) {
             Reset();
-            TimeoutTime = delay;
+            Delay = delay;
             Paused = false;
+        }
+
+        public void Close() 
+        {
+            onTimeout = null;
         }
 
     }

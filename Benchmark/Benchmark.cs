@@ -32,7 +32,7 @@ namespace Util.Test
 
         private void Initialize()
         {
-            CollectGarbage();
+            UtilGC.CollectEverthing();
             for (int i = 0; i < Funtions.Count; i++)
                 Funtions[i].Funtion.Invoke(i);
         }
@@ -87,20 +87,13 @@ namespace Util.Test
 
         public static TimeSpan RunSingle(Action act, int iterations = 1)
         {
-            CollectGarbage();
+            UtilGC.CollectEverthing();
             act.Invoke();
             var sw = Stopwatch.StartNew();
             for (int i = 0; i < iterations; i++)
                 act.Invoke();
             sw.Stop();
             return sw.Elapsed;
-        }
-
-        private static void CollectGarbage()
-        {
-            GC.Collect(GC.MaxGeneration);
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
         }
 
         #endregion

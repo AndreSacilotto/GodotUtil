@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public sealed class TweenerDelaySharp : TweenerSharpBase
+	public class TweenerDelaySharp : TweenerSharpBase
 	{
 		public TweenerDelaySharp(TweenSharpBase owner) : base(owner) { }
 
@@ -13,6 +13,8 @@ namespace Util.Interpolation
 			Accumulator += delta;
 			TryEnd();
 		}
+
+		public override void Close() { }
 	}
 
 }

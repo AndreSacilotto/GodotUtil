@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public sealed class TweenerSharp : TweenerSharpBase
+	public class TweenerSharp : TweenerSharpBase
 	{
 		public delegate void InterpFunc(float interpolation);
 
@@ -22,6 +22,12 @@ namespace Util.Interpolation
 			Accumulator += delta;
 			Interpolation(EasingFunction(Accumulator, from, change, Duration));
 			TryEnd();
+		}
+
+		public override void Close()
+		{
+			Interpolation = null;
+			EasingFunction = null;
 		}
 
 		#region Setup

@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public abstract class TweenerSharpBase : IRequireGameLoop
+	public abstract class TweenerSharpBase : IRequireGameLoop, IClose
 	{
 		protected readonly TweenSharpBase owner;
 
@@ -23,7 +23,7 @@ namespace Util.Interpolation
 		public bool Complete => complete;
 
 		/// <summary>Reset the tweener to be able to play again</summary>
-		public virtual void Reset()
+		public void Reset()
 		{
 			Accumulator = 0f;
 			complete = false;
@@ -39,6 +39,8 @@ namespace Util.Interpolation
 		}
 
 		public abstract void Step(float delta);
+
+		public abstract void Close();
 
 	}
 
