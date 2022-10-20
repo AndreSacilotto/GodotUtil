@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public abstract partial class TweenSharpBase : IRequireGameLoop, IClose
+	public abstract partial class TweenSharpBase : IRequireGameLoop, IClosable
 	{
 		public event Action OnTweenFinish;
 		public Interpolation.EaseFunc DefaultEaseFunc { get; set; }

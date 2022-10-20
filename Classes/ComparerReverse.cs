@@ -5,7 +5,7 @@ namespace Util
 {
     public class ComparerReverse<T> : IComparer<T> where T : IComparable<T>
     {
-        public static ComparerReverse<T> Default { get; } = new();
+        public static IComparer<T> Default { get; } = new ComparerReverse<T>();
 
         public int Compare(T x, T y) => y.CompareTo(x);
     }

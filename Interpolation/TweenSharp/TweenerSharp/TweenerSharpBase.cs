@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public abstract class TweenerSharpBase : IRequireGameLoop, IClose
+	public abstract class TweenerSharpBase : IRequireGameLoop, IClosable
 	{
 		protected readonly TweenSharpBase owner;
 

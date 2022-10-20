@@ -3,76 +3,106 @@ using System.Collections.Generic;
 
 namespace Util
 {
-    public class Requester
-    {
-        private bool requested;
-        private int requestCount;
+	public class Requester
+	{
+		private bool requested;
+		private int requestCount;
 
-        public int Count => requestCount;
-        public bool InRequest => requested;
+		public int Count => requestCount;
+		public bool InRequest => requested;
 
-        public void AddRequest()
-        {
-            requestCount++;
-            requested = true;
-        }
+		public void AddRequest()
+		{
+			requestCount++;
+			requested = true;
+		}
 
-        public void RemoveRequest()
-        {
-            if (--requestCount <= 0)
-            { 
-                requestCount = 0;
-                requested = false;
-            }
-        }
+		public void RemoveRequest()
+		{
+			if (--requestCount <= 0)
+			{
+				requestCount = 0;
+				requested = false;
+			}
+		}
 
-    }
+	}
 
-    public class RequesterEvents : IClose
-    {
-        public event Action OnFirstRequest;
-        public event Action OnNoRequest;
+	public class RequesterEvents : IClosable
+	{
+		public event Action OnFirstRequest;
+		public event Action OnNoRequest;
 
-        private bool requested;
-        private int requestCount;
+		private bool requested = false;
+		private int requestCount = 0;
 
-        public RequesterEvents() { }
-        public RequesterEvents(Action first, Action no)
-        {
-            if(first != null)
-                OnFirstRequest = first;
-            if(no != null)
-                OnNoRequest = no;
-        }
+		public int Count => requestCount;
+		public bool InRequest => requested;
 
-        public int Count => requestCount;
-        public bool InRequest => requested;
+		public void AddRequest()
+		{
+			requestCount++;
+			requested = true;
+			if (OnFirstRequest != null && requestCount == 1)
+				OnFirstRequest();
+		}
 
-        public void AddRequest()
-        {
-            requestCount++;
-            requested = true;
-            if (OnFirstRequest != null && requestCount == 1)
-                OnFirstRequest();
-        }
+		public void RemoveRequest()
+		{
+			if (requestCount > 0)
+			{
+				if (OnNoRequest != null && requestCount == 1)
+					OnNoRequest();
+				requestCount--;
+			}
+			else
+				requestCount = 0;
+		}
 
-        public void RemoveRequest()
-        {
-            requestCount--;
-            if (OnNoRequest != null && requestCount == 0)
-                OnNoRequest();
-            if (requestCount <= 0)
-            { 
-                requestCount = 0;
-                requested = false;
-            }
-        }
+		public void Close()
+		{
+			OnFirstRequest = null;
+			OnNoRequest = null;
+		}
 
-        public void Close() 
-        {
-            OnFirstRequest = null;
-            OnNoRequest = null;
-        }
+	}
+
+	public class RequesterEventsUnsafe : IClosable
+	{
+		public event Action OnFirstRequest;
+		public event Action OnNoRequest;
+
+		private bool requested = false;
+		private int requestCount = 0;
+
+		public int Count => requestCount;
+		public bool InRequest => requested;
+
+		public void AddRequest()
+		{
+			requestCount++;
+			requested = true;
+			if (requestCount == 1)
+				OnFirstRequest();
+		}
+
+		public void RemoveRequest()
+		{
+			if (requestCount > 0)
+			{
+				if (requestCount == 1)
+					OnNoRequest();
+				requestCount--;
+			}
+			else
+				requestCount = 0;
+		}
+
+		public void Close()
+		{
+			OnFirstRequest = null;
+			OnNoRequest = null;
+		}
 
 	}
 

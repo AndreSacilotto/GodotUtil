@@ -14,7 +14,7 @@ namespace Util.Interpolation
             var o = 1f - t;
 
             return o * o * start +
-                    o * t * 2 * pivot +
+                    o * t * 2f * pivot +
                     t * t * end;
         }
         public static Vector3 QuadraticBezier(Vector3 start, Vector3 pivot, Vector3 end, float t)
@@ -22,7 +22,7 @@ namespace Util.Interpolation
             var o = 1f - t;
 
             return o * o * start +
-                    o * t * 2 * pivot +
+                    o * t * 2f * pivot +
                     t * t * end;
         }
 
@@ -33,9 +33,9 @@ namespace Util.Interpolation
             var tt = t * t;
 
             return oo * o * start +
-                    oo * t * 3 * pivot0 +
+                    oo * t * 3f * pivot0 +
                     tt * t * pivot1 +
-                    tt * o * 3 * end;
+                    tt * o * 3f * end;
         }
         public static Vector3 CubicBezier(Vector3 start, Vector3 pivot0, Vector3 pivot1, Vector3 end, float t)
         {
@@ -44,9 +44,9 @@ namespace Util.Interpolation
             var tt = t * t;
 
             return oo * o * start +
-                    oo * t * 3 * pivot0 +
+                    oo * t * 3f * pivot0 +
                     tt * t * pivot1 +
-                    tt * o * 3 * end;
+                    tt * o * 3f * end;
         }
 
     }

@@ -84,10 +84,26 @@ namespace Util
             return value;
         }
 
-        #endregion
+		public static float Confine(float value, float min, float max, out float excess)
+        {
+            if (value < min)
+            {
+                excess = -Math.Abs(value - min);
+                return min;
+            }
+            if (value > max)
+            {
+                excess = Math.Abs(value - max);
+                return max;
+            }
+            excess = 0;
+            return value;
+        }
 
+		#endregion
+		
         #region Digit
-        
+
         public static int GetDigit(int value, int power, int radix) => (int)(value / MathF.Pow(radix, power)) % radix;
 
         [MethodImpl(INLINE)] public static float Fract(float x) => x - MathF.Floor(x);

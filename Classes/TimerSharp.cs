@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Util
 {
-    public class TimerSharp : IRequireGameLoop, IClose
+    public class TimerSharp : IRequireGameLoop, IClosable
     {
         #region Event
 

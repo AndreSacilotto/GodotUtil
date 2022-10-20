@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-/// <summary>Used to dispose things that do not create memory leaks, but memory holding</summary>
-public interface IClose
+/// <summary>Support closing/disposing things that cause memory holding, not to be confused with memory leaks</summary>
+public interface IClosable
 {
 	/// <summary>Close and/or free memory holders</summary>
 	void Close();

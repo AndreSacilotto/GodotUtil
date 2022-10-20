@@ -77,6 +77,34 @@ namespace Util.Vector
 
         #endregion
 
+        public static Vector2[] GetTrajectoryArc(int count, float radians, Vector2 dir)
+        {
+            if (count < 0)
+                return Array.Empty<Vector2>();
+
+            var index = 0;
+            var vectors = new Vector2[count];
+            if (count % 2 != 0)
+            {
+                vectors[index++] = dir;
+                count--;
+            }
+
+            count /= 2;
+            for (int i = 0; i < count; i++)
+            {
+                var angle = (i + 1) * radians;
+                var c = MathF.Cos(angle);
+                var s = MathF.Sin(angle);
+
+                vectors[index++] = RotatedNoTrigCW(dir, c, s);
+                vectors[index++] = RotatedNoTrigCW(dir, c, -s);
+            }
+
+            return vectors;
+        }
+
+
     }
 
 }

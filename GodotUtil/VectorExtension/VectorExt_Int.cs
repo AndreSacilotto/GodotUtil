@@ -76,7 +76,6 @@ namespace Godot
 
 		#endregion
 
-
 		#region Adding
 
 		[MethodImpl(INLINE)] public static vector2_t Add(this vector2_t item, number_t value) => new(item.x + value, item.y + value);
@@ -92,8 +91,8 @@ namespace Godot
 
 		#region New
 
-		[MethodImpl(INLINE)] public static vector2_t Copy(vector2_t vec) => new(vec.x, vec.y);
-		[MethodImpl(INLINE)] public static vector3_t Copy(vector3_t vec) => new(vec.x, vec.y, vec.y);
+		[MethodImpl(INLINE)] public static vector2_t Copy(this vector2_t vec) => new(vec.x, vec.y);
+		[MethodImpl(INLINE)] public static vector3_t Copy(this vector3_t vec) => new(vec.x, vec.y, vec.z);
 
 		[MethodImpl(INLINE)] public static vector2_t CreateVec2(number_t value) => new(value, value);
 
