@@ -14,7 +14,7 @@ namespace Util
 		public static MathFuncPlural Subtract { get; } = CreateExpression<MathFuncPlural>(Expression.Subtract);
 		public static MathFuncPlural Multiply { get; } = CreateExpression<MathFuncPlural>(Expression.Multiply);
 		public static MathFuncPlural Divide { get; } = CreateExpression<MathFuncPlural>(Expression.Divide);
-		
+
 		public static MathFuncSingle Negate { get; } = CreateExpression(Expression.Negate);
 		public static MathFuncSingle Increment { get; } = CreateExpression(Expression.Increment);
 		public static MathFuncSingle Decrement { get; } = CreateExpression(Expression.Decrement);
@@ -41,4 +41,17 @@ namespace Util
 			return Expression.Lambda<MathFuncSingle>(body, paramA).Compile();
 		}
 	}
+
+	public static class Calculator<T, K> where T : unmanaged
+	{
+		public static Func<T, K> Convert { get; } = CreateExpression(Expression.Convert);
+
+		private static Func<T, K> CreateExpression(Func<Expression, Type, Expression> exprFunc)
+		{
+			var paramA = Expression.Parameter(typeof(T));
+			var body = exprFunc(paramA, typeof(K));
+			return Expression.Lambda<Func<T, K>>(body, paramA).Compile();
+		}
+	}
+
 }

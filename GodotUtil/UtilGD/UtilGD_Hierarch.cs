@@ -8,6 +8,7 @@ namespace Godot
 {
     public static partial class UtilGD
     {
+        [MethodImpl(UtilShared.INLINE)] public static SceneTree GetSceneTree() => (SceneTree)Engine.GetMainLoop();
 
         #region Add Generic Cast
 

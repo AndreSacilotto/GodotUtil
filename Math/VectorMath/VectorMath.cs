@@ -17,11 +17,10 @@ namespace Util.Vector
         public static Vector2 DegreeToVector(float degree) => RadianToVector2(UtilMath.TAU_01 * degree);
 
         [MethodImpl(UtilShared.INLINE)]
-        public static Vector3 DegreeToVector(float degree, Vector3 axis) => new Quarternion(axis, degree).GetEuler();
+        public static Vector3 AngleToVector(float angle, Vector3 axis) => new Quarternion(axis, angle).GetEuler();
 
         public static float TauAtan2(Vector2 vector) => TauAtan2(vector.y, vector.x);
         public static float TauAtan2(float y, float x) => MathF.Atan2(y, x) + UtilMath.TAU_180;
-
 
         #region Rotate
         // CW = Clockwise | CC = CounterClockwise

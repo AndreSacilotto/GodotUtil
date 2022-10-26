@@ -18,8 +18,8 @@ namespace Util.GDNode
         public static T[,] TilemapToArray<T>(this TileMap tilemap)
         {
             var rect = tilemap.GetUsedRect();
-            int x = Mathf.FloorToInt(rect.Size.x);
-            int y = Mathf.FloorToInt(rect.Size.y);
+            int x = UtilMath.FloorToInt(rect.Size.x);
+            int y = UtilMath.FloorToInt(rect.Size.y);
             return new T[y, x];
         }
 

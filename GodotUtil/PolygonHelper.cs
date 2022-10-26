@@ -59,7 +59,7 @@ namespace Util
         /// <param name="radius">Radius/Size - Negative value flip the polygon</param>
         public static Vector2[] TriangleEquilateral(float radius)
         {
-            var t = Mathf.Tan(UtilMath.TAU_30) * radius;
+            var t = MathF.Tan(UtilMath.TAU_30) * radius;
             return new Vector2[3] {
                 new Vector2(0f, t * -2f),
                 new Vector2(radius, t),
@@ -185,9 +185,9 @@ namespace Util
 
             var points = new Vector2[density];
 
-            var rad = Mathf.Tau / density;
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var rad = MathF.Tau / density;
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var v = Vector2.Left;
             for (int i = 0; i < density; i++)
@@ -210,9 +210,9 @@ namespace Util
 
             var points = new Vector2[density];
 
-            var rad = Mathf.Tau / density;
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var rad = MathF.Tau / density;
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var v = Vector2.Left;
             for (int i = 0; i < density; i++)
@@ -234,8 +234,8 @@ namespace Util
             var points = new Vector2[density];
 
             var rad = UtilMath.TAU_180 / (density - 1);
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var v = Vector2.Left;
             for (int i = 0; i < density; i++)
@@ -257,9 +257,9 @@ namespace Util
 
             var points = new Vector2[density * 2];
 
-            var rad = Mathf.Tau / (density - 1);
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var rad = MathF.Tau / (density - 1);
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var v = Vector2.Left;
             for (int i = 0, j = density; i < density; i++, j++)
@@ -290,8 +290,8 @@ namespace Util
             var points = new Vector2[1 + density];
 
             var rad = arc / (density - 1);
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var v = Vector2.Up.RotatedCC(arc * 0.5f);
             for (int i = 0; i < density; i++)
@@ -316,8 +316,8 @@ namespace Util
             var points = new Vector2[2 + density];
 
             var rad = UtilMath.TAU_180 / (density - 1);
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var h1 = height * curvature;
             var h2 = height * (1f - curvature);
@@ -345,8 +345,8 @@ namespace Util
             var points = new Vector2[density * 2];
 
             var rad = UtilMath.TAU_180 / (density - 1);
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var h1 = height * curvature;
             var h2 = height * (1f - curvature);
@@ -378,8 +378,8 @@ namespace Util
             var points = new Vector2[density * 2];
 
             var rad = UtilMath.TAU_180 / (density - 1);
-            var s = Mathf.Sin(rad);
-            var c = Mathf.Cos(rad);
+            var s = MathF.Sin(rad);
+            var c = MathF.Cos(rad);
 
             var hU1 = height * upperCur;
             var hU2 = height * (1f - upperCur);

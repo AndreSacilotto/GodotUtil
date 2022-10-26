@@ -32,7 +32,7 @@ namespace Godot
 
         public static Vector2i PositionToDiagonal(Vector2 position, Vector2 center = default)
         {
-            var rad = Mathf.Atan2(position.y - center.y, position.x - center.x);
+            var rad = MathF.Atan2(position.y - center.y, position.x - center.x);
             if (rad < 0)
             {
                 if (rad >= -UtilMath.TAU_90)
@@ -48,7 +48,7 @@ namespace Godot
         }
         public static Vector2i PositionToStraight(Vector2 position, Vector2 center = default)
         {
-            var rad = Mathf.Pi - Mathf.Atan2(center.y - position.y, center.x - position.x);
+            var rad = MathF.PI - MathF.Atan2(center.y - position.y, center.x - position.x);
             if (rad <= UtilMath.TAU_45)
                 return Right;
             else if (rad <= UtilMath.TAU_135)

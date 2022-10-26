@@ -9,12 +9,12 @@ namespace Util.Collections
         protected T[] array;
 
         public FakeArray2D(int size) : this(size, size) { }
-        public FakeArray2D(int rows, int collumns)
+        public FakeArray2D(int rows, int columns)
         {
-            if (rows <= 0 || collumns <= 0)
+            if (rows <= 0 || columns <= 0)
                 throw new Exception("Array Size is less than 0");
 
-            SetSize(rows, collumns);
+            SetSize(rows, columns);
         }
 
         /// <summary>Also means Width or X</summary>
@@ -22,30 +22,30 @@ namespace Util.Collections
         private int rows;
 
         /// <summary>Also means Height or Y</summary>
-        public int Collumns => collumns;
-        private int collumns;
+        public int Columns => columns;
+        private int columns;
 
         public int Count => array.Length;
         public object SyncRoot => array.SyncRoot;
         public bool IsSynchronized => array.IsSynchronized;
 
-        protected void SetSize(int rows, int collumns)
+        protected void SetSize(int rows, int columns)
         {
             this.rows = rows;
-            this.collumns = collumns;
-            array = new T[collumns * rows];
+            this.columns = columns;
+            array = new T[columns * rows];
         }
 
         public void Resize(int newSize) => Resize(newSize, newSize);
-        public void Resize(int newRows, int newCollumns)
+        public void Resize(int newRows, int newColumns)
         {
-            if (newCollumns < 0 || newRows < 0)
+            if (newColumns < 0 || newRows < 0)
                 return;
 
             var oldArray = array;
             int rMin = Math.Min(rows, newRows);
-            int cMin = Math.Min(collumns, newCollumns);
-            SetSize(newRows, newCollumns);
+            int cMin = Math.Min(columns, newColumns);
+            SetSize(newRows, newColumns);
 
             for (int r = 0; r < rMin; r++)
             {
@@ -66,7 +66,7 @@ namespace Util.Collections
             for (int r = 0; r < rows; r++)
             {
                 int rr = r * rows;
-                for (int c = 0; c < collumns; c++)
+                for (int c = 0; c < columns; c++)
                     yield return this[rr + c];
             }
         }
@@ -76,10 +76,10 @@ namespace Util.Collections
             get => array[index];
             set => array[index] = value;
         }
-        public T this[int row, int collumn]
+        public T this[int row, int column]
         {
-            get => array[row * rows + collumn];
-            set => array[row * rows + collumn] = value;
+            get => array[row * rows + column];
+            set => array[row * rows + column] = value;
         }
 
         public object Clone() => array.Clone();

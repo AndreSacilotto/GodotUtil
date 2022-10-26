@@ -10,7 +10,7 @@ namespace Godot
 
         #region Collections Array
 
-        public static object[] GDArray2Array(Collections.Array gdArray)
+        public static object[] GDArrayToArray(Collections.Array gdArray)
         {
             var len = gdArray.Count;
             var arr = new object[len];
@@ -18,7 +18,7 @@ namespace Godot
                 arr[i] = gdArray[i];
             return arr;
         }
-        public static T[] GDArray2Array<T>(Collections.Array gdArray)
+        public static T[] GDArrayToArray<T>(Collections.Array gdArray)
         {
             var len = gdArray.Count;
             var arr = new T[len];
@@ -26,7 +26,7 @@ namespace Godot
                 arr[i] = (T)gdArray[i];
             return arr;
         }
-        public static T[] GDArray2Array<T>(Collections.Array<T> gdArray)
+        public static T[] GDArrayToArray<T>(Collections.Array<T> gdArray)
         {
             var len = gdArray.Count;
             var arr = new T[len];
@@ -35,7 +35,11 @@ namespace Godot
             return arr;
         }
 
-        public static List<object> GDArray2List(Collections.Array gdArray)
+        #endregion
+
+        #region Collections List
+
+        public static List<object> GDArrayToList(Collections.Array gdArray)
         {
             var len = gdArray.Count;
             var list = new List<object>(len);
@@ -43,7 +47,7 @@ namespace Godot
                 list[i] = gdArray[i];
             return list;
         }
-        public static List<T> GDArray2List<T>(Collections.Array gdArray)
+        public static List<T> GDArrayToList<T>(Collections.Array gdArray)
         {
             var len = gdArray.Count;
             var list = new List<T>(len);
@@ -51,7 +55,7 @@ namespace Godot
                 list[i] = (T)gdArray[i];
             return list;
         }
-        public static List<T> GDArray2List<T>(Collections.Array<T> gdArray)
+        public static List<T> GDArrayToList<T>(Collections.Array<T> gdArray)
         {
             var len = gdArray.Count;
             var list = new List<T>(len);
@@ -64,7 +68,7 @@ namespace Godot
 
         #region Collections Dictionary
 
-        public static Dictionary<object, object> GDDict2Dict(Collections.Dictionary gdDict)
+        public static Dictionary<object, object> GDDictToDict(Collections.Dictionary gdDict)
         {
             var len = gdDict.Count;
             var dic = new Dictionary<object, object>(len);
@@ -72,7 +76,7 @@ namespace Godot
                 dic.Add(item.Key, item.Value);
             return dic;
         }
-        public static Dictionary<K, V> GDDict2Dict<K, V>(Collections.Dictionary gdDict)
+        public static Dictionary<K, V> GDDictToDict<K, V>(Collections.Dictionary gdDict)
         {
             var len = gdDict.Count;
             var dic = new Dictionary<K, V>(len);
@@ -81,7 +85,7 @@ namespace Godot
             return dic;
         }
 
-        public static Dictionary<K, V> GDDict2Dict<K, V>(Collections.Dictionary<K, V> gdDict)
+        public static Dictionary<K, V> GDDictToDict<K, V>(Collections.Dictionary<K, V> gdDict)
         {
             var len = gdDict.Count;
             var dic = new Dictionary<K, V>(len);
@@ -89,7 +93,6 @@ namespace Godot
                 dic.Add(item.Key, item.Value);
             return dic;
         }
-
 
         #endregion
 

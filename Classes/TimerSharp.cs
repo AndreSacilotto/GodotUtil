@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Util
 {
-    public class TimerSharp : IRequireGameLoop, IClosable
+	public class TimerSharp : IRequireGameLoop, IClosable
     {
         #region Event
 
@@ -42,6 +42,7 @@ namespace Util
         public bool Repeat { get; set; }
 
         public float Time => accumulator;
+        public float Percentage => accumulator / Delay;
 
         public void Step(float delta)
         {
@@ -59,13 +60,13 @@ namespace Util
 
         public void Reset() => accumulator = 0f;
 
-
         public void Start()
         {
             Reset();
             Paused = false;
         }
-        public void Start(float delay) {
+        public void Start(float delay) 
+        {
             Reset();
             Delay = delay;
             Paused = false;

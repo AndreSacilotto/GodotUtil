@@ -354,7 +354,8 @@ namespace Util
         #endregion
 
         #region List / Dict
-        public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort((a, b) => b.CompareTo(a));
+
+        public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort(ComparerReverse<T>.Default);
 
         public static void AddItems<T>(this List<T> list, params T[] items) => list.AddRange(items);
 

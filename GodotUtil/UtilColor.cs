@@ -50,7 +50,7 @@ namespace Util
             float L = 0f;
             for (int i = 0; i < 3; i++)
             {
-                var c = color[i] < 0.03928f ? color[i] / 12.92f : Mathf.Pow((color[i] + 0.055f) / 1.055f, 2.4f);
+                var c = color[i] < 0.03928f ? color[i] / 12.92f : MathF.Pow((color[i] + 0.055f) / 1.055f, 2.4f);
                 L += c * mult[i];
             }
             return L > 0.179f ? darkColor : lightColor;
