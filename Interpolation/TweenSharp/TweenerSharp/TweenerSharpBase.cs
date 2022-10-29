@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Util.Interpolation
+﻿namespace Util.Interpolation
 {
 	public abstract class TweenerSharpBase : IRequireGameLoop, IClosable
 	{
@@ -29,7 +27,7 @@ namespace Util.Interpolation
 			complete = false;
 		}
 
-		protected void TryEnd() 
+		protected void TryEnd()
 		{
 			if (Accumulator > Duration)
 			{

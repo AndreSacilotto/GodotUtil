@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Util.Interpolation
+﻿namespace Util.Interpolation
 {
 	public class TweenerDelaySharp : TweenerSharpBase
 	{

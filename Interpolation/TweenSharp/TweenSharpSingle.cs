@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Util.Interpolation
+﻿namespace Util.Interpolation
 {
 	public class TweenSharpSingle : TweenSharpBase
 	{

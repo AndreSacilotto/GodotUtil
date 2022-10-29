@@ -2,8 +2,8 @@
 
 namespace Util
 {
-    public static class UtilShared
-    {
-        public const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
-    }
+	public static class UtilShared
+	{
+		public const MethodImplOptions INLINE = MethodImplOptions.AggressiveInlining;
+	}
 }

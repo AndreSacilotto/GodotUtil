@@ -3,48 +3,49 @@ using Util;
 
 namespace Godot
 {
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class ExportRangeAttribute : ExportAttribute
-    {
-        public ExportRangeAttribute(float min, float max, float step = 0f, bool allowLess = false, bool allowGreater = false) : 
-            base(PropertyHint.Range, ExportRangeStringFloat(min, max, step, allowLess, allowGreater)) { }
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+	public class ExportRangeAttribute : ExportAttribute
+	{
+		public ExportRangeAttribute(float min, float max, float step = 0f, bool allowLess = false, bool allowGreater = false) :
+			base(PropertyHint.Range, ExportRangeStringFloat(min, max, step, allowLess, allowGreater))
+		{ }
 
-        public ExportRangeAttribute(int min, int max, int step = 0, bool allowLess = false, bool allowGreater = false) :
-            base(PropertyHint.Range, ExportRangeStringInt(min, max, step, allowLess, allowGreater))
-        { }
+		public ExportRangeAttribute(int min, int max, int step = 0, bool allowLess = false, bool allowGreater = false) :
+			base(PropertyHint.Range, ExportRangeStringInt(min, max, step, allowLess, allowGreater))
+		{ }
 
-        public static string ExportRangeStringInt(int min, int max, int step, bool allowLess, bool allowGreater)
-        {
-            var str = $"{min},{max}";
+		public static string ExportRangeStringInt(int min, int max, int step, bool allowLess, bool allowGreater)
+		{
+			var str = $"{min},{max}";
 
-            if (step != 0)
-                str += $",{step}";
+			if (step != 0)
+				str += $",{step}";
 
-            if (allowLess)
-                str += ",or_lesser";
+			if (allowLess)
+				str += ",or_lesser";
 
-            if (allowGreater)
-                str += ",or_greater";
+			if (allowGreater)
+				str += ",or_greater";
 
-            return str;
-        }
+			return str;
+		}
 
-        public static string ExportRangeStringFloat(float min, float max, float step, bool allowLess, bool allowGreater) 
-        {
-            var str = UtilString.InvariantFormat(min) + ',' + UtilString.InvariantFormat(max);
+		public static string ExportRangeStringFloat(float min, float max, float step, bool allowLess, bool allowGreater)
+		{
+			var str = UtilString.InvariantFormat(min) + ',' + UtilString.InvariantFormat(max);
 
-            if (step != 0)
-                str += ',' + UtilString.InvariantFormat(step);
+			if (step != 0)
+				str += ',' + UtilString.InvariantFormat(step);
 
-            if (allowLess)
-                str += ",or_lesser";
+			if (allowLess)
+				str += ",or_lesser";
 
-            if (allowGreater)
-                str += ",or_greater";
-            
-            return str;
-        }
+			if (allowGreater)
+				str += ",or_greater";
+
+			return str;
+		}
 
 
-    }
+	}
 }

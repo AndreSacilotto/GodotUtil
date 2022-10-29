@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-
 using static Util.UtilShared;
-
+using number_t = System.Single;
 using vector2_t = Godot.Vector2;
 using vector3_t = Godot.Vector3;
-
-using number_t = System.Single;
 
 namespace Godot
 {
@@ -26,7 +23,8 @@ namespace Godot
 		[MethodImpl(INLINE)] public static void AddXRef(this ref vector2_t item, number_t x) => item.x += x;
 		[MethodImpl(INLINE)] public static void AddYRef(this ref vector2_t item, number_t y) => item.y += y;
 
-		[MethodImpl(INLINE)] public static void AddRef(this ref vector3_t item, number_t value)
+		[MethodImpl(INLINE)]
+		public static void AddRef(this ref vector3_t item, number_t value)
 		{
 			item.x += value;
 			item.y += value;
