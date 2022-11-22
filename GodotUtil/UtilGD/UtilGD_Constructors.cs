@@ -8,15 +8,19 @@ namespace Godot
 
 		public static void GodotTime(out int hour, out int minute, out int seconds)
 		{
+#if NETFRAMEWORK
 			var timeDict = OS.GetTime();
+#else
+			var timeDict = Time.GetTimeDictFromSystem();
+#endif
 			hour = (int)timeDict["hour"];
 			minute = (int)timeDict["minute"];
 			seconds = (int)timeDict["second"];
-		}
+			}
 
-		#endregion
+#endregion
 
-		#region RNG
+#region RNG
 
 		public static RandomNumberGenerator GodotRNG(bool setup = false)
 		{
@@ -26,10 +30,11 @@ namespace Godot
 			return rng;
 		}
 
-		#endregion
+#endregion
 
-		#region Contructors
+#region Contructors
 
+#if NETFRAMEWORK
 		public static Timer CreateTimerNode(Node ownerNode, string functionName, bool oneshot = false, float waitTime = 1f, Timer.TimerProcessMode processMode = Timer.TimerProcessMode.Idle)
 		{
 			var timer = new Timer {
@@ -53,6 +58,8 @@ namespace Godot
 			ownerNode?.AddChild(tween);
 			return tween;
 		}
+#endif
+
 		public static Line2D CreateLine2DBox(Node ownerNode, float width, float height, Color color, int girth = 10, int zindex = 0)
 		{
 			var line = new Line2D {
@@ -73,6 +80,6 @@ namespace Godot
 			return line;
 		}
 
-		#endregion
+#endregion
 	}
 }

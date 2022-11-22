@@ -1,4 +1,6 @@
-﻿namespace Util
+﻿using System;
+
+namespace Util
 {
 	public static partial class UtilMath
 	{

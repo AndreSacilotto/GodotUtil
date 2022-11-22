@@ -1,8 +1,10 @@
 ﻿using System;
 using Godot;
 
+#if NETFRAMEWORK
 using static Godot.NetworkedMultiplayerENet;
 using static Godot.NetworkedMultiplayerPeer;
+#endif
 
 namespace Util
 {
@@ -22,6 +24,21 @@ namespace Util
 		{
 			return address + separator + port;
 		}
+
+		public static void OpenTerminals(int count, string scene = "")
+		{
+			var godotPath = OS.GetExecutablePath();
+			var projectPath = ProjectSettings.GlobalizePath("res://");
+			if (string.IsNullOrWhiteSpace(scene))
+				scene = (string)ProjectSettings.GetSetting("application/run/main_scene");
+			OpenTerminals(count, godotPath, projectPath, scene);
+		}
+
+		public static string GenerateObjectName(string prefix, int id) => prefix + '_' + id;
+		public static string GenerateObjectName(string prefix, int id, int number) => prefix + '_' + id + '_' + number;
+
+
+#if NETFRAMEWORK
 
 		public static NetworkedMultiplayerENet CreateENetPeer(bool refuseConnections = false, TransferModeEnum transferMode = TransferModeEnum.Reliable, bool ordered = false, int channels = 3, CompressionModeEnum compression = CompressionModeEnum.RangeCoder, bool relay = true, int transferChannel = -1, string dtlsHostname = "", bool dtlsVerify = true, bool dtlsUse = false) => new() {
 			RefuseNewConnections = refuseConnections,
@@ -73,18 +90,6 @@ namespace Util
 				OS.Execute(godot, args, false);
 		}
 
-		public static void OpenTerminals(int count, string scene = "")
-		{
-			var godotPath = OS.GetExecutablePath();
-			var projectPath = ProjectSettings.GlobalizePath("res://");
-			if (string.IsNullOrWhiteSpace(scene))
-				scene = (string)ProjectSettings.GetSetting("application/run/main_scene");
-			OpenTerminals(count, godotPath, projectPath, scene);
-		}
-
-		public static string GenerateObjectName(string prefix, int id) => prefix + '_' + id;
-		public static string GenerateObjectName(string prefix, int id, int number) => prefix + '_' + id + '_' + number;
-
 		public static T InstanciateInNetwork<T>(PackedScene prefab, int peerId, string uniqueName) where T : Node
 		{
 			var obj = prefab.Instance<T>();
@@ -98,6 +103,16 @@ namespace Util
 			obj.SetNetworkMaster(peerId);
 			return obj;
 		}
+#else
+		public static void OpenTerminals(int count, string godot, string project, string scene)
+		{
+			var args = new string[] { "--path", project, scene };
+			for (int i = 0; i < count; i++)
+				OS.Execute(godot, args);
+		}
+#endif
+
 
 	}
 }
+

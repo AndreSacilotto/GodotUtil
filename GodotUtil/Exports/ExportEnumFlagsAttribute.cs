@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if NETFRAMEWORK
+
+
+using System;
 using System.Linq;
 
 namespace Godot
@@ -11,3 +14,5 @@ namespace Godot
 		{ }
 	}
 }
+
+#endif
