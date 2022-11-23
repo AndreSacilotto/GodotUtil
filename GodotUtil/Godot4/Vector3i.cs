@@ -7,8 +7,6 @@ using real_t = System.Double;
 using real_t = System.Single;
 #endif
 
-#if NETFRAMEWORK
-
 namespace Godot
 {
 	/// <summary>
@@ -718,5 +716,3 @@ namespace Godot
 		}
 	}
 }
-
-#endif

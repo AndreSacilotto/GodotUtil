@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Basis = Godot.Basis;
 
-#if NETFRAMEWORK
+using Basis = Godot.Basis;
 using Quarternion = Godot.Quat;
-#else
-using Quarternion = Godot.Quaternion;
-#endif
 using Vector2 = Godot.Vector2;
 using Vector2i = Godot.Vector2i;
 using Vector3 = Godot.Vector3;

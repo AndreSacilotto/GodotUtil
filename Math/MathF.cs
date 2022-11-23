@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-#if NETFRAMEWORK
-
 using static Util.UtilShared;
 
 namespace Util
@@ -62,5 +60,3 @@ namespace Util
 
 	}
 }
-
-#endif

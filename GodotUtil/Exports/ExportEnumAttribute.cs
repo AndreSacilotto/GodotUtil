@@ -1,6 +1,4 @@
-﻿#if NETFRAMEWORK
-
-using System;
+﻿using System;
 
 namespace Godot
 {
@@ -14,5 +12,3 @@ namespace Godot
 		{ }
 	}
 }
-
-#endif

@@ -7,7 +7,6 @@ namespace Util
 	{
 		public static string StandardizePath(string path) => path.Replace("\\\\", "/").Replace('\\', '/');
 
-#if NETFRAMEWORK
 		public static string ReadFile(string fullPath)
 		{
 			var file = new File();
@@ -47,41 +46,6 @@ namespace Util
 			action(file);
 			file.Close();
 		}
-#else
-		public static string ReadFile(string fullPath)
-		{
-			using var fa = FileAccess.Open(fullPath, FileAccess.ModeFlags.Read);
-			if (fa.GetError() != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(ReadFile), fa.GetError());
-			return fa.GetAsText();
-		}
-		public static T ReadFile<T>(string fullPath, Func<FileAccess, T> action)
-		{
-			using var fa = FileAccess.Open(fullPath, FileAccess.ModeFlags.Read);
-			if (fa.GetError() != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(ReadFile), fa.GetError());
-			return action(fa);
-		}
-
-		public static void WriteFile(string fullPath, string data)
-		{
-			using var fa = FileAccess.Open(fullPath, FileAccess.ModeFlags.Write);
-			if (fa.GetError() != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(WriteFile), fa.GetError());
-			fa.StoreString(data);
-		}
-		public static void WriteFile(string fullPath, Action<FileAccess> action)
-		{
-			using var fa = FileAccess.Open(fullPath, FileAccess.ModeFlags.Write);
-			if (fa.GetError() != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(WriteFile), fa.GetError());
-			action(fa);
-		}
-
-
-#endif
-
-
 
 	}
 }
