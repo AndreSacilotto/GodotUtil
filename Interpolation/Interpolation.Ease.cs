@@ -446,7 +446,7 @@ namespace Util.Interpolation
 			EaseEquation.BackInOut => BackInOut,
 			EaseEquation.BackOutIn => BackOutIn,
 			EaseEquation.Linear => LinearIn,
-			_ => throw new Exception("Easing function of name " + equation + "dont exist"),
+			_ => throw new ArgumentOutOfRangeException(nameof(equation), $"Easing function of name {equation} dont exist"),
 		};
 
 		#endregion

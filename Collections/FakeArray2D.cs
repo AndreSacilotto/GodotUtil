@@ -51,7 +51,10 @@ namespace Util.Collections
 			{
 				int rr = r * rows;
 				for (int c = 0; c < cMin; c++)
-					this[r, c] = oldArray[rr + c];
+				{
+					var index = rr + c;
+					array[index] = oldArray[index];
+				}
 			}
 		}
 

@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 
 namespace Util
 {
+	//https://stackoverflow.com/q/32664
 	public static class Calculator<T> where T : unmanaged
 	{
 		public delegate bool MathFuncCmp(T a, T b);
@@ -25,7 +26,7 @@ namespace Util
 		public static MathFuncCmp Equal { get; } = CreateExpression<MathFuncCmp>(Expression.Equal);
 		public static MathFuncCmp NotEqual { get; } = CreateExpression<MathFuncCmp>(Expression.NotEqual);
 
-		private static MF CreateExpression<MF>(Func<Expression, Expression, Expression> exprFunc)
+		public static MF CreateExpression<MF>(Func<Expression, Expression, Expression> exprFunc)
 		{
 			var paramA = Expression.Parameter(typeof(T));
 			var paramB = Expression.Parameter(typeof(T));
@@ -33,7 +34,7 @@ namespace Util
 			return Expression.Lambda<MF>(body, paramA, paramB).Compile();
 		}
 
-		private static MathFuncSingle CreateExpression(Func<Expression, Expression> exprFunc)
+		public static MathFuncSingle CreateExpression(Func<Expression, Expression> exprFunc)
 		{
 			var paramA = Expression.Parameter(typeof(T));
 			var body = exprFunc(paramA);
@@ -45,7 +46,7 @@ namespace Util
 	{
 		public static Func<T, K> Convert { get; } = CreateExpression(Expression.Convert);
 
-		private static Func<T, K> CreateExpression(Func<Expression, Type, Expression> exprFunc)
+		public static Func<T, K> CreateExpression(Func<Expression, Type, Expression> exprFunc)
 		{
 			var paramA = Expression.Parameter(typeof(T));
 			var body = exprFunc(paramA, typeof(K));

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 using UtilShared = Util.UtilShared;
@@ -18,6 +19,23 @@ namespace Godot
 		[MethodImpl(UtilShared.INLINE)] public static T Duplicate<T>(this Resource res, bool subResources = false) where T : Resource => (T)res.Duplicate(subResources);
 		[MethodImpl(UtilShared.INLINE)] public static T Duplicate<T>(this Node res, Node.DuplicateFlags flags = (Node.DuplicateFlags)15) where T : Node => (T)res.Duplicate((int)flags);
 
+
+		#endregion
+
+		#region Instanciate & Add
+
+		public static Node Instanciate(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled)
+		{
+			var instance = scene.Instance(editState);
+			parent.AddChild(instance);
+			return instance;
+		}
+		public static T Instanciate<T>(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled) where T : Node
+		{
+			var instance = scene.Instance<T>(editState);
+			parent.AddChild(instance);
+			return instance;
+		}
 
 		#endregion
 
@@ -46,6 +64,18 @@ namespace Godot
 
 		#endregion
 
+		#region New Node
+
+		[MethodImpl(UtilShared.INLINE)]
+		public static T NewChild<T>(this Node parent) where T : Node, new()
+		{
+			var nd = new T();
+			parent.AddChild(nd);
+			return nd;
+		}
+
+		#endregion
+
 		#region Node Create
 
 		[MethodImpl(UtilShared.INLINE)]
@@ -68,7 +98,7 @@ namespace Godot
 
 		#region Delete/Remove
 
-		public static void DeleteAllChildrens(this Node parent)
+		public static void QueueFreeAllChildrens(this Node parent)
 		{
 			foreach (Node item in parent.GetChildren())
 				item.QueueFree();
@@ -153,6 +183,11 @@ namespace Godot
 		[MethodImpl(UtilShared.INLINE)] public static bool HasAnyChild(this Node node) => node.GetChildCount() > 0;
 		[MethodImpl(UtilShared.INLINE)] public static bool HasNoChild(this Node node) => node.GetChildCount() == 0;
 
+		public static IEnumerable GetEnumeratorNodeChildren(this Node node)
+		{
+			foreach (var item in node.GetChildren())
+				yield return item;
+		}
 		public static IEnumerable<T> GetEnumeratorNodeChildren<T>(this Node node) where T : Node
 		{
 			foreach (var item in node.GetChildren())

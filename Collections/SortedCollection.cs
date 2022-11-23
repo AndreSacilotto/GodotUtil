@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Util
 {
 	/// <summary>
-	/// https://stackoverflow.com/questions/3663613/why-is-there-no-sortedlistt-in-net
+	/// https://stackoverflow.com/q/3663613
 	/// </summary>
 	public class SortedCollection<T> : ICollection<T>, IEnumerable<T>, IEnumerable, IReadOnlyList<T>, IReadOnlyCollection<T>
 	{

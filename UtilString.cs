@@ -168,25 +168,12 @@ namespace Util
 
 		#region Others
 
-		public static string EnumToName(Enum enumValue)
+		public static uint SumString(string str) 
 		{
-			var str = enumValue.ToString();
-			var sb = new StringBuilder(str.Length);
-
-			if (char.IsLetterOrDigit(str[0]))
-				sb.Append(str[0]);
-			for (int i = 1; i < str.Length; i++)
-			{
-				var c = str[i];
-				if (c == '_')
-					sb.Append(' ');
-				else if (char.IsUpper(c) || char.IsNumber(c))
-					sb.Append(' ' + c);
-				else
-					sb.Append(c);
-			}
-
-			return sb.ToString();
+			uint sum = 0;
+			for (int i = 0; i < str.Length; i++)
+				sum += str[i];
+			return sum;
 		}
 
 		public static string NicifyVariableName(string str)

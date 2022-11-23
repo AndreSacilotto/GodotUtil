@@ -7,12 +7,11 @@ namespace Godot
 {
 	public static partial class UtilGD
 	{
-		public static bool IsNullPrint(object value)
+		[Conditional("DEBUG")]
+		public static void IsNullPrint(object value)
 		{
-			var isnull = value == null;
-			if (isnull)
+			if (value == null)
 				GD.Print("null");
-			return isnull;
 		}
 
 		[Conditional("DEBUG")]

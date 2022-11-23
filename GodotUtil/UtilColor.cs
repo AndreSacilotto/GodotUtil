@@ -35,10 +35,10 @@ namespace Util
 
 
 
-		#region Text Color
+        #region Text Color
 
-		//https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
-		public static Color TextColorFromColor(Color color, Color lightColor, Color darkColor) =>
+        //https://stackoverflow.com/q/3942878
+        public static Color TextColorFromColor(Color color, Color lightColor, Color darkColor) =>
 			(color.r * 0.299f + color.g * 0.587f + color.b * 0.114f) > 0.729f ? darkColor : lightColor;
 
 		public static Color TextColorFromColorLerp(Color color, Color lightColor, Color darkColor) =>
