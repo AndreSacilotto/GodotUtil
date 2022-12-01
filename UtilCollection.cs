@@ -390,9 +390,15 @@ namespace Util
 			return default;
 		}
 
+		public static Dictionary<TKey, TValue> DictionaryFromCollection<TKey, TValue>(ICollection<TKey> keys, Func<TKey, TValue> newFunc) 
+		{
+			var dict = new Dictionary<TKey, TValue>(keys.Count);
+			foreach (var key in keys)
+				dict.Add(key, newFunc(key));
+			return dict;
+		}
+
 		#endregion
-
-
 
 	}
 }

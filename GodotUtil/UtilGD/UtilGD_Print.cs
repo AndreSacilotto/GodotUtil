@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -7,32 +8,6 @@ namespace Godot
 {
 	public static partial class UtilGD
 	{
-		[Conditional("DEBUG")]
-		public static void IsNullPrint(object value)
-		{
-			if (value == null)
-				GD.Print("null");
-		}
-
-		[Conditional("DEBUG")]
-		public static void PrintCollection<TK, TV>(IEnumerable<KeyValuePair<TK, TV>> ie, string separator = " ")
-		{
-			string str = "";
-			foreach (var item in ie)
-				str += $"({item.Key}, {item.Value}){separator}";
-			GD.Print(str);
-		}
-
-		[Conditional("DEBUG")]
-		public static void PrintCollection<T>(IEnumerable<T> ie, string separator = " ")
-		{
-			string str = "";
-			foreach (var item in ie)
-				str += item.ToString() + separator;
-			str.Remove(str.Length - separator.Length);
-			GD.Print(str);
-		}
-
 		[Conditional("DEBUG")]
 		public static void PrintTree(SceneTree tree, bool pretty = false)
 		{

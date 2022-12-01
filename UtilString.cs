@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -11,15 +12,16 @@ namespace Util
 	{
 		public const string FLOAT_FIXED_POINT = "0.############################################################################################################";
 
+		public const string NUMBER_WITH_SIGN = "+#;-#;0";
+
 		public const string NUMBERS = "0123456789";
 		public const string CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
 		public const string CHAR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 		#region Format
 
-		[MethodImpl(INLINE)] public static string NumberWithSign(int value) => value.ToString("+#;-#;0");
-		[MethodImpl(INLINE)] public static string NumberWithSign(float value) => value.ToString("+#;-#;0");
 		[MethodImpl(INLINE)] public static string InvariantFormat(float value) => value.ToString(NumberFormatInfo.InvariantInfo);
+		[MethodImpl(INLINE)] public static string InvariantFormat(double value) => value.ToString(NumberFormatInfo.InvariantInfo);
 
 		#endregion
 
@@ -205,8 +207,6 @@ namespace Util
 			return sb.ToString();
 		}
 
-
-
 		public static string GenerateID(int lenght, bool allowNumbers, bool allowLowerCase, bool allowUpperCase)
 		{
 			var allowChars = string.Empty;
@@ -223,6 +223,26 @@ namespace Util
 			for (int i = 0; i < lenght; i++)
 				sb.Append(allowChars[rng.Next(len)]);
 			return sb.ToString();
+		}
+
+		#endregion
+
+		#region Collections to String
+
+		public static string CollectionToString<TK, TV>(IEnumerable<KeyValuePair<TK, TV>> ie, Func<TK, TV, string> func, string separator = " ")
+		{
+			var sb = new StringBuilder();
+			foreach (var item in ie)
+				sb.Append(func(item.Key, item.Value) + separator);
+			return sb.ToString(0, sb.Length - separator.Length);
+		}
+
+		public static string CollectionToString<T>(IEnumerable<T> ie, Func<T, string> func, string separator = " ")
+		{
+			var sb = new StringBuilder();
+			foreach (var item in ie)
+				sb.Append(func(item) + separator);
+			return sb.ToString(0, sb.Length - separator.Length);
 		}
 
 		#endregion

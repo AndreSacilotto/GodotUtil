@@ -12,7 +12,6 @@ namespace Util
 
 		public static T StringToEnum<T>(string value) where T : Enum => (T)Enum.Parse(typeof(T), value);
 		public static T StringToEnum<T>(string value, bool ignoreCase) where T : Enum => (T)Enum.Parse(typeof(T), value, ignoreCase);
-		public static string EnumToString<T>(T value) where T : Enum => Enum.GetName(typeof(T), value);
 
 		public static string EnumToName(Enum enumValue)
 		{
@@ -35,10 +34,8 @@ namespace Util
 			return sb.ToString();
 		}
 
-		public static int EnumCount<T>() where T : Enum => Enum.GetValues(typeof(T)).Length;
 		public static int FlagsSetCount<T>(T enumValue) where T : Enum
 		{
-			//if (!typeof(T).IsEnum) return -1;
 			int settedBits = 0;
 			var target = (long)(object)enumValue;
 
@@ -48,7 +45,10 @@ namespace Util
 			return settedBits;
 		}
 
-		public static T[] EnumToArray<T>() where T : Enum => (T[])Enum.GetValues(typeof(T));
+		#region Collections
+		public static int EnumCount<T>() where T : Enum => Enum.GetValues(typeof(T)).Length;
+
+		public static T[] EnumToArray<T>() where T : Enum => (T[])typeof(T).GetEnumValues();
 		public static Dictionary<TEnum, TValue> EnumToDictionary<TEnum, TValue>(Func<TValue> newFunc, params TEnum[] skip) where TEnum : Enum
 		{
 			var arr = EnumToArray<TEnum>();
@@ -66,6 +66,8 @@ namespace Util
 			}
 			return dict;
 		}
+
+		#endregion
 
 
 	}

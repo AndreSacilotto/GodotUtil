@@ -6,7 +6,7 @@ namespace Godot
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public class ExportRangeAttribute : ExportAttribute
 	{
-		public ExportRangeAttribute(float min, float max, float step = 0f, bool allowLess = false, bool allowGreater = false) :
+		public ExportRangeAttribute(float min, float max, float step = 0, bool allowLess = false, bool allowGreater = false) :
 			base(PropertyHint.Range, ExportRangeStringFloat(min, max, step, allowLess, allowGreater))
 		{ }
 

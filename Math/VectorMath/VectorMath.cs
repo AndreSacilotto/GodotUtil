@@ -11,8 +11,10 @@ namespace Util.Vector
 {
 	public static class VectorMath
 	{
+		[MethodImpl(UtilShared.INLINE)]
 		public static Vector2 RadianToVector2(float radian) => new(MathF.Cos(radian), MathF.Sin(radian));
 
+		[MethodImpl(UtilShared.INLINE)]
 		public static Vector2 DegreeToVector(float degree) => RadianToVector2(UtilMath.TAU_01 * degree);
 
 		[MethodImpl(UtilShared.INLINE)]

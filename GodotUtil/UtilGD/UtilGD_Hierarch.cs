@@ -17,7 +17,7 @@ namespace Godot
 		[MethodImpl(UtilShared.INLINE)] public static void SetShaderParam(this Material sm, string uniform, object value) => ((ShaderMaterial)sm).SetShaderParam(uniform, value);
 
 		[MethodImpl(UtilShared.INLINE)] public static T Duplicate<T>(this Resource res, bool subResources = false) where T : Resource => (T)res.Duplicate(subResources);
-		[MethodImpl(UtilShared.INLINE)] public static T Duplicate<T>(this Node res, Node.DuplicateFlags flags = (Node.DuplicateFlags)15) where T : Node => (T)res.Duplicate((int)flags);
+		[MethodImpl(UtilShared.INLINE)] public static T Duplicate<T>(this Node node, Node.DuplicateFlags flags = (Node.DuplicateFlags)15) where T : Node => (T)node.Duplicate((int)flags);
 
 
 		#endregion
@@ -49,13 +49,6 @@ namespace Godot
 		}
 
 		[MethodImpl(UtilShared.INLINE)]
-		public static T AddAsChildOf<T>(this T self, Node parent) where T : Node
-		{
-			parent.AddChild(self);
-			return self;
-		}
-
-		[MethodImpl(UtilShared.INLINE)]
 		public static T AddChild<T>(this Node parent, T node) where T : Node
 		{
 			parent.AddChild(node);
@@ -70,6 +63,13 @@ namespace Godot
 		public static T NewChild<T>(this Node parent) where T : Node, new()
 		{
 			var nd = new T();
+			parent.AddChild(nd);
+			return nd;
+		}
+		[MethodImpl(UtilShared.INLINE)]
+		public static T NewChild<T>(this Node parent, string name) where T : Node, new()
+		{
+			var nd = new T { Name = name };
 			parent.AddChild(nd);
 			return nd;
 		}
@@ -140,7 +140,7 @@ namespace Godot
 		public static List<T> GetChildrenOfType<T>(this Node node) where T : Node
 		{
 			var children = node.GetChildren();
-			var col = new List<T>();
+			var col = new List<T>(1);
 			for (int i = 0; i < children.Count; i++)
 				if (children[i] is T t)
 					col.Add(t);
@@ -192,16 +192,6 @@ namespace Godot
 		{
 			foreach (var item in node.GetChildren())
 				yield return (T)item;
-		}
-
-		#endregion
-
-		#region Node Others
-
-		public static void SetBothProcess(Node node, bool enable)
-		{
-			node.SetProcess(enable);
-			node.SetPhysicsProcess(enable);
 		}
 
 		#endregion
