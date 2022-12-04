@@ -20,6 +20,13 @@ namespace Godot
 			);
 		}
 
+		/// <summary>
+		/// Returns a perpendicular vector rotated 90 degrees counter-clockwise
+		/// compared to the original, with the same length.
+		/// </summary>
+		/// <returns>The perpendicular vector.</returns>
+		public static Vector2 Orthogonal(this Vector2 vec) => new(vec.y, -vec.x);
+
 		#endregion
 
 		#region INT UNIQUE

@@ -66,13 +66,10 @@ namespace Godot
 			parent.AddChild(nd);
 			return nd;
 		}
+
 		[MethodImpl(UtilShared.INLINE)]
-		public static T NewChild<T>(this Node parent, string name) where T : Node, new()
-		{
-			var nd = new T { Name = name };
-			parent.AddChild(nd);
-			return nd;
-		}
+		public static T NewChild<T>(this Node parent, string name) where T : Node, new() => 
+			parent.AddChild<T>(new T { Name = name });
 
 		#endregion
 
@@ -137,16 +134,6 @@ namespace Godot
 			newParent.AddChild(self);
 		}
 
-		public static List<T> GetChildrenOfType<T>(this Node node) where T : Node
-		{
-			var children = node.GetChildren();
-			var col = new List<T>(1);
-			for (int i = 0; i < children.Count; i++)
-				if (children[i] is T t)
-					col.Add(t);
-			return col;
-		}
-
 		public static T GetFirstChild<T>(this Node node) where T : Node
 		{
 			return node.GetChildCount() == 0 ? null : node.GetChild<T>(0);
@@ -175,20 +162,19 @@ namespace Godot
 			return null;
 		}
 
-
 		#endregion
 
 		#region Node Hierarch
 
-		[MethodImpl(UtilShared.INLINE)] public static bool HasAnyChild(this Node node) => node.GetChildCount() > 0;
-		[MethodImpl(UtilShared.INLINE)] public static bool HasNoChild(this Node node) => node.GetChildCount() == 0;
-
-		public static IEnumerable GetEnumeratorNodeChildren(this Node node)
+		public static IEnumerable<T> GetEnumeratorChildrenOfType<T>(this Node node) where T : Node
 		{
-			foreach (var item in node.GetChildren())
-				yield return item;
+			var children = node.GetChildren();
+			for (int i = 0; i < children.Count; i++)
+				if (children[i] is T t)
+					yield return t;
 		}
-		public static IEnumerable<T> GetEnumeratorNodeChildren<T>(this Node node) where T : Node
+
+		public static IEnumerable<T> GetEnumeratorChildren<T>(this Node node) where T : Node
 		{
 			foreach (var item in node.GetChildren())
 				yield return (T)item;

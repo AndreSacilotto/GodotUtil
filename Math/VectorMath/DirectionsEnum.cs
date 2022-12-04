@@ -14,7 +14,7 @@
 		BottomRight = Bottom | Right,
 	}
 
-	public enum DirectionsIndex : byte
+	public enum Direction : byte
 	{
 		TopLeft,
 		Top,
@@ -26,7 +26,7 @@
 		Left,
 	}
 
-	public enum StraightDirs : byte
+	public enum StraightDirection : byte
 	{
 		None = Directions.None,
 		Top = Directions.Top,
@@ -35,7 +35,7 @@
 		Left = Directions.Left,
 	}
 
-	public enum DiagonalDirs : byte
+	public enum DiagonalDirection : byte
 	{
 		None = Directions.None,
 		TopLeft = Directions.TopLeft,

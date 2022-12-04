@@ -11,7 +11,7 @@ namespace Util.GDNode
 	}
 
 	[System.Flags]
-	public enum NodeProcessesFlags
+	public enum NodeProcessModes
 	{
 		None = 0,
 		Idle = 1 << 0,
@@ -55,52 +55,52 @@ namespace Util.GDNode
 
 		#region Flags
 
-		public static void SetProcessModeFlags(Node nd, NodeProcessesFlags flags)
+		public static void SetProcessModeFlags(Node nd, NodeProcessModes flags)
 		{
-			nd.SetProcess(flags.HasFlag(NodeProcessesFlags.Idle));
-			nd.SetProcessInternal(flags.HasFlag(NodeProcessesFlags.IdleInternal));
-			nd.SetPhysicsProcess(flags.HasFlag(NodeProcessesFlags.Physics));
-			nd.SetPhysicsProcessInternal(flags.HasFlag(NodeProcessesFlags.PhysicsInternal));
-			nd.SetProcessInput(flags.HasFlag(NodeProcessesFlags.Input));
-			nd.SetProcessUnhandledInput(flags.HasFlag(NodeProcessesFlags.UnhandledInput));
-			nd.SetProcessUnhandledKeyInput(flags.HasFlag(NodeProcessesFlags.UnhandledKeyInput));
+			nd.SetProcess(flags.HasFlag(NodeProcessModes.Idle));
+			nd.SetProcessInternal(flags.HasFlag(NodeProcessModes.IdleInternal));
+			nd.SetPhysicsProcess(flags.HasFlag(NodeProcessModes.Physics));
+			nd.SetPhysicsProcessInternal(flags.HasFlag(NodeProcessModes.PhysicsInternal));
+			nd.SetProcessInput(flags.HasFlag(NodeProcessModes.Input));
+			nd.SetProcessUnhandledInput(flags.HasFlag(NodeProcessModes.UnhandledInput));
+			nd.SetProcessUnhandledKeyInput(flags.HasFlag(NodeProcessModes.UnhandledKeyInput));
 		}
 
-		public static void SetProcessModeFlags(Node nd, NodeProcessesFlags flags, bool value)
+		public static void SetProcessModeFlags(Node nd, NodeProcessModes flags, bool value)
 		{
-			if (flags.HasFlag(NodeProcessesFlags.Idle))
+			if (flags.HasFlag(NodeProcessModes.Idle))
 				nd.SetProcess(value);
-			if (flags.HasFlag(NodeProcessesFlags.IdleInternal))
+			if (flags.HasFlag(NodeProcessModes.IdleInternal))
 				nd.SetProcessInternal(value);
-			if (flags.HasFlag(NodeProcessesFlags.Physics))
+			if (flags.HasFlag(NodeProcessModes.Physics))
 				nd.SetPhysicsProcess(value);
-			if (flags.HasFlag(NodeProcessesFlags.PhysicsInternal))
+			if (flags.HasFlag(NodeProcessModes.PhysicsInternal))
 				nd.SetPhysicsProcessInternal(value);
-			if (flags.HasFlag(NodeProcessesFlags.Input))
+			if (flags.HasFlag(NodeProcessModes.Input))
 				nd.SetProcessInput(value);
-			if (flags.HasFlag(NodeProcessesFlags.UnhandledInput))
+			if (flags.HasFlag(NodeProcessModes.UnhandledInput))
 				nd.SetProcessUnhandledInput(value);
-			if (flags.HasFlag(NodeProcessesFlags.UnhandledKeyInput))
+			if (flags.HasFlag(NodeProcessModes.UnhandledKeyInput))
 				nd.SetProcessUnhandledKeyInput(value);
 		}
 
-		public static NodeProcessesFlags GetProcessModeFlags(Node nd)
+		public static NodeProcessModes GetProcessModeFlags(Node nd)
 		{
-			NodeProcessesFlags flags = NodeProcessesFlags.None;
+			NodeProcessModes flags = NodeProcessModes.None;
 			if (nd.IsProcessing())
-				flags |= NodeProcessesFlags.Idle;
+				flags |= NodeProcessModes.Idle;
 			if (nd.IsProcessingInternal())
-				flags |= NodeProcessesFlags.IdleInternal;
+				flags |= NodeProcessModes.IdleInternal;
 			if (nd.IsPhysicsProcessing())
-				flags |= NodeProcessesFlags.Physics;
+				flags |= NodeProcessModes.Physics;
 			if (nd.IsPhysicsProcessingInternal())
-				flags |= NodeProcessesFlags.PhysicsInternal;
+				flags |= NodeProcessModes.PhysicsInternal;
 			if (nd.IsProcessingInput())
-				flags |= NodeProcessesFlags.Input;
+				flags |= NodeProcessModes.Input;
 			if (nd.IsProcessingUnhandledInput())
-				flags |= NodeProcessesFlags.UnhandledInput;
+				flags |= NodeProcessModes.UnhandledInput;
 			if (nd.IsProcessingUnhandledKeyInput())
-				flags |= NodeProcessesFlags.UnhandledKeyInput;
+				flags |= NodeProcessModes.UnhandledKeyInput;
 			return flags;
 		}
 
