@@ -7,33 +7,10 @@ using vector3_t = Godot.Vector3i;
 
 namespace Godot
 {
+
 	public static partial class VectorExt
 	{
-		// REF
-
-		#region Adding
-
-		[MethodImpl(INLINE)]
-		public static void AddRef(this ref vector2_t item, number_t value)
-		{
-			item.x += value;
-			item.y += value;
-		}
-		[MethodImpl(INLINE)] public static void AddXRef(this ref vector2_t item, number_t x) => item.x += x;
-		[MethodImpl(INLINE)] public static void AddYRef(this ref vector2_t item, number_t y) => item.y += y;
-
-		[MethodImpl(INLINE)]
-		public static void AddRef(this ref vector3_t item, number_t value)
-		{
-			item.x += value;
-			item.y += value;
-			item.z += value;
-		}
-		[MethodImpl(INLINE)] public static void AddXRef(this ref vector3_t item, number_t x) => item.x += x;
-		[MethodImpl(INLINE)] public static void AddYRef(this ref vector3_t item, number_t y) => item.y += y;
-		[MethodImpl(INLINE)] public static void AddZRef(this ref vector3_t item, number_t z) => item.y += z;
-
-		#endregion
+		// ----------------------- REF -----------------------
 
 		#region Setting
 
@@ -53,7 +30,31 @@ namespace Godot
 
 		#endregion
 
-		// NON REF
+		#region Adding
+
+		[MethodImpl(INLINE)]
+		public static void AddXYRef(this ref vector2_t item, number_t value)
+		{
+			item.x += value;
+			item.y += value;
+		}
+		[MethodImpl(INLINE)] public static void AddXRef(this ref vector2_t item, number_t x) => item.x += x;
+		[MethodImpl(INLINE)] public static void AddYRef(this ref vector2_t item, number_t y) => item.y += y;
+
+		[MethodImpl(INLINE)]
+		public static void AddXYZRef(this ref vector3_t item, number_t value)
+		{
+			item.x += value;
+			item.y += value;
+			item.z += value;
+		}
+		[MethodImpl(INLINE)] public static void AddXRef(this ref vector3_t item, number_t x) => item.x += x;
+		[MethodImpl(INLINE)] public static void AddYRef(this ref vector3_t item, number_t y) => item.y += y;
+		[MethodImpl(INLINE)] public static void AddZRef(this ref vector3_t item, number_t z) => item.y += z;
+
+		#endregion
+
+		// ----------------------- NON REF -----------------------
 
 		#region Setting
 
@@ -75,11 +76,11 @@ namespace Godot
 
 		#region Adding
 
-		[MethodImpl(INLINE)] public static vector2_t Add(this vector2_t item, number_t value) => new(item.x + value, item.y + value);
+		[MethodImpl(INLINE)] public static vector2_t AddXY(this vector2_t item, number_t value) => new(item.x + value, item.y + value);
 		[MethodImpl(INLINE)] public static vector2_t AddX(this vector2_t item, number_t x) => new(item.x + x, item.y);
 		[MethodImpl(INLINE)] public static vector2_t AddY(this vector2_t item, number_t y) => new(item.x, item.y + y);
 
-		[MethodImpl(INLINE)] public static vector3_t Add(this vector3_t item, number_t value) => new(item.x + value, item.y + value, item.z + value);
+		[MethodImpl(INLINE)] public static vector3_t AddXYZ(this vector3_t item, number_t value) => new(item.x + value, item.y + value, item.z + value);
 		[MethodImpl(INLINE)] public static vector3_t AddX(this vector3_t item, number_t x) => new(item.x + x, item.y, item.z);
 		[MethodImpl(INLINE)] public static vector3_t AddY(this vector3_t item, number_t y) => new(item.x, item.y + y, item.z);
 		[MethodImpl(INLINE)] public static vector3_t AddZ(this vector3_t item, number_t z) => new(item.x, item.y, item.z + z);
@@ -93,7 +94,6 @@ namespace Godot
 
 		[MethodImpl(INLINE)] public static vector2_t CreateVec2(number_t value) => new(value, value);
 
-		[MethodImpl(INLINE)] public static vector3_t CreateVec3(number_t x, number_t y, number_t z = 0) => new(x, y, z);
 		[MethodImpl(INLINE)] public static vector3_t CreateVec3(number_t value) => new(value, value, value);
 
 		#endregion
@@ -112,15 +112,6 @@ namespace Godot
 
 		#endregion
 
-		#region Converting
-
-		[MethodImpl(INLINE)] public static vector3_t ToVec3_XY0(this vector2_t vector, number_t z = 0) => new(vector.x, vector.y, z);
-		[MethodImpl(INLINE)] public static vector3_t ToVec3_X0Y(this vector2_t vector, number_t y = 0) => new(vector.x, y, vector.y);
-
-		[MethodImpl(INLINE)] public static vector2_t ToVec2_XY(this vector3_t vector) => new(vector.x, vector.y);
-		[MethodImpl(INLINE)] public static vector2_t ToVec2_XZ(this vector3_t vector) => new(vector.x, vector.z);
-		[MethodImpl(INLINE)] public static vector2_t ToVec2_ZY(this vector3_t vector) => new(vector.z, vector.y);
-
-		#endregion
 	}
+
 }

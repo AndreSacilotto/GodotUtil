@@ -13,9 +13,6 @@
 
 		#region 3D Const
 
-		public const int UP = 1;
-		public const int DONW = -1;
-
 		public const int NORTH = 1;
 		public const int SOUTH = -1;
 

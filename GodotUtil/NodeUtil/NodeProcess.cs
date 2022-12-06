@@ -2,29 +2,30 @@
 
 namespace Util.GDNode
 {
-	public enum NodeProcessMode
-	{
-		None,
-		Idle,
-		Physics,
-		Both = Idle | Physics,
-	}
-
-	[System.Flags]
-	public enum NodeProcessModes
-	{
-		None = 0,
-		Idle = 1 << 0,
-		IdleInternal = 1 << 1,
-		Physics = 1 << 2,
-		PhysicsInternal = 1 << 3,
-		Input = 1 << 4,
-		UnhandledInput = 1 << 5,
-		UnhandledKeyInput = 1 << 6,
-	}
 
 	public static class NodeProcess
 	{
+		public enum NodeProcessMode
+		{
+			None,
+			Idle,
+			Physics,
+			Both = Idle | Physics,
+		}
+
+		[System.Flags]
+		public enum NodeProcessModes
+		{
+			None = 0,
+			Idle = 1 << 0,
+			IdleInternal = 1 << 1,
+			Physics = 1 << 2,
+			PhysicsInternal = 1 << 3,
+			Input = 1 << 4,
+			UnhandledInput = 1 << 5,
+			UnhandledKeyInput = 1 << 6,
+		}
+
 		public static NodeProcessMode GetProcessMode(Node nd)
 		{
 			var p = nd.IsProcessing();
