@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Util.Singleton
 {
+	[ClassInterface(ClassInterfaceType.None)]
+	[ComDefaultInterface(typeof(_Exception))]
+	[ComVisible(true)]
 	public class SingletonException : Exception
 	{
 		const string ERR_MESSAGE_TEXT = "One Instance of {0} already exists";

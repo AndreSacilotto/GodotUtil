@@ -1,4 +1,4 @@
-﻿namespace Util.MathC
+﻿namespace Util.MathCrazy
 {
 	public static class UtilBit
 	{

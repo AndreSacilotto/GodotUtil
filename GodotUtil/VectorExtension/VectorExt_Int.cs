@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using static Util.UtilShared;
-using number_t = System.Int32;
+
 using vector2_t = Godot.Vector2i;
 using vector3_t = Godot.Vector3i;
+using number_t = System.Int32;
 
 namespace Godot
 {

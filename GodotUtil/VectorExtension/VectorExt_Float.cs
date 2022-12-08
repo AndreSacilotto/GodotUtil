@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using static Util.UtilShared;
-using number_t = System.Single;
+
 using vector2_t = Godot.Vector2;
 using vector3_t = Godot.Vector3;
+#if REAL_T_IS_DOUBLE
+using number_t = System.Double;
+#else
+using number_t = System.Single;
+#endif
 
 namespace Godot
 {

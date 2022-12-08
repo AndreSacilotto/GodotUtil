@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Util.MathC
+namespace Util.MathCrazy
 {
 	public static class MathOptimization
 	{

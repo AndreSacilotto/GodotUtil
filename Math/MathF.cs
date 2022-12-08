@@ -1,9 +1,8 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 using static Util.UtilShared;
 
-namespace Util
+namespace System
 {
 	/// <summary> 
 	/// System.Math float Wrapper, wrapping every and only funtions that doesnt accept float 

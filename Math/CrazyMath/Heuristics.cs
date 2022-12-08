@@ -2,7 +2,7 @@
 
 using Vector2 = Godot.Vector2;
 
-namespace Util.MathC
+namespace Util.MathCrazy
 {
 	public static class Heuristics
 	{

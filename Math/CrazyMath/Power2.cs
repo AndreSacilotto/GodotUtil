@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Util.MathC
+namespace Util.MathCrazy
 {
 	public struct Power2 : IComparable, IFormattable, IConvertible, IComparable<Power2>, IEquatable<Power2>
 	{

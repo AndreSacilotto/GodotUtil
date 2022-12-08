@@ -1,4 +1,11 @@
-﻿using Util;
+﻿using System;
+using Util;
+
+#if REAL_T_IS_DOUBLE
+using real_t = System.Double;
+#else
+using real_t = System.Single;
+#endif
 
 namespace Godot
 {
@@ -94,14 +101,14 @@ namespace Godot
 		#region Rotation
 		// CC = Counter-Clockwise
 
-		public static Vector2 RotatedCC(this Vector2 vec, float angle)
+		public static Vector2 RotatedCC(this Vector2 vec, real_t angle)
 		{
 			var sin = -MathF.Sin(angle);
 			var cos = MathF.Cos(angle);
 			return new(vec.x * cos - vec.y * sin, vec.x * sin + vec.y * cos);
 		}
 
-		public static Vector3 RotatedCC(this Vector3 vec, Vector3 axis, float angle) => new Basis(axis, -angle).Mult(vec);
+		public static Vector3 RotatedCC(this Vector3 vec, Vector3 axis, real_t angle) => new Basis(axis, -angle).Mult(vec);
 
 		#endregion
 

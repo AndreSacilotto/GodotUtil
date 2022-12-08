@@ -1,7 +1,6 @@
 ﻿
 using System;
 using Godot;
-using Util.Vector;
 
 namespace Util
 {
@@ -193,7 +192,7 @@ namespace Util
 			for (int i = 0; i < density; i++)
 			{
 				points[i] = v * radius;
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 
 			return points;
@@ -218,7 +217,7 @@ namespace Util
 			for (int i = 0; i < density; i++)
 			{
 				points[i] = new(v.x * width, v.y * height);
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 
 			return points;
@@ -241,7 +240,7 @@ namespace Util
 			for (int i = 0; i < density; i++)
 			{
 				points[i] = new(v.x * radius, (v.y + 0.5f) * radius);
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 
 			return points;
@@ -266,7 +265,7 @@ namespace Util
 			{
 				points[i] = v * inner;
 				points[j] = v.NegY() * outter;
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 
 			var safe = new Vector2(0f, SAFE_THRESHOLD);
@@ -297,7 +296,7 @@ namespace Util
 			for (int i = 0; i < density; i++)
 			{
 				points[i] = new Vector2(v.x * width, v.y * height);
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 
 			points[points.Length - 1] = new Vector2(0f, height);
@@ -326,7 +325,7 @@ namespace Util
 			for (int i = 0; i < density; i++)
 			{
 				points[i] = new(v.x * width, v.y * h1 - h2);
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 
 			points[points.Length - 2] = new(width, height);
@@ -357,7 +356,7 @@ namespace Util
 				var p = new Vector2(v.x * width, v.y * h1 - h2);
 				points[i] = -p;
 				points[j] = p;
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 			return points;
 		}
@@ -393,7 +392,7 @@ namespace Util
 				var w = v.x * width;
 				points[i] = new(w, v.y * hU1 - hU2);
 				points[j] = new(-w, v.y * hL1 + height);
-				v = VectorMath.RotatedNoTrigCW(v, c, s);
+				v = UtilVector.RotatedNoTrigCW(v, c, s);
 			}
 
 			return points;

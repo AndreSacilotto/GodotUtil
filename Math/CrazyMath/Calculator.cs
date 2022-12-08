@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace Util
+namespace Util.MathCrazy
 {
 	//https://stackoverflow.com/q/32664
 	public static class Calculator<T> where T : unmanaged

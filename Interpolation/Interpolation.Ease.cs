@@ -1,8 +1,6 @@
 ﻿/**
  * Initial: godot engine 3.5
- * 
  * Author: 5Spectra
- *
  * Credit: Robert Penner - The easing equations we all know and love 
  */
 

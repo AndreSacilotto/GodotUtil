@@ -7,9 +7,9 @@ using Vector2 = Godot.Vector2;
 using Vector2i = Godot.Vector2i;
 using Vector3 = Godot.Vector3;
 
-namespace Util.Vector
+namespace Util
 {
-	public static class VectorMath
+	public static class UtilVector
 	{
 		[MethodImpl(UtilShared.INLINE)]
 		public static Vector2 RadianToVector2(float radian) => new(MathF.Cos(radian), MathF.Sin(radian));
