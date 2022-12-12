@@ -5,8 +5,12 @@ namespace Util.Interpolation
 {
 	public static partial class Bezier
 	{
+		#region Linear
 		public static vec2 LinearBezier(vec2 start, vec2 end, float t) => start + (end - start) * t;
 		public static vec3 LinearBezier(vec3 start, vec3 end, float t) => start + (end - start) * t;
+		#endregion
+
+		#region Quad
 		public static vec2 QuadBezier(vec2 start, vec2 control, vec2 end, float t)
 		{
 			return new(
@@ -37,6 +41,9 @@ namespace Util.Interpolation
 				QuadBezierDerivative(start.z, control.z, end.z, t)
 			);
 		}
+		#endregion
+
+		#region Cubic
 		public static vec2 CubicBezier(vec2 start, vec2 control0, vec2 control1, vec2 end, float t)
 		{
 			return new(
@@ -67,5 +74,6 @@ namespace Util.Interpolation
 				CubicBezierDerivative(start.z, control0.z, control1.z, end.z, t)
 			);
 		}
+		#endregion
 	}
 }

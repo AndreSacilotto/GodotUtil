@@ -37,10 +37,11 @@ namespace Util.Interpolation
 		public static float CubicBezierDerivative(float start, float control0, float control1, float end, float t)
 		{
 			var o = 1f - t;
-			return (control1 - start) * 3f * o * o +
+			return (control0 - start) * 3f * o * o +
 				(control1 - control0) * 6f * o * t +
 				(end - control1) * 3f * t * t;
 		}
+
 	}
 
 
