@@ -4,6 +4,11 @@ namespace Util
 {
 	public static partial class UtilMath
 	{
+		#region Constansts
+
+		public const float SQTR_2 = 1.41421356237F;
+
+		#endregion
 
 		#region PI
 
@@ -41,6 +46,7 @@ namespace Util
 		public const float TAU_360 = MathF.Tau;
 
 		#endregion
+
 
 		public const float EPSILON_FLOAT = 1E-06F;
 		public const float EPSILON_DOUBLE = 1E-12F;

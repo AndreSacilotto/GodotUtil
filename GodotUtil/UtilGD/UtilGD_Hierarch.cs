@@ -22,7 +22,7 @@ namespace Godot
 
 		#endregion
 
-		#region Instanciate & Add
+		#region Instanciate->Add
 
 		public static Node Instanciate(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled)
 		{
@@ -55,9 +55,13 @@ namespace Godot
 			return node;
 		}
 
-		#endregion
-
-		#region New Node
+		[MethodImpl(UtilShared.INLINE)]
+		public static T AddChildAt<T>(this Node parent, T node, int index) where T : Node
+		{
+			parent.AddChild(node);
+			parent.MoveChild(node, index);
+			return node;
+		}
 
 		[MethodImpl(UtilShared.INLINE)]
 		public static T NewChild<T>(this Node parent) where T : Node, new()
@@ -66,10 +70,6 @@ namespace Godot
 			parent.AddChild(nd);
 			return nd;
 		}
-
-		[MethodImpl(UtilShared.INLINE)]
-		public static T NewChild<T>(this Node parent, string name) where T : Node, new() => 
-			parent.AddChild<T>(new T { Name = name });
 
 		#endregion
 
