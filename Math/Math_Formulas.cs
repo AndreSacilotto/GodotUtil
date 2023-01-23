@@ -29,12 +29,12 @@ namespace Util
 				return 0f;
 			if (value >= max)
 				return 1f;
-			float t = (value - min) / (max - min);
+			var t = (value - min) / (max - min);
 			return t * t * (3f - 2f * t);
 		}
-		public static float Smootherstep(float min, float max, float x)
+		public static float Smootherstep(float min, float max, float value)
 		{
-			x = Clamp01((x - min) / (max - min));
+			var x = Clamp01((value - min) / (max - min));
 			return x * x * x * (x * (x * 6f - 15f) + 10f);
 		}
 

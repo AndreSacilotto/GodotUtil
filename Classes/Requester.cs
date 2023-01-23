@@ -29,8 +29,8 @@ namespace Util
 
 	public class RequesterEvents : IClosable
 	{
-		public event Action OnFirstRequest;
-		public event Action OnNoRequest;
+		public event Action? OnFirstRequest;
+		public event Action? OnNoRequest;
 
 		private bool requested = false;
 		private int requestCount = 0;
@@ -68,8 +68,8 @@ namespace Util
 
 	public class RequesterEventsUnsafe : IClosable
 	{
-		public event Action OnFirstRequest;
-		public event Action OnNoRequest;
+		public event Action? OnFirstRequest;
+		public event Action? OnNoRequest;
 
 		private bool requested = false;
 		private int requestCount = 0;
@@ -82,7 +82,7 @@ namespace Util
 			requestCount++;
 			requested = true;
 			if (requestCount == 1)
-				OnFirstRequest();
+				OnFirstRequest?.Invoke();
 		}
 
 		public void RemoveRequest()
@@ -90,7 +90,7 @@ namespace Util
 			if (requestCount > 0)
 			{
 				if (requestCount == 1)
-					OnNoRequest();
+					OnNoRequest?.Invoke();
 				requestCount--;
 			}
 			else

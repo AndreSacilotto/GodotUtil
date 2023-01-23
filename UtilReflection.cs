@@ -16,7 +16,7 @@ namespace Util
 			AppDomain.CurrentDomain.AssemblyLoad += (sender, args) => assemblies.Add(args.LoadedAssembly);
 		}
 
-		public static Type GetType(string typeName)
+		public static Type? GetType(string typeName)
 		{
 			Type type = Type.GetType(typeName);
 			if (type == null)
@@ -40,18 +40,18 @@ namespace Util
 			return assemblyRefs;
 		}
 
-		public static T GetFieldValue<T>(object obj, string name)
+		public static T? GetFieldValue<T>(object obj, string name)
 		{
 			var bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 			var field = obj.GetType().GetField(name, bindingFlags);
-			return (T)field?.GetValue(obj);
+			return (T?)field?.GetValue(obj);
 		}
 
-		public static T GetPropValue<T>(object obj, string name)
+		public static T? GetPropValue<T>(object obj, string name)
 		{
 			var bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 			var prop = obj.GetType().GetProperty(name, bindingFlags);
-			return (T)prop?.GetValue(obj);
+			return (T?)prop?.GetValue(obj);
 		}
 
 		public delegate object ConstructorFunc(params object[] args);

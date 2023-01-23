@@ -58,8 +58,6 @@ namespace Util
 		public static T Min<T>(params T[] values) where T : IComparable<T>
 		{
 			int len = values.Length;
-			if (len == 0)
-				return default;
 			var smaller = values[0];
 			for (int i = 1; i < len; i++)
 				if (values[i].CompareTo(smaller) < 0)
@@ -69,8 +67,6 @@ namespace Util
 		public static T Max<T>(params T[] values) where T : IComparable<T>
 		{
 			int len = values.Length;
-			if (len == 0)
-				return default;
 			var biggest = values[0];
 			for (int i = 1; i < len; i++)
 				if (values[i].CompareTo(biggest) > 0)

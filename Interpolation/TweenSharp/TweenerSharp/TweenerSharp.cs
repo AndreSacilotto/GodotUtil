@@ -6,8 +6,10 @@ namespace Util.Interpolation
 	{
 		public delegate void InterpFunc(float interpolation);
 
-		private InterpFunc Interpolation;
-		private Interpolation.EaseFunc EasingFunction;
+		public static Interpolation.EaseFunc DefaultEaseFunc { get; set; } = Util.Interpolation.Interpolation.LinearIn;
+
+		private InterpFunc? Interpolation;
+		private Interpolation.EaseFunc? EasingFunction;
 
 		private float from, to, change;
 
@@ -20,7 +22,9 @@ namespace Util.Interpolation
 			if (complete)
 				return;
 			Accumulator += delta;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 			Interpolation(EasingFunction(Accumulator, from, change, Duration));
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 			TryEnd();
 		}
 
@@ -52,16 +56,16 @@ namespace Util.Interpolation
 
 		private void SetChange() => change = to - from;
 
-		public void Setup(float from, float to, float duration, InterpFunc interpolation, Interpolation.EaseFunc easingFunction = null)
+		public void Setup(float from, float to, float duration, InterpFunc interpolation, Interpolation.EaseFunc? easingFunction = null)
 		{
 			Setup(interpolation, easingFunction);
 			Setup(from, to, duration);
 		}
 
-		public void Setup(InterpFunc interpolation, Interpolation.EaseFunc easingFunction)
+		public void Setup(InterpFunc interpolation, Interpolation.EaseFunc? easingFunction)
 		{
-			Interpolation = interpolation ?? throw new ArgumentNullException(nameof(interpolation));
-			EasingFunction = easingFunction ?? owner.DefaultEaseFunc;
+			Interpolation = interpolation;
+			EasingFunction = easingFunction ?? DefaultEaseFunc;
 		}
 
 		public void Setup(float from, float to, float duration)

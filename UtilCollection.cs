@@ -377,10 +377,10 @@ namespace Util
 		}
 
 		[MethodImpl(UtilShared.INLINE)]
-		public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) =>
+		public static TValue? GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) =>
 			dictionary.TryGetValue(key, out var value) ? value : default;
 
-		public static TValue TryRemoveValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+		public static TValue? TryRemoveValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
 		{
 			if (dictionary.TryGetValue(key, out var value))
 			{

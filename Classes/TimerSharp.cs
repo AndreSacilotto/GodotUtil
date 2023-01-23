@@ -6,7 +6,7 @@ namespace Util
 	{
 		#region Event
 
-		private Action onTimeout;
+		private Action? onTimeout;
 		public event Action OnTimeout
 		{
 			add {

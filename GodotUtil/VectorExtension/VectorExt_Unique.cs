@@ -63,14 +63,14 @@ namespace Godot
 		{
 			var rad = MathF.PI - MathF.Atan2(center.y - position.y, center.x - position.x);
 			if (rad <= UtilMath.TAU_45)
-				return Right;
+				return Vector2i.Right;
 			else if (rad <= UtilMath.TAU_135)
-				return Top;
+				return Vector2i.Up;
 			else if (rad <= UtilMath.TAU_45 * 5f)
-				return Left;
+				return Vector2i.Left;
 			else if (rad <= UtilMath.TAU_45 * 7f)
-				return Bottom;
-			return Right;
+				return Vector2i.Down;
+			return Vector2i.Right;
 		}
 
 		#endregion

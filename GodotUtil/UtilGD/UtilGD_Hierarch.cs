@@ -134,18 +134,18 @@ namespace Godot
 			newParent.AddChild(self);
 		}
 
-		public static T GetFirstChild<T>(this Node node) where T : Node
+		public static T? GetFirstChild<T>(this Node node) where T : Node
 		{
 			return node.GetChildCount() == 0 ? null : node.GetChild<T>(0);
 		}
 
-		public static T GetLastChild<T>(this Node node) where T : Node
+		public static T? GetLastChild<T>(this Node node) where T : Node
 		{
 			var count = node.GetChildCount();
 			return count == 0 ? null : node.GetChild<T>(count - 1);
 		}
 
-		public static T GetFirstChildOfType<T>(this Node node) where T : Node
+		public static T? GetFirstChildOfType<T>(this Node node) where T : Node
 		{
 			var children = node.GetChildren();
 			for (int i = 0; i < children.Count; i++)
@@ -153,7 +153,7 @@ namespace Godot
 					return t;
 			return null;
 		}
-		public static T GetLastChildOfType<T>(this Node node) where T : Node
+		public static T? GetLastChildOfType<T>(this Node node) where T : Node
 		{
 			var children = node.GetChildren();
 			for (int i = children.Count - 1; i >= 0; i--)

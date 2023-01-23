@@ -129,7 +129,7 @@ namespace Util
 		public static string[] SplitAndReplace(string str, char separator = ' ')
 		{
 			if (str == null || str.Length == 0)
-				return null;
+				return Array.Empty<string>();
 
 			var len = str.Length;
 

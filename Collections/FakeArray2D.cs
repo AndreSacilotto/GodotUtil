@@ -6,7 +6,7 @@ namespace Util.Collections
 {
 	public class FakeArray2D<T> : ICloneable, ICollection, IStructuralComparable, IStructuralEquatable, IReadOnlyCollection<T>
 	{
-		protected T[] array;
+		protected T[] array = null!;
 
 		public FakeArray2D(int size) : this(size, size) { }
 		public FakeArray2D(int rows, int columns)

@@ -48,19 +48,19 @@ namespace Util
 			UseDtls = dtlsUse,
 		};
 
-		public static NetworkedMultiplayerCustom NetworkPeerCustom(this SceneTree tree) => tree.NetworkPeer as NetworkedMultiplayerCustom;
-		public static NetworkedMultiplayerENet NetworkPeerENet(this SceneTree tree) => tree.NetworkPeer as NetworkedMultiplayerENet;
-		public static WebRTCMultiplayer NetworkPeerWebRTC(this SceneTree tree) => tree.NetworkPeer as WebRTCMultiplayer;
-		public static WebSocketMultiplayerPeer NetworkPeerWebSocket(this SceneTree tree) => tree.NetworkPeer as WebSocketMultiplayerPeer;
+		public static NetworkedMultiplayerCustom NetworkPeerCustom(this SceneTree tree) => (NetworkedMultiplayerCustom)tree.NetworkPeer;
+		public static NetworkedMultiplayerENet NetworkPeerENet(this SceneTree tree) => (NetworkedMultiplayerENet)tree.NetworkPeer;
+		public static WebRTCMultiplayer NetworkPeerWebRTC(this SceneTree tree) => (WebRTCMultiplayer)tree.NetworkPeer;
+		public static WebSocketMultiplayerPeer NetworkPeerWebSocket(this SceneTree tree) => (WebSocketMultiplayerPeer)tree.NetworkPeer;
 
 		public static void CloseENet(SceneTree tree)
 		{
-			(tree.NetworkPeer as NetworkedMultiplayerENet).CloseConnection();
+			((NetworkedMultiplayerENet)tree.NetworkPeer).CloseConnection();
 			tree.NetworkPeer = null;
 		}
 		public static void CloseWebRTC(SceneTree tree)
 		{
-			(tree.NetworkPeer as WebRTCMultiplayer).Close();
+			((WebRTCMultiplayer)tree.NetworkPeer).Close();
 			tree.NetworkPeer = null;
 		}
 

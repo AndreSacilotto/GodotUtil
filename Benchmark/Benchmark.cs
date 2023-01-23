@@ -37,7 +37,7 @@ namespace Util.Test
 				Funtions[i].Funtion.Invoke(i);
 		}
 
-		public TimeSpan[] Run(Action<BenchmarkNode, TimeSpan> printFunc = null)
+		public TimeSpan[] Run(Action<BenchmarkNode, TimeSpan>? printFunc = null)
 		{
 			Initialize();
 			var arr = new TimeSpan[Funtions.Count];
@@ -57,7 +57,7 @@ namespace Util.Test
 			return arr;
 		}
 
-		public TimeSpan[] RunInverse(Action<BenchmarkNode, TimeSpan> printFunc = null)
+		public TimeSpan[] RunInverse(Action<BenchmarkNode, TimeSpan>? printFunc = null)
 		{
 			Initialize();
 			var arr = new TimeSpan[Funtions.Count];

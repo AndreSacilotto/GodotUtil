@@ -4,31 +4,18 @@ using System.Linq;
 
 namespace Util.Interpolation
 {
-	public class TweenSharpMult : TweenSharpBase
+	public class TweenSharpMultiples : TweenSharpBase
 	{
-		public event Action<TweenerSharpBase> OnTweenerEnd;
+		public event Action<TweenerSharpBase>? OnTweenerEnd;
 
-		protected List<TweenerSharpBase> tweeners = new(1);
+		protected List<TweenerSharpBase> tweeners = new(2);
 
 		private int currentIndex;
 
 		public int Count => tweeners.Count;
 		public bool HasTweeners => tweeners.Count > 0;
 
-		public TweenerSharp CreateTweener()
-		{
-			var tweener = new TweenerSharp(this);
-			AddTweenerInternal(tweener);
-			return tweener;
-		}
-		public TweenerDelaySharp CreateTweenerDelay()
-		{
-			var tweener = new TweenerDelaySharp(this);
-			AddTweenerInternal(tweener);
-			return tweener;
-		}
-
-		public TweenerSharpBase AddTweenerInternal(TweenerSharpBase tweener)
+		public TweenerSharpBase AddTweener(TweenerSharpBase tweener)
 		{
 			if (current == null)
 			{
@@ -89,12 +76,6 @@ namespace Util.Interpolation
 				current.Reset();
 			}
 			OnTweenerEnd?.Invoke(tweener);
-		}
-
-		public override void Close()
-		{
-			Clear();
-			base.Close();
 		}
 
 	}

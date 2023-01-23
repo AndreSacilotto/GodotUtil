@@ -34,11 +34,21 @@ namespace Util
 		}
 
 
-		#region Sharp Util
+		#region CSharpScript
+		// CSharpScript methods only works if it inherit from Godot.Object
 
-		public static Type GetCSharpScriptType(this CSharpScript sharpScript)
+
+		public static Type GetCSharpScriptType(this CSharpScript script, bool reflection = false)
 		{
-			return Util.UtilReflection.GetType(GetResourceFileName(sharpScript));
+			if (reflection)
+				return UtilReflection.GetType(GetResourceFileName(script));
+			else
+				return Type.GetType(script.GetInstanceBaseType());
+		}
+
+		public static T New<T>(this CSharpScript script) where T : Godot.Object
+		{
+			return (T)script.New();
 		}
 
 		#endregion

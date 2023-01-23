@@ -12,7 +12,8 @@
 		public override void Reset()
 		{
 			totalDuration = 0f;
-			current.Reset();
+			if(current == null)
+				Reset();
 		}
 
 		public override void Clear()
@@ -22,7 +23,7 @@
 			Paused = true;
 		}
 
-		public override float GetCompletationTime() => current.Duration;
+		public override float GetCompletationTime() => current == null ? default : current.Duration;
 
 		public override void TweenerEnd(TweenerSharpBase tweener)
 		{

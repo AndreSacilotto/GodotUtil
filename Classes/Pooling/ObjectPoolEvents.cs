@@ -10,12 +10,12 @@ namespace Util.ObjectPool
 
 		public int Count => pool.Count;
 
-		public event Func<T> CreateFunc;
-		public event Action<T> OnTakeFromPool;
-		public event Action<T> OnReturnToPool;
-		public event Action<T> OnDestroyFromPool;
+		private Func<T> CreateFunc;
+		public event Action<T>? OnTakeFromPool;
+		public event Action<T>? OnReturnToPool;
+		public event Action<T>? OnDestroyFromPool;
 
-		public ObjectPoolEvents(Func<T> createFunc, int initialSize = 0, Action<T> onTakeFromPool = null, Action<T> onReturnToPool = null, Action<T> onDestroyFromPool = null)
+		public ObjectPoolEvents(Func<T> createFunc, int initialSize = 0, Action<T>? onTakeFromPool = null, Action<T>? onReturnToPool = null, Action<T>? onDestroyFromPool = null)
 		{
 			CreateFunc = createFunc;
 			OnTakeFromPool = onTakeFromPool;
