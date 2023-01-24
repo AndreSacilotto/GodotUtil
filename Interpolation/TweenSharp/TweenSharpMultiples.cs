@@ -23,6 +23,7 @@ namespace Util.Interpolation
 				current = tweener;
 			}
 			tweeners.Add(tweener);
+			tweener.OnTweenerEnd += TweenerEnd;
 			return tweener;
 		}
 

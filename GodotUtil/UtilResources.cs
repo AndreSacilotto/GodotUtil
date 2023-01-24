@@ -41,7 +41,7 @@ namespace Util
 		public static Type GetCSharpScriptType(this CSharpScript script, bool reflection = false)
 		{
 			if (reflection)
-				return UtilReflection.GetType(GetResourceFileName(script));
+				return UtilReflection.GetType(GetResourceFileName(script)) ?? throw new Exception("Cant find script type");
 			else
 				return Type.GetType(script.GetInstanceBaseType());
 		}

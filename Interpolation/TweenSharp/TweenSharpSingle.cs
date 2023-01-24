@@ -2,11 +2,12 @@
 {
 	public class TweenSharpSingle : TweenSharpBase
 	{
-		public TweenerSharp CreateTweener()
+		public TweenerSharpBase SetTweener(TweenerSharpBase tweener)
 		{
-			var tweener = new TweenerSharp(this);
+			Clear();
 			current = tweener;
-			return tweener;
+			tweener.OnTweenerEnd += TweenerEnd;
+			return current;
 		}
 
 		public override void Reset()

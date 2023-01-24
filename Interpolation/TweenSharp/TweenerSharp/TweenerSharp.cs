@@ -13,8 +13,6 @@ namespace Util.Interpolation
 
 		private float from, to, change;
 
-		public TweenerSharp(TweenSharpBase owner) : base(owner) { }
-
 		public float ChangeValue => change;
 
 		public override void Step(float delta)
@@ -32,6 +30,7 @@ namespace Util.Interpolation
 		{
 			Interpolation = null;
 			EasingFunction = null;
+			base.Close();
 		}
 
 		#region Setup
