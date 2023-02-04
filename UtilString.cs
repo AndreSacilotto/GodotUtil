@@ -62,6 +62,12 @@ namespace Util
 
 		#region Replace
 
+		public static string Replace(this string input, int index, int length, string replacement) =>
+			input.Remove(index, length).Insert(index, replacement);
+
+		public static StringBuilder Replace(this StringBuilder input, int index, int length, string replacement) =>
+			input.Remove(index, length).Insert(index, replacement);
+
 		public static string Replace(this string text, char search, string replacement)
 		{
 			var sb = new StringBuilder(text.Length);
