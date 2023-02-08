@@ -10,35 +10,6 @@ namespace Godot
 	{
 		[MethodImpl(UtilShared.INLINE)] public static SceneTree GetSceneTree() => (SceneTree)Engine.GetMainLoop();
 
-		#region Add Generic Cast
-
-		[MethodImpl(UtilShared.INLINE)] public static T GetShaderParam<T>(this ShaderMaterial sm, string uniform) => (T)sm.GetShaderParam(uniform);
-		[MethodImpl(UtilShared.INLINE)] public static T GetShaderParam<T>(this Material sm, string uniform) => (T)((ShaderMaterial)sm).GetShaderParam(uniform);
-		[MethodImpl(UtilShared.INLINE)] public static void SetShaderParam(this Material sm, string uniform, object value) => ((ShaderMaterial)sm).SetShaderParam(uniform, value);
-
-		[MethodImpl(UtilShared.INLINE)] public static T Duplicate<T>(this Resource res, bool subResources = false) where T : Resource => (T)res.Duplicate(subResources);
-		[MethodImpl(UtilShared.INLINE)] public static T Duplicate<T>(this Node node, Node.DuplicateFlags flags = (Node.DuplicateFlags)15) where T : Node => (T)node.Duplicate((int)flags);
-
-
-		#endregion
-
-		#region Instanciate->Add
-
-		public static Node Instanciate(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled)
-		{
-			var instance = scene.Instance(editState);
-			parent.AddChild(instance);
-			return instance;
-		}
-		public static T Instanciate<T>(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled) where T : Node
-		{
-			var instance = scene.Instance<T>(editState);
-			parent.AddChild(instance);
-			return instance;
-		}
-
-		#endregion
-
 		#region Node Add
 
 		[MethodImpl(UtilShared.INLINE)]
@@ -61,14 +32,6 @@ namespace Godot
 			parent.AddChild(node);
 			parent.MoveChild(node, index);
 			return node;
-		}
-
-		[MethodImpl(UtilShared.INLINE)]
-		public static T NewChild<T>(this Node parent) where T : Node, new()
-		{
-			var nd = new T();
-			parent.AddChild(nd);
-			return nd;
 		}
 
 		#endregion

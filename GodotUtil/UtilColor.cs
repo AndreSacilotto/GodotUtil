@@ -34,8 +34,6 @@ namespace Util
 			return new((r % 255) / 255f, (g % 255) / 255f, (b % 255) / 255f, alpha);
 		}
 
-
-
         #region Text Color
 
         //https://stackoverflow.com/q/3942878
