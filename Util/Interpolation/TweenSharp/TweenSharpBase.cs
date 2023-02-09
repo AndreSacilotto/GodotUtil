@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation
 {
-	public abstract class TweenSharpBase : IRequireGameLoop, IPausable, IClosable
+	public abstract class TweenSharpBase : IPausable, IClosable, IRequireGameLoop<float>
 	{
 		public event Action? OnTweenFinish;
 

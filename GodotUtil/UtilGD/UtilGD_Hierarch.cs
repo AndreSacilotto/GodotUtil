@@ -10,6 +10,22 @@ namespace Godot
 	{
 		[MethodImpl(UtilShared.INLINE)] public static SceneTree GetSceneTree() => (SceneTree)Engine.GetMainLoop();
 
+
+		#region PackedScene->Add
+		public static Node Instanciate(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled)
+		{
+			var instance = scene.Instance(editState);
+			parent.AddChild(instance);
+			return instance;
+		}
+		public static T Instanciate<T>(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled) where T : Node
+		{
+			var instance = scene.Instance<T>(editState);
+			parent.AddChild(instance);
+			return instance;
+		}
+		#endregion
+
 		#region Node Add
 
 		[MethodImpl(UtilShared.INLINE)]

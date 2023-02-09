@@ -2,7 +2,7 @@
 
 namespace Util
 {
-	public class TimerSharp : IRequireGameLoop, IPausable, IClosable
+	public class TimerSharp : IPausable, IClosable, IRequireGameLoop<float>
 	{
 		#region Event
 
