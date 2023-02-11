@@ -3,9 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace Util.Singleton
 {
-	[ClassInterface(ClassInterfaceType.None)]
-	[ComDefaultInterface(typeof(_Exception))]
-	[ComVisible(true)]
 	public class SingletonException : Exception
 	{
 		//public SingletonException() { }

@@ -3,9 +3,6 @@ using System.Runtime.InteropServices;
 
 namespace Util
 {
-	[ClassInterface(ClassInterfaceType.None)]
-	[ComDefaultInterface(typeof(_Exception))]
-	[ComVisible(true)]
 	public class GDException : Exception
 	{
 		public GDException(Type type, string message, Godot.Error error) : 

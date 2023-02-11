@@ -43,7 +43,7 @@ namespace Util
 		public const float TAU_270 = 3f * TAU_360 / 4f;
 
 		/// <summary>Same as 2*PI</summary>
-		public const float TAU_360 = MathF.Tau;
+		public const float TAU_360 = MathF.PI * 2f;
 
 		#endregion
 

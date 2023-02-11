@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿#if NET472
+
+using System.Runtime.CompilerServices;
 
 using static Util.UtilShared;
 
@@ -60,3 +62,5 @@ namespace System
 
 	}
 }
+
+#endif

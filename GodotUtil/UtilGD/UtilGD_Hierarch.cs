@@ -113,7 +113,7 @@ namespace Godot
 			newParent.AddChild(self);
 		}
 
-		public static T? GetFirstChild<T>(this Node node) where T : Node
+		public static T? GetFirstChildAs<T>(this Node node) where T : Node
 		{
 			return node.GetChildCount() == 0 ? null : node.GetChild<T>(0);
 		}
