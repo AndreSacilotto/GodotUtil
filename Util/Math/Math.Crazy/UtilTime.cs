@@ -1,51 +1,50 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Util.MathCrazy
+namespace Util.MathCrazy;
+
+public static class UtilTime
 {
-	public static class UtilTime
-	{
-		[MethodImpl(UtilShared.INLINE)] public static float NsToMs(float ms) => ms / 1e+6f;
+	[MethodImpl(INLINE)] public static float NsToMs(float ms) => ms / 1e+6f;
 
-		#region Milliseconds to
+	#region Milliseconds to
 
-		[MethodImpl(UtilShared.INLINE)] public static float MsToNs(float ms) => ms * 1e+6f;
+	[MethodImpl(INLINE)] public static float MsToNs(float ms) => ms * 1e+6f;
 
-		/// <summary>Milisencods to Microsencond</summary>
-		[MethodImpl(UtilShared.INLINE)] public static float MsToUs(float ms) => ms * 1000;
+	/// <summary>Milisencods to Microsencond</summary>
+	[MethodImpl(INLINE)] public static float MsToUs(float ms) => ms * 1000;
 
-		[MethodImpl(UtilShared.INLINE)] public static float MsToSec(float ms) => ms / 1000f;
+	[MethodImpl(INLINE)] public static float MsToSec(float ms) => ms / 1000f;
 
-		#endregion
+	#endregion
 
-		#region Seconds to
+	#region Seconds to
 
-		[MethodImpl(UtilShared.INLINE)] public static float SecToMs(float sec) => sec * 1000f;
-		[MethodImpl(UtilShared.INLINE)] public static float SecToMinute(float sec) => sec / 60f;
-		[MethodImpl(UtilShared.INLINE)] public static float SecToHour(float sec) => sec / 3600f;
+	[MethodImpl(INLINE)] public static float SecToMs(float sec) => sec * 1000f;
+	[MethodImpl(INLINE)] public static float SecToMinute(float sec) => sec / 60f;
+	[MethodImpl(INLINE)] public static float SecToHour(float sec) => sec / 3600f;
 
-		#endregion
+	#endregion
 
-		#region Minute to
+	#region Minute to
 
-		[MethodImpl(UtilShared.INLINE)] public static float MinuteToSec(float min) => min * 60f;
-		[MethodImpl(UtilShared.INLINE)] public static float MinuteToHour(float min) => min / 60f;
+	[MethodImpl(INLINE)] public static float MinuteToSec(float min) => min * 60f;
+	[MethodImpl(INLINE)] public static float MinuteToHour(float min) => min / 60f;
 
-		#endregion
+	#endregion
 
-		#region Hour to
+	#region Hour to
 
-		[MethodImpl(UtilShared.INLINE)] public static float HourToSec(float hour) => hour * 3600f;
-		[MethodImpl(UtilShared.INLINE)] public static float HourToMinute(float hour) => hour * 60f;
-		[MethodImpl(UtilShared.INLINE)] public static float HourToDays(float hour) => hour / 24f;
+	[MethodImpl(INLINE)] public static float HourToSec(float hour) => hour * 3600f;
+	[MethodImpl(INLINE)] public static float HourToMinute(float hour) => hour * 60f;
+	[MethodImpl(INLINE)] public static float HourToDays(float hour) => hour / 24f;
 
-		#endregion
+	#endregion
 
-		#region Days to
+	#region Days to
 
-		[MethodImpl(UtilShared.INLINE)] public static float DaysToHour(float days) => days * 24f;
+	[MethodImpl(INLINE)] public static float DaysToHour(float days) => days * 24f;
 
-		#endregion
+	#endregion
 
 
-	}
 }

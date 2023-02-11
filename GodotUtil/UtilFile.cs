@@ -1,51 +1,47 @@
-﻿using System;
-using Godot;
+﻿using Godot;
 
-namespace Util
+namespace Util;
+
+public static class UtilFile
 {
-	public static class UtilFile
+	public static string StandardizePath(string path) => path.Replace("\\\\", "/").Replace('\\', '/');
+
+	public static string ReadFile(string fullPath)
 	{
-		public static string StandardizePath(string path) => path.Replace("\\\\", "/").Replace('\\', '/');
-
-		public static string ReadFile(string fullPath)
-		{
-			var file = new File();
-			var er = file.Open(fullPath, File.ModeFlags.Read);
-			if (er != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(ReadFile), er);
-			var str = file.GetAsText();
-			file.Close();
-			return str;
-		}
-		public static T ReadFile<T>(string fullPath, Func<File, T> action)
-		{
-			var file = new File();
-			var er = file.Open(fullPath, File.ModeFlags.Read);
-			if (er != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(ReadFile), er);
-			var result = action(file);
-			file.Close();
-			return result;
-		}
-
-		public static void WriteFile(string fullPath, string data)
-		{
-			var file = new File();
-			var er = file.Open(fullPath, File.ModeFlags.Write);
-			if (er != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(WriteFile), er);
-			file.StoreString(data);
-			file.Close();
-		}
-		public static void WriteFile(string fullPath, Action<File> action)
-		{
-			var file = new File();
-			var er = file.Open(fullPath, File.ModeFlags.Write);
-			if (er != Error.Ok)
-				throw new GDException(typeof(UtilFile), nameof(WriteFile), er);
-			action(file);
-			file.Close();
-		}
-
+		using var file = FileAccess.Open(fullPath, FileAccess.ModeFlags.Read);
+		var error = FileAccess.GetOpenError();
+		if (error != Error.Ok)
+			throw new GDException(typeof(UtilFile), error, nameof(ReadFile));
+		var str = file.GetAsText();
+		return str;
 	}
+
+	public static T ReadFile<T>(string fullPath, Func<FileAccess, T> action)
+	{
+		using var file = FileAccess.Open(fullPath, FileAccess.ModeFlags.Read);
+		var error = FileAccess.GetOpenError();
+		if (error != Error.Ok)
+			throw new GDException(typeof(UtilFile), error, nameof(ReadFile));
+		var result = action(file);
+		return result;
+	}
+
+	public static void WriteFile(string fullPath, string data)
+	{
+		using var file = FileAccess.Open(fullPath, FileAccess.ModeFlags.Read);
+		var error = FileAccess.GetOpenError();
+		if (error != Error.Ok)
+			throw new GDException(typeof(UtilFile), error, nameof(WriteFile));
+		file.StoreString(data);
+	}
+
+	public static void WriteFile(string fullPath, Action<FileAccess> action)
+	{
+		using var file = FileAccess.Open(fullPath, FileAccess.ModeFlags.Write);
+		var error = FileAccess.GetOpenError();
+		if (error != Error.Ok)
+			throw new GDException(typeof(UtilFile), error, nameof(WriteFile));
+		action(file);
+	}
+
 }

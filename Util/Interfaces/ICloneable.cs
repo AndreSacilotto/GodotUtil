@@ -1,7 +1,6 @@
-﻿namespace Util
+﻿namespace Util;
+
+public interface ICloneable<T>
 {
-	public interface ICloneable<T>
-	{
-		public T Clone();
-	}
+	public T Clone();
 }

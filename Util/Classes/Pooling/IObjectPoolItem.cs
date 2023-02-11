@@ -1,15 +1,14 @@
-﻿namespace Util.Pool
+﻿namespace Util.Pool;
+
+public interface IObjectPoolItem<T> where T : class
 {
-	public interface IObjectPoolItem<T> where T : class
-	{
-		IObjectPool<T> PoolOwner { get; }
+	IObjectPool<T> PoolOwner { get; }
 
-		void OnCreate(IObjectPool<T> pool);
+	void OnCreate(IObjectPool<T> pool);
 
-		void OnTakeFromPool();
+	void OnTakeFromPool();
 
-		void OnReturnToPool();
+	void OnReturnToPool();
 
-		void OnDestroyFromPool();
-	}
+	void OnDestroyFromPool();
 }

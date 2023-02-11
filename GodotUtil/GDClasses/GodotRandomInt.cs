@@ -1,23 +1,22 @@
 ﻿
 using Godot;
 
-namespace Util.Rng
+namespace Util.Rng;
+
+public class GodotRandomInt : IRandom<int>, ISeed<ulong>
 {
-	public class GodotRandomInt : IRandom<int>, ISeed<ulong>
+	private RandomNumberGenerator rng = null!;
+
+	public GodotRandomInt() => rng = new();
+	public GodotRandomInt(ulong seed) => Seed = seed;
+
+	public ulong Seed
 	{
-		private RandomNumberGenerator rng = null!;
-
-		public GodotRandomInt() => rng = new();
-		public GodotRandomInt(ulong seed) => Seed = seed;
-
-		public ulong Seed
-		{
-			get => rng.Seed; 
-			set => rng.Seed = value;
-		}
-
-		public int Next() => rng.RandiRange(0, int.MaxValue-1);
-		public int Next(int max) => rng.RandiRange(0, max);
-		public int Next(int min, int max) => rng.RandiRange(min, max);
+		get => rng.Seed;
+		set => rng.Seed = value;
 	}
+
+	public int Next() => rng.RandiRange(0, int.MaxValue - 1);
+	public int Next(int max) => rng.RandiRange(0, max);
+	public int Next(int min, int max) => rng.RandiRange(min, max);
 }
