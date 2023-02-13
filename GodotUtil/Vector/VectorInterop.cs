@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+
 using g_q = Godot.Quaternion;
 using g_t2 = Godot.Transform2D;
 using g_t3 = Godot.Transform3D;
@@ -71,10 +72,10 @@ public static class VectorInterop
 		var c0 = m.X;
 		var c1 = m.Y;
 		var c2 = m.Origin;
-		return new s_m4x4(c0.X, c1.X, c2.X, 0,
-						c0.Y, c1.Y, c2.Y, 0,
-						   0, 0, 1, 0,
-						   0, 0, 0, 1);
+		return new s_m4x4(	c0.X,	c1.X,	0,	c2.X,
+							c0.Y,	c1.Y,	0,	c2.Y,
+							0,		0,		1,	0,
+							0,		0,		0,	1);
 	}
 	[MethodImpl(INLINE)]
 	public static s_m4x4 Interop(this g_t3 m)

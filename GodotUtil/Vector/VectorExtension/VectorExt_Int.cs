@@ -1,110 +1,72 @@
 ﻿using System.Runtime.CompilerServices;
+
 using number_t = System.Int32;
-using vector2_t = Godot.Vector2I;
-using vector3_t = Godot.Vector3I;
+using vec2_t = Godot.Vector2I;
+using vec3_t = Godot.Vector3I;
 
 namespace Godot;
 public static partial class VectorExt
 {
-	// ----------------------- REF -----------------------
-
 	#region Setting
 
-	[MethodImpl(INLINE)] public static void SetXRef(this ref vector2_t item, number_t x) => item.X = x;
-	[MethodImpl(INLINE)] public static void SetYRef(this ref vector2_t item, number_t y) => item.Y = y;
+	[MethodImpl(INLINE)] public static vec2_t SetX(this vec2_t item, number_t x) => new(x, item.Y);
+	[MethodImpl(INLINE)] public static vec2_t SetY(this vec2_t item, number_t y) => new(item.X, y);
 
-	[MethodImpl(INLINE)] public static void SetXRef(this ref vector3_t item, number_t x) => item.X = x;
-	[MethodImpl(INLINE)] public static void SetYRef(this ref vector3_t item, number_t y) => item.Y = y;
-	[MethodImpl(INLINE)] public static void SetZRef(this ref vector3_t item, number_t z) => item.Z = z;
+	[MethodImpl(INLINE)] public static vec3_t SetX(this vec3_t item, number_t x) => new(x, item.Y, item.Z);
+	[MethodImpl(INLINE)] public static vec3_t SetY(this vec3_t item, number_t y) => new(item.X, y, item.Z);
+	[MethodImpl(INLINE)] public static vec3_t SetZ(this vec3_t item, number_t z) => new(item.X, item.Y, z);
 
-	[MethodImpl(INLINE)] public static void NegXRef(this ref vector2_t item) => item.X = -item.X;
-	[MethodImpl(INLINE)] public static void NegYRef(this ref vector2_t item) => item.Y = -item.Y;
+	[MethodImpl(INLINE)] public static vec2_t NegX(this vec2_t item) => new(-item.X, item.Y);
+	[MethodImpl(INLINE)] public static vec2_t NegY(this vec2_t item) => new(item.X, -item.Y);
 
-	[MethodImpl(INLINE)] public static void NegXRef(this ref vector3_t item) => item.X = -item.X;
-	[MethodImpl(INLINE)] public static void NegYRef(this ref vector3_t item) => item.X = -item.Y;
-	[MethodImpl(INLINE)] public static void NegZRef(this ref vector3_t item) => item.X = -item.Z;
+	[MethodImpl(INLINE)] public static vec3_t NegX(this vec3_t item) => new(-item.X, item.Y, item.X);
+	[MethodImpl(INLINE)] public static vec3_t NegY(this vec3_t item) => new(item.X, -item.Y, item.Y);
+	[MethodImpl(INLINE)] public static vec3_t NegZ(this vec3_t item) => new(item.X, item.Y, -item.Z);
 
 	#endregion
 
 	#region Adding
 
-	[MethodImpl(INLINE)]
-	public static void AddXYRef(this ref vector2_t item, number_t value)
-	{
-		item.X += value;
-		item.Y += value;
-	}
-	[MethodImpl(INLINE)] public static void AddXRef(this ref vector2_t item, number_t x) => item.X += x;
-	[MethodImpl(INLINE)] public static void AddYRef(this ref vector2_t item, number_t y) => item.Y += y;
+	[MethodImpl(INLINE)] public static vec2_t AddX(this vec2_t item, number_t x) => new(item.X + x, item.Y);
+	[MethodImpl(INLINE)] public static vec2_t AddY(this vec2_t item, number_t y) => new(item.X, item.Y + y);
+	[MethodImpl(INLINE)] public static vec2_t AddXY(this vec2_t item, number_t value) => new(item.X + value, item.Y + value);
 
-	[MethodImpl(INLINE)]
-	public static void AddXYZRef(this ref vector3_t item, number_t value)
-	{
-		item.X += value;
-		item.Y += value;
-		item.Z += value;
-	}
-	[MethodImpl(INLINE)] public static void AddXRef(this ref vector3_t item, number_t x) => item.X += x;
-	[MethodImpl(INLINE)] public static void AddYRef(this ref vector3_t item, number_t y) => item.Y += y;
-	[MethodImpl(INLINE)] public static void AddZRef(this ref vector3_t item, number_t z) => item.Y += z;
-
-	#endregion
-
-	// ----------------------- NON REF -----------------------
-
-	#region Setting
-
-	[MethodImpl(INLINE)] public static vector2_t SetX(this vector2_t item, number_t x) => new(x, item.Y);
-	[MethodImpl(INLINE)] public static vector2_t SetY(this vector2_t item, number_t y) => new(item.X, y);
-
-	[MethodImpl(INLINE)] public static vector3_t SetX(this vector3_t item, number_t x) => new(x, item.Y, item.Z);
-	[MethodImpl(INLINE)] public static vector3_t SetY(this vector3_t item, number_t y) => new(item.X, y, item.Z);
-	[MethodImpl(INLINE)] public static vector3_t SetZ(this vector3_t item, number_t z) => new(item.X, item.Y, z);
-
-	[MethodImpl(INLINE)] public static vector2_t NegX(this vector2_t item) => new(-item.X, item.Y);
-	[MethodImpl(INLINE)] public static vector2_t NegY(this vector2_t item) => new(item.X, -item.Y);
-
-	[MethodImpl(INLINE)] public static vector3_t NegX(this vector3_t item) => new(-item.X, item.Y, item.X);
-	[MethodImpl(INLINE)] public static vector3_t NegY(this vector3_t item) => new(item.X, -item.Y, item.Y);
-	[MethodImpl(INLINE)] public static vector3_t NegZ(this vector3_t item) => new(item.X, item.Y, -item.Z);
-
-	#endregion
-
-	#region Adding
-
-	[MethodImpl(INLINE)] public static vector2_t AddXY(this vector2_t item, number_t value) => new(item.X + value, item.Y + value);
-	[MethodImpl(INLINE)] public static vector2_t AddX(this vector2_t item, number_t x) => new(item.X + x, item.Y);
-	[MethodImpl(INLINE)] public static vector2_t AddY(this vector2_t item, number_t y) => new(item.X, item.Y + y);
-
-	[MethodImpl(INLINE)] public static vector3_t AddXYZ(this vector3_t item, number_t value) => new(item.X + value, item.Y + value, item.Z + value);
-	[MethodImpl(INLINE)] public static vector3_t AddX(this vector3_t item, number_t x) => new(item.X + x, item.Y, item.Z);
-	[MethodImpl(INLINE)] public static vector3_t AddY(this vector3_t item, number_t y) => new(item.X, item.Y + y, item.Z);
-	[MethodImpl(INLINE)] public static vector3_t AddZ(this vector3_t item, number_t z) => new(item.X, item.Y, item.Z + z);
+	[MethodImpl(INLINE)] public static vec3_t AddX(this vec3_t item, number_t x) => new(item.X + x, item.Y, item.Z);
+	[MethodImpl(INLINE)] public static vec3_t AddY(this vec3_t item, number_t y) => new(item.X, item.Y + y, item.Z);
+	[MethodImpl(INLINE)] public static vec3_t AddZ(this vec3_t item, number_t z) => new(item.X, item.Y, item.Z + z);
+	[MethodImpl(INLINE)] public static vec3_t AddXY(this vec3_t item, number_t value) => new(item.X + value, item.Y + value, item.Z);
+	[MethodImpl(INLINE)] public static vec3_t AddXZ(this vec3_t item, number_t value) => new(item.X + value, item.Y, item.Z + value);
+	[MethodImpl(INLINE)] public static vec3_t AddYZ(this vec3_t item, number_t value) => new(item.X, item.Y + value, item.Z + value);
+	[MethodImpl(INLINE)] public static vec3_t AddXYZ(this vec3_t item, number_t value) => new(item.X + value, item.Y + value, item.Z + value);
 
 	#endregion
 
 	#region New
 
-	[MethodImpl(INLINE)] public static vector2_t Copy(this vector2_t vec) => new(vec.X, vec.Y);
-	[MethodImpl(INLINE)] public static vector3_t Copy(this vector3_t vec) => new(vec.X, vec.Y, vec.Z);
+	[MethodImpl(INLINE)] public static vec2_t Copy(this vec2_t vec) => new(vec.X, vec.Y);
+	[MethodImpl(INLINE)] public static vec3_t Copy(this vec3_t vec) => new(vec.X, vec.Y, vec.Z);
 
-	[MethodImpl(INLINE)] public static vector2_t CreateVec2(number_t value) => new(value, value);
-
-	[MethodImpl(INLINE)] public static vector3_t CreateVec3(number_t value) => new(value, value, value);
+	[MethodImpl(INLINE)] public static vec2_t CreateVec2(number_t value) => new(value, value);
+	[MethodImpl(INLINE)] public static vec3_t CreateVec3(number_t value) => new(value, value, value);
 
 	#endregion
 
 	#region Clamping
 
-	[MethodImpl(INLINE)] public static vector2_t Clamp(this vector2_t item, number_t min, number_t max) => new(Mathf.Clamp(item.X, min, max), Mathf.Clamp(item.Y, min, max));
-	[MethodImpl(INLINE)] public static vector2_t Clamp(this vector2_t item, vector2_t min, vector2_t max) => new(Mathf.Clamp(item.X, min.X, max.X), Mathf.Clamp(item.Y, min.Y, max.Y));
+	[MethodImpl(INLINE)] public static vec2_t Clamp(this vec2_t item, number_t min, number_t max) => new(Math.Clamp(item.X, min, max), Math.Clamp(item.Y, min, max));
+	[MethodImpl(INLINE)] public static vec2_t Clamp(this vec2_t item, vec2_t min, vec2_t max) => new(Math.Clamp(item.X, min.X, max.X), Math.Clamp(item.Y, min.Y, max.Y));
+	[MethodImpl(INLINE)] public static vec3_t Clamp(this vec3_t item, number_t min, number_t max) => new(Math.Clamp(item.X, min, max), Math.Clamp(item.Y, min, max), Math.Clamp(item.Z, min, max));
+	[MethodImpl(INLINE)] public static vec3_t Clamp(this vec3_t item, vec3_t min, vec3_t max) => new(Math.Clamp(item.X, min.X, max.X), Math.Clamp(item.Y, min.Y, max.Y), Math.Clamp(item.Z, min.Z, max.Z));
 
-	[MethodImpl(INLINE)] public static vector2_t Max(this vector2_t item, number_t max) => new(Math.Max(item.X, max), Math.Max(item.Y, max));
-	[MethodImpl(INLINE)] public static vector2_t Max(this vector2_t item, vector2_t max) => new(Math.Max(item.X, max.X), Math.Max(item.Y, max.Y));
+	[MethodImpl(INLINE)] public static vec2_t Max(this vec2_t item, number_t max) => new(Math.Max(item.X, max), Math.Max(item.Y, max));
+	[MethodImpl(INLINE)] public static vec2_t Max(this vec2_t item, vec2_t max) => new(Math.Max(item.X, max.X), Math.Max(item.Y, max.Y));
+	[MethodImpl(INLINE)] public static vec3_t Max(this vec3_t item, number_t max) => new(Math.Max(item.X, max), Math.Max(item.Y, max), Math.Max(item.Z, max));
+	[MethodImpl(INLINE)] public static vec3_t Max(this vec3_t item, vec3_t max) => new(Math.Max(item.X, max.X), Math.Max(item.Y, max.Y), Math.Max(item.Z, max.Z));
 
-	[MethodImpl(INLINE)] public static vector2_t Min(this vector2_t item, number_t min) => new(Math.Min(item.X, min), Math.Min(item.Y, min));
-	[MethodImpl(INLINE)] public static vector2_t Min(this vector2_t item, vector2_t min) => new(Math.Min(item.X, min.X), Math.Min(item.Y, min.Y));
-
+	[MethodImpl(INLINE)] public static vec2_t Min(this vec2_t item, number_t min) => new(Math.Min(item.X, min), Math.Min(item.Y, min));
+	[MethodImpl(INLINE)] public static vec2_t Min(this vec2_t item, vec2_t min) => new(Math.Min(item.X, min.X), Math.Min(item.Y, min.Y));
+	[MethodImpl(INLINE)] public static vec3_t Min(this vec3_t item, number_t min) => new(Math.Min(item.X, min), Math.Min(item.Y, min), Math.Min(item.Z, min));
+	[MethodImpl(INLINE)] public static vec3_t Min(this vec3_t item, vec3_t min) => new(Math.Min(item.X, min.X), Math.Min(item.Y, min.Y), Math.Min(item.Z, min.Z));
 
 	#endregion
 
