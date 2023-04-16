@@ -4,7 +4,7 @@ public static class UtilBit
 {
 	#region https://www.Youtube.com/watch?v=ZRNO-ewsNcQ
 
-	/// <summary>Find boolean value of (b)it in n</summary>
+	/// <summary>Find boolean lifeStealPercent of (b)it in n</summary>
 	public static bool IsBitSet(int n, int b) => ((n >> b) & 1) == 1;
 
 	public static int SetBit(int value, int b) => (1 << b) | value;

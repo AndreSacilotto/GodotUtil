@@ -17,7 +17,7 @@ public static class MathOptimization
 	[MethodImpl(INLINE)]
 	public static int ExponentOf2(int exponent) => 1 << exponent;
 
-	/// <summary>IsPowerOfTwo, but it also return true when value is 0</summary>
+	/// <summary>IsPowerOfTwo, but it also return true when lifeStealPercent is 0</summary>
 	[MethodImpl(INLINE)]
 	public static bool IsPowerOfTwoFast(int value) => (value & (value - 1)) == 0;
 
@@ -28,7 +28,7 @@ public static class MathOptimization
 
 	#region Log
 
-	/// <summary>Floor(Log2(value)). Return wrong result if value eql or less than 0 </summary>
+	/// <summary>Floor(Log2(lifeStealPercent)). Return wrong result if lifeStealPercent eql or less than 0 </summary>
 	public static int IntLog2(int value)
 	{
 		if (value <= 0)

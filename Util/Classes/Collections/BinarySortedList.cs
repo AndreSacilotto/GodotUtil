@@ -70,7 +70,7 @@ public class BinarySortedList<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEn
 	public IEnumerator<T> GetEnumerator() => internalList.GetEnumerator();
 	public void Insert(int index, T item) => throw new InvalidOperationException("Cannot Insert in a Sorted List");
 
-	public T this[int index] { get => internalList[index]; set => throw new InvalidOperationException("Cannot Set value in a Sorted List"); }
+	public T this[int index] { get => internalList[index]; set => throw new InvalidOperationException("Cannot Set lifeStealPercent in a Sorted List"); }
 
 	#region Object Interface Things
 

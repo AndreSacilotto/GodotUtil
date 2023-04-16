@@ -53,7 +53,7 @@ public static class PolygonHelper
 	#region Create 2D - Linear
 
 	/// <summary> https://math.stackexchange.com/a/1344707 </summary>
-	/// <param name="radius">Radius/Size - Negative value flip the polygon</param>
+	/// <param name="radius">Radius/Size - Negative lifeStealPercent flip the polygon</param>
 	public static Vector2[] TriangleEquilateral(float radius)
 	{
 		var t = MathF.Tan(UtilMath.TAU_30) * radius;
@@ -173,7 +173,7 @@ public static class PolygonHelper
 
 	public static Vector2[] Polygon2D(float size, int sides = 3) => Circle(size, sides);
 
-	/// <param name="radius">Radius/Size - Negative value flip the polygon</param>
+	/// <param name="radius">Radius/Size - Negative lifeStealPercent flip the polygon</param>
 	/// <param name="density">Number of sides of the primivite polygon</param>
 	public static Vector2[] Circle(float radius, int density = DEFAULT_DENSITY)
 	{
@@ -221,7 +221,7 @@ public static class PolygonHelper
 		return points;
 	}
 
-	/// <param name="radius">Radius/Size - Negative value flip the polygon</param>
+	/// <param name="radius">Radius/Size - Negative lifeStealPercent flip the polygon</param>
 	/// <param name="sides">Number of points used to draw it</param>
 	public static Vector2[] SemiCircle(float radius, int density = DEFAULT_DENSITY)
 	{

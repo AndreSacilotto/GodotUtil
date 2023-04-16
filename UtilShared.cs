@@ -3,6 +3,8 @@ global using System.Collections.Generic;
 
 global using static Util.UtilShared;
 
+global using GDC = Godot.Collections;
+
 using System.Runtime.CompilerServices;
 
 namespace Util;

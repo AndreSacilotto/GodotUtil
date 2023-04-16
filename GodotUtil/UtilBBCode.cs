@@ -8,9 +8,9 @@ public static class UtilBBCode
 	public static string RemoveTags(string str) =>
 		Regex.Replace(str, "\\[.*?\\]", string.Empty);
 
-	public static string Custom(string str, string tag) => "[" + tag + "]" + str + "[" + tag + "]";
-	public static string Custom(string str, string tag, string arg) => "[" + tag + "=" + arg + "]" + str + "[" + tag + "]";
-	public static string CustomArgs(string str, string tag, string args) => "[" + tag + " " + args + "]" + str + "[" + tag + "]";
+	public static string Custom(string str, string tag) => '[' + tag + ']' + str + '[' + tag + ']';
+	public static string Custom(string str, string tag, string arg) => '[' + tag + '=' + arg + ']' + str + '[' + tag + ']';
+	public static string CustomArgs(string str, string tag, string args) => '[' + tag + ' ' + args + ']' + str + '[' + tag + ']';
 
 	#region Basic
 	public static string Bold(string str) => "[b]" + str + "[/b]";
@@ -38,13 +38,13 @@ public static class UtilBBCode
 
 	#region Table
 	public static string Cell(string str) => Custom(str, "cell");
-	public static string Table(string str, int numCollums) => Custom(str, "table", numCollums.ToString());
+	public static string Table(string str, int numCollums) => Custom(str, "stats", numCollums.ToString());
 	public static string Table(string[] cells, int numCollums)
 	{
-		string str = "[table=" + numCollums + "]";
+		string str = "[stats=" + numCollums + "]";
 		for (int i = 0; i < cells.Length; i++)
 			str += "[cell]" + cells[i] + "[/cell]";
-		str += "[table]";
+		str += "[stats]";
 		return str;
 	}
 	#endregion

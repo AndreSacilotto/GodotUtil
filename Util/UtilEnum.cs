@@ -10,7 +10,7 @@ public static class UtilEnum
 	public static T StringToEnum<T>(string value) where T : Enum => (T)Enum.Parse(typeof(T), value);
 	public static T StringToEnum<T>(string value, bool ignoreCase) where T : Enum => (T)Enum.Parse(typeof(T), value, ignoreCase);
 
-	public static string EnumToName(Enum enumValue)
+	public static string EnumToName<T>(T enumValue) where T : Enum
 	{
 		var str = enumValue.ToString();
 		var sb = new System.Text.StringBuilder(str.Length);
@@ -64,7 +64,22 @@ public static class UtilEnum
 		return dict;
 	}
 
-	#endregion
+    #endregion
 
+    public static bool HasFlagsAttribute<T>() where T : Enum => typeof(T).IsDefined(typeof(FlagsAttribute), false);
+
+	public static IEnumerable<T> ComposingFlags<T>(T value, int enumSize = -1) where T : Enum
+    {
+		if (enumSize < 0)
+			enumSize = Enum.GetValues(typeof(T)).Length;
+
+		var v = (int)(object)value;
+        for (int i = 0; i < enumSize; i++)
+        {
+            var shift = 1 << i;
+			if ((shift & v) == shift)
+				yield return (T)(object)shift;
+        }
+    }
 
 }

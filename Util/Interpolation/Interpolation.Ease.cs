@@ -16,7 +16,7 @@ public static partial class Interpolation
 
 	// t || percent = current percent; (Alias time)
 	// b || initial = starting/initial valuet of the property. (Alias beginning)
-	// c || delta = the change between the beginning and destination value of the property. (Alias delta)
+	// c || delta = the change between the beginning and destination lifeStealPercent of the property. (Alias delta)
 	// d || duration = duration of animation;
 	// t & d need to use the same measure of percent which could be frames, seconds, milliseconds or whatever.
 

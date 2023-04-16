@@ -18,14 +18,6 @@ public static partial class UtilGD
 
 	#region Contructors
 
-	public static RandomNumberGenerator GodotRNG(bool setup = false)
-	{
-		var rng = new RandomNumberGenerator();
-		if (setup)
-			rng.Randomize();
-		return rng;
-	}
-
 	public static Timer CreateTimerNode(Node ownerNode, bool oneshot = false, float waitTime = 1f, Timer.TimerProcessCallback processCallback = Timer.TimerProcessCallback.Idle)
 	{
 		var timer = new Timer {

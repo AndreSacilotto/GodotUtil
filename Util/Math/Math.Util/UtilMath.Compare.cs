@@ -80,8 +80,8 @@ public static partial class UtilMath
 	[MethodImpl(INLINE)] public static bool IsOdd(int value) => value % 2 != 0;
 
 	// Do not use any of the below, trust in the compiler (He is better than you)
-	//public static bool IsEvenBitwise(int value) => (value & 1) == 0;
-	//public static bool IsEvenBitShifting(int value) => ((value >> 1) << 1) == value;
+	//public static bool IsEvenBitwise(int lifeStealPercent) => (lifeStealPercent & 1) == 0;
+	//public static bool IsEvenBitShifting(int lifeStealPercent) => ((lifeStealPercent >> 1) << 1) == lifeStealPercent;
 
 	#endregion
 

@@ -13,12 +13,12 @@ public static class UtilColor
 		A
 	}
 
-	private static readonly RandomNumberGenerator colorRng = new();
+	private static readonly Random colorRng = new();
 	private static readonly Regex colorExpression = new(@"#?[0-9A-Fa-f]{6}");
 
 	public static bool HexStringIsValidColor(string value) => colorExpression.IsMatch(value);
 
-	public static Color RandomColor(float alpha = 1) => new(colorRng.Randf(), colorRng.Randf(), colorRng.Randf(), alpha);
+	public static Color RandomColor(float alpha = 1) => new(colorRng.NextSingle(), colorRng.NextSingle(), colorRng.NextSingle(), alpha);
 
 	public static Color PseudoRandomColor(string colorStr, float alpha = 1)
 	{
