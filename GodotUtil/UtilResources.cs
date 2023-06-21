@@ -1,18 +1,16 @@
 ﻿using Godot;
-using io = System.IO;
+using Util;
+using IO = System.IO;
 
-namespace Util;
+namespace GodotUtil;
 
 public static class UtilResources
 {
-    public static string GetResourceFileName(this Resource res) =>
-        io.Path.GetFileNameWithoutExtension(res.ResourcePath);
+    public static string GetResourceFileName(this Resource res) => IO.Path.GetFileNameWithoutExtension(res.ResourcePath);
 
-    public static string GetResourceDir(this Resource res) =>
-        res.ResourcePath.GetBaseDir();
+    public static string GetResourceDir(this Resource res) => res.ResourcePath.GetBaseDir();
 
-    public static string GetResourceExtension(this Resource res) =>
-        io.Path.GetExtension(res.ResourcePath);
+    public static string GetResourceExtension(this Resource res) => IO.Path.GetExtension(res.ResourcePath);
 
     #region Load
 
@@ -63,10 +61,10 @@ public static class UtilResources
             var itemPath = dir.GetNext();
             while (itemPath != string.Empty)
             {
-                if (dir.CurrentIsDir()) 
+                if (dir.CurrentIsDir())
                 {
-                    if(maxDepth > 0)
-                        LoadAllRecursive(buffer, itemPath, maxDepth-1, cacheMode);
+                    if (maxDepth > 0)
+                        LoadAllRecursive(buffer, itemPath, maxDepth - 1, cacheMode);
                 }
                 else
                     buffer.Add(ResourceLoader.Load<T>(itemPath, null, cacheMode));

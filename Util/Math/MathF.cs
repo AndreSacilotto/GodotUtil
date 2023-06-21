@@ -58,8 +58,6 @@ public static class MathF
 	[MethodImpl(INLINE)] public static float Tan(float value) => (float)Math.Tan(value);
 	[MethodImpl(INLINE)] public static float Tanh(float value) => (float)Math.Tanh(value);
 	[MethodImpl(INLINE)] public static float Truncate(float value) => (float)Math.Truncate(value);
-
-
 }
 
 #endif

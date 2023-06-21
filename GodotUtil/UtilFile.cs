@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace Util;
+namespace GodotUtil;
 
 public static class UtilFile
 {

@@ -2,5 +2,5 @@
 
 public interface ICloneable<T>
 {
-	public T Clone();
+    public T Clone();
 }

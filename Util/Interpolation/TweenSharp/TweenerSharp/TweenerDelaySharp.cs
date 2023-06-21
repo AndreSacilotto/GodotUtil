@@ -2,11 +2,11 @@
 
 public class TweenerDelaySharp : TweenerSharpBase
 {
-	public override void Step(float delta)
-	{
-		if (complete)
-			return;
-		Accumulator += delta;
-		TryEnd();
-	}
+    public override void Step(float delta)
+    {
+        if (complete)
+            return;
+        Accumulator += delta;
+        TryEnd();
+    }
 }
