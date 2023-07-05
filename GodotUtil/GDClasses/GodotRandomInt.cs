@@ -1,6 +1,6 @@
 ﻿
 using Godot;
-using Util.Rng;
+using Util.Classes;
 
 namespace GodotUtil;
 

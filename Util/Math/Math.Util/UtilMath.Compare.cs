@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Util;
 
@@ -9,7 +10,29 @@ public static partial class UtilMath
     [MethodImpl(INLINE)] public static bool MoreThanZero(this float value) => value > EPSILON_FLOAT;
     [MethodImpl(INLINE)] public static bool LessThanZero(this float value) => value < -EPSILON_FLOAT;
 
-    [MethodImpl(INLINE)] public static bool Approximately(float a, float b) => Math.Abs(b - a) < EPSILON_FLOAT;//float.Epsilon;
+    [MethodImpl(INLINE)] public static bool ApproximatelySign(float a, float b) => Math.Abs(b - a) < EPSILON_FLOAT;//float.Epsilon;
+
+    public static bool AlmostEqual2sComplement(float a, float b, int maxDeltaBits = 6)
+    {
+        int aInt = FloatAsInt.Convert(a);
+        if (aInt < 0)
+            aInt = Int32.MinValue - aInt;
+
+        int bInt = FloatAsInt.Convert(b);
+        if (bInt < 0)
+            bInt = Int32.MinValue - bInt;
+
+        return Math.Abs(aInt - bInt) <= (1 << maxDeltaBits);
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public readonly struct FloatAsInt
+    {
+        public static int Convert(float value) => new FloatAsInt(value).IntValue;
+        public FloatAsInt(float floatValue) => FloatValue = floatValue;
+        [FieldOffset(0)] public readonly int IntValue;
+        [FieldOffset(0)] public readonly float FloatValue;
+    }
 
     #endregion
 

@@ -117,7 +117,7 @@ public static class UtilVector
         // Dot product - the cosine of the angle between 2 vectors.
         float dot = start.Dot(end);
         // Clamp it to be in the range of Acos(), because of float precision
-        Godot.Mathf.Clamp(dot, -1.0f, 1.0f);
+        UtilMath.Clamp(dot, -1.0f, 1.0f);
         // Acos(dot) returns the angle between start and end,
         // And multiplying that by percent returns the angle between start and the final result.
         var theta = MathF.Acos(dot) * weight;
@@ -130,7 +130,7 @@ public static class UtilVector
         // Dot product - the cosine of the angle between 2 vectors.
         float dot = start.Dot(end);
         // Clamp it to be in the range of Acos(), because of float precision
-        Godot.Mathf.Clamp(dot, -1.0f, 1.0f);
+        UtilMath.Clamp(dot, -1.0f, 1.0f);
         // Acos(dot) returns the angle between start and end,
         // And multiplying that by percent returns the angle between start and the final result.
         var theta = MathF.Acos(dot) * weight;

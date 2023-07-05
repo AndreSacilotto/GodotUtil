@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Util.Pool;
+namespace Util.Classes;
 
 public class ObjectPoolEvents<T> : IObjectPool<T> where T : class
 {

@@ -43,7 +43,7 @@ public static class Heuristics
         int diffX = Math.Abs(x1 - x0);
         int diffY = Math.Abs(y1 - y0);
 
-        return Math.Max(diffX, diffY) + Godot.Mathf.Sqrt2 * Math.Min(diffX, diffY);
+        return Math.Max(diffX, diffY) + UtilMath.SQTR_2 * Math.Min(diffX, diffY);
     }
 
     /// <summary> 

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Util.Collections;
+namespace Util.Classes;
 
 public class FakeArray2D<T> : ICloneable, ICollection, IStructuralComparable, IStructuralEquatable, IReadOnlyCollection<T>
 {

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Util.Pool;
+namespace Util.Classes;
 
 public abstract class ObjectPool<T> : IObjectPool<T> where T : class, IObjectPoolItem<T>
 {

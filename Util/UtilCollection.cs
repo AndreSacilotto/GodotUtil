@@ -273,10 +273,6 @@ public static class UtilCollection
         return newArr;
     }
 
-    #endregion
-
-    #region Row and Collums
-
     [MethodImpl(INLINE)] public static int Rows<T>(this T[,] array) => array.GetLength(0);
     [MethodImpl(INLINE)] public static int Columns<T>(this T[,] array) => array.GetLength(1);
 
@@ -309,7 +305,7 @@ public static class UtilCollection
     public static void Swap<T>(this T[] array, int indexA, int indexB) =>
         (array[indexB], array[indexA]) = (array[indexA], array[indexB]);
     [MethodImpl(INLINE)]
-    public static void Swap<T>(this IList<T> list, int indexA, int indexB) =>
+    public static void Swap<T>(this List<T> list, int indexA, int indexB) =>
         (list[indexB], list[indexA]) = (list[indexA], list[indexB]);
     [MethodImpl(INLINE)]
     public static void Swap<T, K>(this IDictionary<T, K> dict, T indexA, T indexB) =>
@@ -345,14 +341,12 @@ public static class UtilCollection
     }
     #endregion
 
-    #region List / Dict
+    #region List
 
     [MethodImpl(INLINE)]
     public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort(ComparerReverse<T>.Default);
 
     [MethodImpl(INLINE)]
-    public static void AddItems<T>(this List<T> list, params T[] items) => list.AddRange(items);
-
     public static int AddSorted<T>(this List<T> list, T item) where T : IComparable<T>
     {
         var index = list.BinarySearch(item);
@@ -361,6 +355,7 @@ public static class UtilCollection
         list.Insert(index, item);
         return index;
     }
+    [MethodImpl(INLINE)]
     public static int AddSorted<T>(this List<T> list, T item, IComparer<T> comparer)
     {
         var index = list.BinarySearch(item, comparer);
@@ -369,6 +364,21 @@ public static class UtilCollection
         list.Insert(index, item);
         return index;
     }
+
+    [MethodImpl(INLINE)]
+    public static bool TryAdd<T>(this List<T> list, T item)
+    {
+        int index = list.IndexOf(item);
+        if (index == -1)
+        {
+            list.Add(item);
+            return true;
+        }
+        return false;
+    }
+    #endregion
+
+    #region Dict
 
     [MethodImpl(INLINE)]
     public static TValue? GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) =>

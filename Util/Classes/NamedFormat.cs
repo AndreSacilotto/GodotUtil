@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Util;
+namespace Util.Classes;
 
 public partial class NamedFormat
 {

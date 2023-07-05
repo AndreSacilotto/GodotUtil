@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Util.Collections;
+namespace Util.Classes;
 
 /// <summary>
 /// https://stackoverflow.com/q/3663613

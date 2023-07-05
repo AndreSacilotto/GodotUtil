@@ -1,4 +1,4 @@
-﻿namespace Util.Pool;
+﻿namespace Util.Classes;
 
 public interface IObjectPool<T> : IEnumerable<T> where T : class
 {

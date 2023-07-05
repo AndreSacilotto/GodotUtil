@@ -1,4 +1,4 @@
-﻿namespace Util;
+﻿namespace Util.Classes;
 
 public class TimerSharp : IPausable, IClosable, IRequireGameLoop<float>
 {

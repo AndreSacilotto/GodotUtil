@@ -1,4 +1,4 @@
-﻿namespace Util.Rng;
+﻿namespace Util.Classes;
 
 public interface ISeed<T>
 {

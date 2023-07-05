@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Util.Collections;
+namespace Util.Classes;
 
 public class BinarySortedList<T> : IList<T>, ICollection<T>, IEnumerable<T>, IEnumerable, IList, ICollection, IReadOnlyList<T>, IReadOnlyCollection<T>
 {

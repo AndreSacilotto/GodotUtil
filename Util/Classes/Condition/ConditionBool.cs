@@ -1,4 +1,4 @@
-﻿namespace Util;
+﻿namespace Util.Classes;
 
 public class ConditionBool : IConditionEvent
 {
