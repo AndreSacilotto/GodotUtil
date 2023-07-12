@@ -309,7 +309,7 @@ public static class PolygonHelper
     {
         if (width < 0f || height < 0f)
             return ErrorReturn2D();
-        curvature = UtilMath.Clamp(curvature, 0f, 1f);
+        curvature = Math.Clamp(curvature, 0f, 1f);
 
         var points = new Vector2[2 + density];
 
@@ -338,7 +338,7 @@ public static class PolygonHelper
     {
         if (width < 0f || height < 0f)
             return ErrorReturn2D();
-        curvature = UtilMath.Clamp(curvature, 0f, 1f - SAFE_THRESHOLD);
+        curvature = Math.Clamp(curvature, 0f, 1f - SAFE_THRESHOLD);
 
         var points = new Vector2[density * 2];
 
@@ -370,8 +370,8 @@ public static class PolygonHelper
     {
         if (width < 0f || height < 0f)
             return ErrorReturn2D();
-        upperCur = UtilMath.Clamp(upperCur, 0f, 1f - SAFE_THRESHOLD);
-        lowerCur = UtilMath.Clamp(lowerCur, 0f, 1f - SAFE_THRESHOLD);
+        upperCur = Math.Clamp(upperCur, 0f, 1f - SAFE_THRESHOLD);
+        lowerCur = Math.Clamp(lowerCur, 0f, 1f - SAFE_THRESHOLD);
 
         var points = new Vector2[density * 2];
 

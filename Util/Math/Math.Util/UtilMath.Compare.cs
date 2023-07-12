@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Util;
@@ -37,11 +38,9 @@ public static partial class UtilMath
     #endregion
 
     #region Bool to Value
-    [MethodImpl(INLINE)] public static int BoolValue01(bool value) => value ? 0 : 1;
-
-    [MethodImpl(INLINE)] public static int BoolValue10(bool value) => value ? 1 : 0;
-
-    [MethodImpl(INLINE)] public static int BoolValue11(bool value) => value ? 1 : -1;
+    [MethodImpl(INLINE)] public static T BoolValue01<T>(bool value) where T : INumber<T> => value ? T.Zero : T.One;
+    [MethodImpl(INLINE)] public static T BoolValue10<T>(bool value) where T : INumber<T> => value ? T.One : T.Zero;
+    [MethodImpl(INLINE)] public static T BoolValue11<T>(bool value) where T : INumber<T>, ISignedNumber<T> => value ? T.One : T.NegativeOne;
     #endregion
 
     #region Min Max
@@ -95,16 +94,6 @@ public static partial class UtilMath
                 biggest = values[i];
         return biggest;
     }
-
-    #endregion
-
-    #region Even Odd
-    [MethodImpl(INLINE)] public static bool IsEven(int value) => value % 2 == 0;
-    [MethodImpl(INLINE)] public static bool IsOdd(int value) => value % 2 != 0;
-
-    // Do not use any of the below, trust in the compiler (He is better than you)
-    //public static bool IsEvenBitwise(int value) => (value & 1) == 0;
-    //public static bool IsEvenBitShifting(int value) => ((value >> 1) << 1) == value;
 
     #endregion
 

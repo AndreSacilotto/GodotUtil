@@ -45,7 +45,6 @@ public static partial class UtilMath
 
     #endregion
 
-
     public const float EPSILON_FLOAT = 1E-06F;
     public const float EPSILON_DOUBLE = 1E-12F;
 

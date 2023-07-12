@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace Util;
@@ -56,65 +56,69 @@ public static partial class UtilMath
     #region Average
 
     [MethodImpl(INLINE)]
-    public static int Average(IEnumerable<int> items)
+    public static T Average<T>(IEnumerable<T> items) where T : INumber<T>
     {
-        int sum = 0, count = 0;
-        foreach (var item in items)
-        {
-            sum += item;
-            count++;
-        }
-        return sum / count;
-    }
-    [MethodImpl(INLINE)]
-    public static float Average(IEnumerable<float> items)
-    {
-        float sum = 0;
+        T sum = T.Zero;
         int count = 0;
         foreach (var item in items)
         {
             sum += item;
             count++;
         }
-        return sum / count;
+        return sum / T.CreateChecked(count);
+    }
+    [MethodImpl(INLINE)]
+    public static T Average<T>(ICollection<T> items) where T : INumber<T>
+    {
+        T sum = T.Zero;
+        foreach (var item in items)
+            sum += item;
+        return sum / T.CreateChecked(items.Count);
     }
     #endregion
 
     #region Median
 
-    [MethodImpl(INLINE)] public static float FindMedian(float[] arr) => FindMedian(arr, 0, arr.Length);
-    public static float FindMedian(float[] arr, int index, int length)
+    public static T GetMedian<T>(T[] sourceArray, bool cloneArray = true) where T : INumber<T>
     {
-        Array.Sort(arr, index, length);
-        length += index;
-        if (length % 2 != 0)
-            return arr[length / 2 + index];
-        return (arr[(length - 1) / 2 + index] + arr[length / 2] + index) / 2f;
-    }
+        var sortedArray = cloneArray ? (T[])sourceArray.Clone() : sourceArray;
+        Array.Sort(sortedArray);
 
-    public static float FindMedian(int[] arr) => FindMedian(arr, 0, arr.Length);
-    public static float FindMedian(int[] arr, int index, int length)
-    {
-        Array.Sort(arr, index, length);
-        length += index;
-        if (length % 2 != 0)
-            return arr[length / 2 + index];
-        return (arr[(length - 1) / 2 + index] + arr[length / 2] + index) / 2f;
+        int size = sortedArray.Length;
+        (int mid, int remainer) = Math.DivRem(size, 2);
+        if (remainer != 0) // It would be > 0 if was even 
+            return sortedArray[mid];
+        return (sortedArray[mid] + sortedArray[mid - 1]) / T.CreateChecked(2);
     }
 
     #endregion
 
     #region Average Related
-    public static float StandardDeviation(IEnumerable<int> values)
+    
+    public static T StandardDeviation<T>(IEnumerable<T> values) where T : IFloatingPointIeee754<T>
     {
         var avg = Average(values);
-        return MathF.Sqrt((float)values.Average(v => PowSquare(v - avg)));
+        var deviations = T.Zero;
+        int count = 0;
+        foreach (var item in values)
+        {
+            deviations += PowSquare(item - avg);
+            count++;
+        }
+        var variance = deviations / T.CreateChecked(count);
+        return T.Sqrt(variance);
     }
-    public static float StandardDeviation(IEnumerable<float> values)
+
+    public static T StandardDeviation<T>(ICollection<T> values) where T : IFloatingPointIeee754<T>
     {
         var avg = Average(values);
-        return MathF.Sqrt(values.Average(v => PowSquare(v - avg)));
+        var deviations = T.Zero;
+        foreach (var item in values)
+            deviations += PowSquare(item - avg);
+        var variance = deviations / T.CreateChecked(values.Count);
+        return T.Sqrt(variance);
     }
+
     #endregion
 
 }

@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace Util;
 
@@ -7,27 +8,17 @@ public static partial class UtilMath
 
     #region Pow
 
-    [MethodImpl(INLINE)] public static int PowSquare(int value) => value * value;
-    [MethodImpl(INLINE)] public static float PowSquare(float value) => value * value;
-    [MethodImpl(INLINE)] public static double PowSquare(double value) => value * value;
-
-    [MethodImpl(INLINE)] public static int PowCubic(int value) => value * value * value;
-    [MethodImpl(INLINE)] public static float PowCubic(float value) => value * value * value;
-    [MethodImpl(INLINE)] public static double PowCubic(double value) => value * value * value;
-
-    [MethodImpl(INLINE)] public static int PowQuartic(int value) => value * value * value * value;
-    [MethodImpl(INLINE)] public static float PowQuartic(float value) => value * value * value * value;
-    [MethodImpl(INLINE)] public static double PowQuartic(double value) => value * value * value * value;
-
-    [MethodImpl(INLINE)] public static int PowQuintic(int value) => value * value * value * value * value;
-    [MethodImpl(INLINE)] public static float PowQuintic(float value) => value * value * value * value * value;
-    [MethodImpl(INLINE)] public static double PowQuintic(double value) => value * value * value * value * value;
+    [MethodImpl(INLINE)] public static T PowSquare<T>(T value) where T : INumber<T> => value * value;
+    [MethodImpl(INLINE)] public static T PowCubic<T>(T value) where T : INumber<T> => value * value * value;
+    [MethodImpl(INLINE)] public static T PowQuartic<T>(T value) where T : INumber<T> => value * value * value * value;
+    [MethodImpl(INLINE)] public static T PowQuintic<T>(T value) where T : INumber<T> => value * value * value * value * value;
 
     #endregion
 
     #region Precision
 
     [MethodImpl(INLINE)] public static float CorrectPrecision(float value) => MathF.Round(value, 6);
+    [MethodImpl(INLINE)] public static double CorrectPrecision(double value) => Math.Round(value, 12);
 
     #endregion
 
@@ -51,34 +42,7 @@ public static partial class UtilMath
 
     #region Clamping
 
-    [MethodImpl(INLINE)]
-    public static int Clamp(int value, int min, int max)
-    {
-        if (value > max)
-            return max;
-        if (value < min)
-            return min;
-        return value;
-    }
-
-    [MethodImpl(INLINE)]
-    public static float Clamp(float value, float min, float max)
-    {
-        if (value > max)
-            return max;
-        if (value < min)
-            return min;
-        return value;
-    }
-    [MethodImpl(INLINE)]
-    public static float Clamp01(float value)
-    {
-        if (value > 1f)
-            return 1f;
-        if (value < 0f)
-            return 0f;
-        return value;
-    }
+    [MethodImpl(INLINE)] public static T Clamp01<T>(T value) where T : INumber<T> => T.Clamp(value, T.One, T.Zero);
 
     public static float Confine(float value, float min, float max, out float excess)
     {
