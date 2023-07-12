@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace Util;
 
@@ -34,7 +35,7 @@ public static class UtilBit
 
     [MethodImpl(INLINE)] public static int CombineBytes(byte b1, byte b2) => b1 << 8 | b2;
 
-#if NET7_0_OR_GREATER && false
+#if NET7_0_OR_GREATER
 	[MethodImpl(INLINE)] public static T UnsetFlags<T>(T value, T flags) where T : IBinaryInteger<T> => value &= ~flags;
 	[MethodImpl(INLINE)] public static T SetFlags<T>(T value, T flags) where T : IBinaryInteger<T> => value |= flags;
 	[MethodImpl(INLINE)] public static T ToggleFlags<T>(T value, T flags) where T : IBinaryInteger<T> => value ^= flags;
