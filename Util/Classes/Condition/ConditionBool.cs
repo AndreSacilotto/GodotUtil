@@ -4,7 +4,11 @@ public class ConditionBool : IConditionEvent
 {
     public event Action? OnActivation, OnDesactivation;
 
-    private bool active;
+    protected bool active;
+
+    public ConditionBool() { }
+    public ConditionBool(bool active) => this.active = active;
+
     public bool Active
     {
         get => active;

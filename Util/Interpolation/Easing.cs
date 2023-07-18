@@ -1,21 +1,21 @@
-﻿/**
- * Initial: godot engine 3.5
- * Author: 5Spectra
- * Credit: Robert Penner - The easing equations we all know and love 
- */
+﻿using System.Numerics;
 
+/**
+* Author: 5Spectra
+* Credit: Godot Engine 3.5 and Robert Penner
+*/
 namespace Util.Interpolation;
 
-public static partial class Interpolation
+/// <summary>
+/// Robert Penner's Easing Functions<br/><br/>
+/// For explanation go to:<br/>
+/// <see href="http://robertpenner.com/easing/"/><br/>
+/// <see href="https://gist.Github.com/xanathar/735e17ac129a72a277ee"/>
+/// </summary>
+public static partial class Easing
 {
-    #region Robert Penner's Easing Functions
-
-    //For explanatiion go to:
-    //http://robertpenner.com/easing/
-    //https://gist.Github.com/xanathar/735e17ac129a72a277ee
-
     // t || percent = current percent; (Alias time)
-    // b || initial = starting/initial valuet of the property. (Alias beginning)
+    // b || initial = starting/initial value of the property. (Alias beginning)
     // c || delta = the change between the beginning and destination value of the property. (Alias delta)
     // d || duration = duration of animation;
     // t & d need to use the same measure of percent which could be frames, seconds, milliseconds or whatever.
@@ -379,72 +379,4 @@ public static partial class Interpolation
     }
     #endregion
 
-    #endregion
-
-    #region Easing Function Util
-
-    public delegate float EaseFunc(float percent, float initial, float delta, float duration);
-
-    public enum EaseEquation
-    {
-        Linear,
-        ExpoIn, ExpoOut, ExpoInOut, ExpoOutIn,
-        CircIn, CircOut, CircInOut, CircOutIn,
-        QuadIn, QuadOut, QuadInOut, QuadOutIn,
-        SineIn, SineOut, SineInOut, SineOutIn,
-        CubicIn, CubicOut, CubicInOut, CubicOutIn,
-        QuartIn, QuartOut, QuartInOut, QuartOutIn,
-        QuintIn, QuintOut, QuintInOut, QuintOutIn,
-        ElasticIn, ElasticOut, ElasticInOut, ElasticOutIn,
-        BounceIn, BounceOut, BounceInOut, BounceOutIn,
-        BackIn, BackOut, BackInOut, BackOutIn,
-    };
-
-    public static EaseFunc GetEaseEquation(EaseEquation equation) => equation switch
-    {
-        EaseEquation.ExpoInOut => ExpoInOut,
-        EaseEquation.ExpoOut => ExpoOut,
-        EaseEquation.ExpoIn => ExpoIn,
-        EaseEquation.ExpoOutIn => ExpoOutIn,
-        EaseEquation.CircOut => CircOut,
-        EaseEquation.CircIn => CircIn,
-        EaseEquation.CircInOut => CircInOut,
-        EaseEquation.CircOutIn => CircOutIn,
-        EaseEquation.QuadOut => QuadOut,
-        EaseEquation.QuadIn => QuadIn,
-        EaseEquation.QuadInOut => QuadInOut,
-        EaseEquation.QuadOutIn => QuadOutIn,
-        EaseEquation.SineOut => SineOut,
-        EaseEquation.SineIn => SineIn,
-        EaseEquation.SineInOut => SineInOut,
-        EaseEquation.SineOutIn => SineOutIn,
-        EaseEquation.CubicOut => CubicOut,
-        EaseEquation.CubicIn => CubicIn,
-        EaseEquation.CubicInOut => CubicInOut,
-        EaseEquation.CubicOutIn => CubicOutIn,
-        EaseEquation.QuartIn => QuartIn,
-        EaseEquation.QuartOut => QuartOut,
-        EaseEquation.QuartInOut => QuartInOut,
-        EaseEquation.QuartOutIn => QuartOutIn,
-        EaseEquation.QuintIn => QuintIn,
-        EaseEquation.QuintOut => QuintOut,
-        EaseEquation.QuintInOut => QuintInOut,
-        EaseEquation.QuintOutIn => QuintOutIn,
-        EaseEquation.ElasticIn => ElasticIn,
-        EaseEquation.ElasticOut => ElasticOut,
-        EaseEquation.ElasticInOut => ElasticInOut,
-        EaseEquation.ElasticOutIn => ElasticOutIn,
-        EaseEquation.BounceIn => BounceIn,
-        EaseEquation.BounceOut => BounceOut,
-        EaseEquation.BounceInOut => BounceInOut,
-        EaseEquation.BounceOutIn => BounceOutIn,
-        EaseEquation.BackIn => BackIn,
-        EaseEquation.BackOut => BackOut,
-        EaseEquation.BackInOut => BackInOut,
-        EaseEquation.BackOutIn => BackOutIn,
-        EaseEquation.Linear => LinearIn,
-        _ => throw new ArgumentOutOfRangeException(nameof(equation), $"Easing function of name {equation} dont exist"),
-    };
-
-    #endregion
 }

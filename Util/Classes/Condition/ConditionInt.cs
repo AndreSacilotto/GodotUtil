@@ -6,6 +6,9 @@ public class ConditionInt : IConditionEvent
 
     protected uint activeCount;
 
+    public ConditionInt() { }
+    public ConditionInt(uint activeCount) => this.activeCount = activeCount;
+
     public bool Active => activeCount != 0u;
 
     public void Request()
