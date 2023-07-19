@@ -2,16 +2,16 @@
 
 partial class TweenSharp : IRequireGameLoop<float>
 {
-    public record struct TweenerBatch(int FirstIndex, int LastIndex)
+    public record struct Batch(int FirstIndex, int LastIndex)
     {
         public int Size => FirstIndex - LastIndex + 1;
     }
 
     private readonly List<TweenerSharpBase> tweeners = new();
-    private readonly List<TweenerBatch> batches = new();
+    private readonly List<Batch> batches = new();
 
     private int conclusions = 0;
-    private TweenerBatch current;
+    private Batch currentBatch;
     private int currentIndex = 0;
 
     public int TotalSteps => batches.Count;
@@ -23,7 +23,7 @@ partial class TweenSharp : IRequireGameLoop<float>
             return;
         timeAccumulator += delta;
 
-        for (int i = current.FirstIndex; i <= current.LastIndex; i++)
+        for (int i = currentBatch.FirstIndex; i <= currentBatch.LastIndex; i++)
             tweeners[i].Step(delta);
     }
 
@@ -45,20 +45,32 @@ partial class TweenSharp : IRequireGameLoop<float>
         return total;
     }
 
-    private void WhenTweenerEnd(TweenerSharpBase tweener)
+    private void WhenTweenerEnd()
     {
         conclusions++;
-        if (current.Size == conclusions)
+        if (currentBatch.Size == conclusions)
         {
             conclusions = 0;
             currentIndex++;
+            OnBacthFinish?.Invoke();
             if (currentIndex >= batches.Count)
             {
-                finished = true;
-                onTweenFinished?.Invoke();
+                if (NextLoop())
+                {
+                    OnLoopFinish?.Invoke();
+                    currentIndex = 0;
+                    Reset();
+                }
+                else
+                {
+                    finished = true;
+                    OnFinish?.Invoke();
+                    Pause();
+                    return;
+                }
             }
-            else
-                current = batches[currentIndex];
+
+            currentBatch = batches[currentIndex];
         }
     }
 
@@ -67,7 +79,7 @@ partial class TweenSharp : IRequireGameLoop<float>
         batches.Clear();
 
         foreach (var item in tweeners)
-            item.OnTweenerEnd -= WhenTweenerEnd;
+            item.OnTweenerFinish -= WhenTweenerEnd;
         tweeners.Clear();
 
         Reset();
@@ -76,19 +88,14 @@ partial class TweenSharp : IRequireGameLoop<float>
     public void AddTweener(TweenerSharpBase tweener)
     {
         tweeners.Add(tweener);
-        tweener.OnTweenerEnd += WhenTweenerEnd;
+        tweener.OnTweenerFinish += WhenTweenerEnd;
         var len = tweeners.Count;
         batches.Add(new(len - 1, len));
     }
-    public void AddTweeners(ICollection<TweenerSharpBase> tweeners)
+    public void AddTweeners(IEnumerable<TweenerSharpBase> tweeners)
     {
-        if (tweeners.Count == 0)
-            return;
-        this.tweeners.AddRange(tweeners);
         foreach (var item in tweeners)
-            item.OnTweenerEnd += WhenTweenerEnd;
-        var len = tweeners.Count;
-        batches.Add(new(len - 1, len));
+            AddTweener(item);
     }
     public void AddTweenersParallel(ICollection<TweenerSharpBase> tweeners)
     {

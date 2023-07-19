@@ -2,8 +2,10 @@
 
 public partial class TweenSharp : IClosable, ITween<float>
 {
-    protected Action? onTweenFinished;
-    public event Action? OnTweenFinished { add => onTweenFinished += value; remove => onTweenFinished -= value; }
+    /// <summary>Only emmited after all loops</summary>
+    public event Action? OnFinish;
+    public event Action? OnBacthFinish;
+    public event Action? OnLoopFinish;
 
     private bool paused, finished;
     private int loops, loopsLeft;
@@ -32,7 +34,7 @@ public partial class TweenSharp : IClosable, ITween<float>
         }
     }
 
-    protected bool NextLoop()
+    private bool NextLoop()
     {
         if (loopsLeft < 0)
             return true;
@@ -44,42 +46,47 @@ public partial class TweenSharp : IClosable, ITween<float>
         return false;
     }
 
-    public virtual void Start()
+    public void Start()
     {
+        if (tweeners.Count == 0)
+            return;
         if (finished)
             Reset();
+        currentBatch = batches[currentIndex];
         paused = false;
     }
 
-    public virtual void Pause() => paused = true;
+    public void Pause() => paused = true;
 
     public void Stop()
     {
-        paused = true;
+        Pause();
         Reset();
     }
 
-    public virtual void End()
+    public void Complete()
     {
+        paused = true;
         finished = true;
-        onTweenFinished?.Invoke();
+        OnFinish?.Invoke();
         Stop();
     }
 
-    public virtual void Reset()
+    public void Reset()
     {
         finished = false;
         loopsLeft = loops;
         timeAccumulator = 0f;
 
-        current = default;
         currentIndex = 0;
         conclusions = 0;
     }
 
-    public virtual void Close()
+    public void Close()
     {
-        onTweenFinished = null;
+        OnFinish = null;
+        OnBacthFinish = null;
+        OnLoopFinish = null;
     }
 
 }

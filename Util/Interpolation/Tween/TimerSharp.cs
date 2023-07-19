@@ -63,7 +63,6 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
     public TNumber Percentage => accumulator / delay;
     public TNumber TimeLeft => delay - accumulator;
 
-
     public void Step(TNumber delta)
     {
         if (paused)
@@ -91,7 +90,7 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
         return false;
     }
 
-    public virtual void Reset()
+    public void Reset()
     {
         accumulator = TNumber.Zero;
         loopsLeft = loops;
@@ -111,7 +110,7 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
         Reset();
     }
 
-    public void End() 
+    public void Complete() 
     {
         accumulator = delay;
         paused = true;
@@ -120,7 +119,7 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
 
     public void Close()
     {
-        Stop();
+        Pause();
         onTimeout = null;
     }
 

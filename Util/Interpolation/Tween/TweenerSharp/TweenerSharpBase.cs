@@ -2,7 +2,7 @@
 
 public abstract class TweenerSharpBase : IClosable, IRequireGameLoop<float>
 {
-    public event Action<TweenerSharpBase>? OnTweenerEnd;
+    public event Action? OnTweenerFinish;
 
     protected float accumulator = 0f;
     protected bool complete = false;
@@ -34,7 +34,7 @@ public abstract class TweenerSharpBase : IClosable, IRequireGameLoop<float>
 
         if (accumulator >= Duration)
         {
-            OnTweenerEnd?.Invoke(this);
+            OnTweenerFinish?.Invoke();
             complete = true;
         }
     }
@@ -43,7 +43,7 @@ public abstract class TweenerSharpBase : IClosable, IRequireGameLoop<float>
 
     public virtual void Close()
     {
-        OnTweenerEnd = null;
+        OnTweenerFinish = null;
     }
 
 }
