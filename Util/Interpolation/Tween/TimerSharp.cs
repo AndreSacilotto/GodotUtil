@@ -2,11 +2,13 @@
 
 namespace Util.Interpolation;
 
-public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, IClosable where TNumber : unmanaged, INumber<TNumber>
+public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, IClosable where TNumber : unmanaged, IFloatingPoint<TNumber>
 {
     #region Event
 
     private Action? onTimeout;
+
+    /// <summary>Timeout is invoked every time the timer ends or a new loop starts</summary>
     public event Action OnTimeout
     {
         add
@@ -25,9 +27,9 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
 
     private int loops, loopsLeft;
 
-    private bool paused;
+    private bool paused, finished;
 
-    private TNumber accumulator, delay;
+    private TNumber timeAccumulator, delay;
 
     public TimerSharp(TNumber delay, bool autostart = true)
     {
@@ -36,8 +38,9 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
             Start();
     }
 
+    public bool IsFinished => paused;
     public bool IsPaused => paused;
-    public TNumber Time => accumulator;
+    public TNumber Time => timeAccumulator;
     public int LoopsLeft => loopsLeft;
 
     public int Loops
@@ -56,26 +59,37 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
         set
         {
             delay = value;
-            accumulator = TNumber.Min(accumulator, delay);
+            timeAccumulator = TNumber.Min(timeAccumulator, delay);
         }
     }
 
-    public TNumber Percentage => accumulator / delay;
-    public TNumber TimeLeft => delay - accumulator;
+    public TNumber LoopPercentage => timeAccumulator / delay;
+    public TNumber TotalPercentage => timeAccumulator / GetCompletationTime();
 
     public void Step(TNumber delta)
     {
         if (paused)
             return;
-        accumulator += delta;
-        if (accumulator > delay)
+        timeAccumulator += delta;
+        if (timeAccumulator >= delay)
         {
             onTimeout?.Invoke();
-            if (NextLoop())
+            if (NextLoop()) 
+            {
+                var overshot = timeAccumulator - delay;
                 Reset();
+                Step(overshot);
+            }
             else
-                Pause();
+                End();
         }
+    }
+    
+    private void End() 
+    {
+        finished = true;
+        paused = true;
+        onTimeout?.Invoke();
     }
 
     private bool NextLoop()
@@ -92,13 +106,14 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
 
     public void Reset()
     {
-        accumulator = TNumber.Zero;
+        timeAccumulator = TNumber.Zero;
         loopsLeft = loops;
     }
 
     public void Start()
     {
-        Reset();
+        if (finished)
+            Reset();
         paused = false;
     }
 
@@ -112,15 +127,28 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
 
     public void Complete() 
     {
-        accumulator = delay;
-        paused = true;
-        onTimeout?.Invoke();
+        if (loops < 0)
+            return;
+        End();
     }
 
     public void Close()
     {
-        Pause();
         onTimeout = null;
+    }
+
+    public TNumber GetCompletationTime()
+    {
+        if (loops < 0)
+            return TNumber.NegativeOne;
+        return delay * (TNumber.One + TNumber.CreateChecked(loops));
+    }
+
+    public TNumber GetTimeLeft()
+    {
+        if (loops < 0)
+            return TNumber.NegativeOne;
+        return GetCompletationTime() - timeAccumulator;
     }
 
 }

@@ -14,7 +14,14 @@ public abstract class TweenerSharpBase : IClosable, IRequireGameLoop<float>
     public float Accumulator { get => accumulator; set => float.Max(accumulator, Duration); }
 
     /// <summary>True if the tweener has completed his animation, false otherwise</summary>
-    public bool Complete => complete;
+    public bool HasFinish => complete;
+
+    public void Complete() 
+    {
+        accumulator = Duration;
+        complete = true;
+        OnTweenerFinish?.Invoke();
+    }
 
     /// <summary>Reset the tweener to be able to play again</summary>
     public void Reset()
@@ -23,27 +30,20 @@ public abstract class TweenerSharpBase : IClosable, IRequireGameLoop<float>
         complete = false;
     }
 
-    public virtual void Step(float delta) 
+    public void Step(float delta)
     {
         if (complete)
             return;
 
         accumulator += delta;
-
-        Step();
+        
+        StepInternal();
 
         if (accumulator >= Duration)
-        {
-            OnTweenerFinish?.Invoke();
-            complete = true;
-        }
+            Complete();
     }
 
-    protected abstract void Step();
+    protected abstract void StepInternal();
 
-    public virtual void Close()
-    {
-        OnTweenerFinish = null;
-    }
-
+    public virtual void Close() => OnTweenerFinish = null;
 }

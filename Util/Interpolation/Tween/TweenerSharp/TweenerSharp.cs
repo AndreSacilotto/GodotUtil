@@ -20,7 +20,7 @@ public class TweenerSharp : TweenerSharpBase
         this.easingFunc = easingFunc ?? DefaultEaseFunc;
     }
 
-    protected override void Step()
+    protected override void StepInternal()
     {
         var ease = easingFunc(accumulator, from, deltaStep, Duration);
         interpolationFunc(ease);

@@ -4,7 +4,7 @@ public partial class TweenSharp : IClosable, ITween<float>
 {
     /// <summary>Only emmited after all loops</summary>
     public event Action? OnFinish;
-    public event Action? OnBacthFinish;
+    public event Action? OnBatchFinish;
     public event Action? OnLoopFinish;
 
     private bool paused, finished;
@@ -21,7 +21,7 @@ public partial class TweenSharp : IClosable, ITween<float>
 
     public int LoopsLeft => loopsLeft;
 
-    public bool HasFinish => finished;
+    public bool IsFinished => finished;
     public bool IsPaused => paused;
 
     public int Loops
@@ -64,12 +64,11 @@ public partial class TweenSharp : IClosable, ITween<float>
         Reset();
     }
 
-    public void Complete()
+    private void End()
     {
         paused = true;
         finished = true;
         OnFinish?.Invoke();
-        Stop();
     }
 
     public void Reset()
@@ -85,8 +84,14 @@ public partial class TweenSharp : IClosable, ITween<float>
     public void Close()
     {
         OnFinish = null;
-        OnBacthFinish = null;
+        OnBatchFinish = null;
         OnLoopFinish = null;
     }
 
+    public void Complete()
+    {
+        if (loops < 0)
+            return;
+        Step(GetCompletationTime() - timeAccumulator + 1f);
+    }
 }

@@ -76,7 +76,7 @@ public static partial class UtilMath
         return v2;
     }
 
-    public static T Min<T>(params T[] values) where T : IComparable<T>
+    public static T Smaller<T>(params T[] values) where T : IComparable<T>
     {
         int len = values.Length;
         var smaller = values[0];
@@ -85,7 +85,7 @@ public static partial class UtilMath
                 smaller = values[i];
         return smaller;
     }
-    public static T Max<T>(params T[] values) where T : IComparable<T>
+    public static T Biggest<T>(params T[] values) where T : IComparable<T>
     {
         int len = values.Length;
         var biggest = values[0];
