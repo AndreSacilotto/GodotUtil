@@ -16,15 +16,12 @@ public static partial class VectorExt
     /// <summary>
     /// https://github.com/godotengine/godot/blob/2d9583fa3bf2426dabbdd9e9d9b8fd9725b9436c/modules/mono/glue/GodotSharp/GodotSharp/Core/Basis.cs#L861
     /// </summary>
-    public static Vector3 Mult(this Basis basis, Vector3 vector)
-    {
-        return new Vector3
+    public static Vector3 Mult(this Basis basis, Vector3 vector) => new Vector3
         (
             basis.Row0[0] * vector.X + basis.Row1[0] * vector.Y + basis.Row2[0] * vector.Z,
             basis.Row0[1] * vector.X + basis.Row1[1] * vector.Y + basis.Row2[1] * vector.Z,
             basis.Row0[2] * vector.X + basis.Row1[2] * vector.Y + basis.Row2[2] * vector.Z
         );
-    }
 
     /// <summary>
     /// Returns a perpendicular vector rotated 90 degrees counter-clockwise

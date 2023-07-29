@@ -16,7 +16,8 @@ public static class UtilWeb
     public static bool ValidUrl(string uri) =>
         Uri.TryCreate(uri, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
-    public static bool SucessStatusCode(int statusCode) => statusCode >= 200 && statusCode <= 299;
+    public static bool SucessStatusCode(int statusCode) => 
+        statusCode >= 200 && statusCode <= 299;
 
     public static bool IsPNG(byte[] buffer)
     {

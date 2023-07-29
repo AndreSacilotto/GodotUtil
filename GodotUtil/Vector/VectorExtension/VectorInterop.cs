@@ -35,23 +35,19 @@ public static class VectorInterop
     public static g_t2 Interop2(this s_m4x4 m) => new(new(m.M11, m.M21), new(m.M12, m.M22), new(m.M13, m.M23));
 
     [MethodImpl(INLINE)]
-    public static g_t2 Interop(this s_m3x2 m)
-    {
+    public static g_t2 Interop(this s_m3x2 m) =>
         // | 11	 12 |		| 11 12 31 |
         // | 21  22 |	=>	| 21 22 32 |
         // | 31  32 |
-        return new g_t2(m.M11, m.M21, m.M12, m.M22, m.M31, m.M32);
-    }
+        new g_t2(m.M11, m.M21, m.M12, m.M22, m.M31, m.M32);
 
     [MethodImpl(INLINE)]
-    public static g_t2 InteropTranspose(this s_m3x2 m)
-    {
+    public static g_t2 InteropTranspose(this s_m3x2 m) =>
         //					Transposed
         // | 11	 12 |		| 11 21 31 |
         // | 21  22 |	=>	| 12 22 32 |
         // | 31  32 |
-        return new g_t2(m.M11, m.M12, m.M21, m.M22, m.M31, m.M32);
-    }
+        new g_t2(m.M11, m.M12, m.M21, m.M22, m.M31, m.M32);
 
     #endregion
 
@@ -89,23 +85,19 @@ public static class VectorInterop
 
 
     [MethodImpl(INLINE)]
-    public static s_m3x2 Interop(this g_t2 m)
-    {
+    public static s_m3x2 Interop(this g_t2 m) =>
         // | xx	 yx |		| xx yx ox |
         // | xy  yy |	<=	| xy yy oy |
         // | ox  oy |
-        return new s_m3x2(m.X.X, m.X.Y, m.Y.X, m.Y.Y, m.Origin.X, m.Origin.Y);
-    }
+        new s_m3x2(m.X.X, m.X.Y, m.Y.X, m.Y.Y, m.Origin.X, m.Origin.Y);
 
     [MethodImpl(INLINE)]
-    public static s_m3x2 InteropTranspose(this g_t2 m)
-    {
+    public static s_m3x2 InteropTranspose(this g_t2 m) =>
         // Transposed
         // | xx	 xy |		| xx yx ox |
         // | yx  yy |	<=	| xy yy oy |
         // | ox  oy |
-        return new s_m3x2(m.X.X, m.Y.X, m.X.Y, m.Y.Y, m.Origin.X, m.Origin.Y);
-    }
+        new s_m3x2(m.X.X, m.Y.X, m.X.Y, m.Y.Y, m.Origin.X, m.Origin.Y);
 
     #endregion
 

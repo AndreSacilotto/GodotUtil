@@ -16,8 +16,10 @@ public static class UtilString
 
     #region Format
 
-    [MethodImpl(INLINE)] public static string InvariantFormat(float value) => value.ToString(NumberFormatInfo.InvariantInfo);
-    [MethodImpl(INLINE)] public static string InvariantFormat(double value) => value.ToString(NumberFormatInfo.InvariantInfo);
+    [MethodImpl(INLINE)] public static string InvariantFormat(float value) => 
+        value.ToString(NumberFormatInfo.InvariantInfo);
+    [MethodImpl(INLINE)] public static string InvariantFormat(double value) => 
+        value.ToString(NumberFormatInfo.InvariantInfo);
 
     #endregion
 
@@ -46,7 +48,8 @@ public static class UtilString
 
     #region Contains
 
-    [MethodImpl(INLINE)] public static bool Contains(this string source, char value, int startIdx = 0) => source.IndexOf(value, startIdx) >= 0;
+    [MethodImpl(INLINE)] public static bool Contains(this string source, char value, int startIdx = 0) => 
+        source.IndexOf(value, startIdx) >= 0;
 
     [MethodImpl(INLINE)]
     public static bool Contains(this string source, string value, int startIdx = 0, StringComparison strCmp = StringComparison.InvariantCultureIgnoreCase) =>

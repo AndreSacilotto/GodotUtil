@@ -132,10 +132,7 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
         End();
     }
 
-    public void Close()
-    {
-        onTimeout = null;
-    }
+    public void Close() => onTimeout = null;
 
     public TNumber GetCompletationTime()
     {

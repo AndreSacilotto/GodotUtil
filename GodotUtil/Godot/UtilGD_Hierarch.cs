@@ -89,10 +89,8 @@ public static partial class UtilGD
 
     #region Get Child
 
-    public static T? GetFirstChildAs<T>(this Node node) where T : Node
-    {
-        return node.GetChildCount() == 0 ? null : node.GetChild<T>(0);
-    }
+    public static T? GetFirstChildAs<T>(this Node node) where T : Node => 
+        node.GetChildCount() == 0 ? null : node.GetChild<T>(0);
 
     public static T? GetLastChild<T>(this Node node) where T : Node
     {

@@ -26,9 +26,7 @@ public static partial class UtilGD
     }
 
     [Conditional("DEBUG")]
-    public static void PrintTrace(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
-    {
+    public static void PrintTrace(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0) => 
         GD.Print($"Called from {memberName}\tMessage: {message}\tFile: {filePath}\tLine: {lineNumber}");
-    }
 
 }

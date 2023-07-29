@@ -4,10 +4,7 @@ namespace Util.Interpolation;
 public static partial class Bezier
 {
     /// <summary> It's the same thing as Lerp</summary>
-    public static float LinearBezier(float start, float end, float t)
-    {
-        return start + (end - start) * t;
-    }
+    public static float LinearBezier(float start, float end, float t) => start + (end - start) * t;
 
     public static float QuadBezier(float start, float control, float end, float t)
     {
@@ -17,11 +14,8 @@ public static partial class Bezier
             t * t * end;
     }
 
-    public static float QuadBezierDerivative(float start, float control, float end, float t)
-    {
-        return 2f * (1f - t) * (control - start) +
+    public static float QuadBezierDerivative(float start, float control, float end, float t) => 2f * (1f - t) * (control - start) +
             2f * t * (end - control);
-    }
 
     public static float CubicBezier(float start, float control0, float control1, float end, float t)
     {

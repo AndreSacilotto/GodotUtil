@@ -23,11 +23,7 @@ public static class PolygonHelper
 
     private const float SAFE_THRESHOLD = 0.0001f;
 
-    private static Vector2[] ErrorReturn2D()
-    {
-        return Array.Empty<Vector2>();
-        //return null;
-    }
+    private static Vector2[] ErrorReturn2D() => Array.Empty<Vector2>();//return null;
 
     //private static Vector3[] ErrorReturn3D()
     //{
@@ -76,37 +72,28 @@ public static class PolygonHelper
         };
     }
 
-    public static Vector2[] Retangle(float width, float height)
-    {
-        return new Vector2[4] {
+    public static Vector2[] Retangle(float width, float height) => new Vector2[4] {
             new Vector2(-width, -height),
             new Vector2(width, -height),
             new Vector2(width, height),
             new Vector2(-width, height),
         };
-    }
 
-    public static Vector2[] Rhombus(float width, float height)
-    {
-        return new Vector2[4] {
+    public static Vector2[] Rhombus(float width, float height) => new Vector2[4] {
             new Vector2(0f, -height),
             new Vector2(width, 0f),
             new Vector2(0f, height),
             new Vector2(-width, 0f),
         };
-    }
 
     /// <param name="near">Near - bottom width</param>
     /// <param name="far">Far - top width</param>
-    public static Vector2[] Trapezoid(float near, float far, float height)
-    {
-        return new Vector2[4] {
+    public static Vector2[] Trapezoid(float near, float far, float height) => new Vector2[4] {
             new Vector2(-far, -height),
             new Vector2(far, -height),
             new Vector2(near, height),
             new Vector2(-near, height),
         };
-    }
 
     public static Vector2[] Hexagon(float size, bool rotated = false)
     {

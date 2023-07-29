@@ -30,11 +30,14 @@ public static class NumericExt
         //}
     }
 
-    public static float Cross(this Vector2 vec, Vector2 with) => (vec.X * with.Y) - (vec.Y * with.X);
+    public static float Cross(this Vector2 vec, Vector2 with) => 
+        (vec.X * with.Y) - (vec.Y * with.X);
 
-    public static float DistanceTo(this Vector2 from, Vector2 to) => Vector2.Distance(from, to);
+    public static float DistanceTo(this Vector2 from, Vector2 to) => 
+        Vector2.Distance(from, to);
 
-    public static float AngleTo(this Vector2 from, Vector2 to) => MathF.Atan2(Cross(from, to), Vector2.Dot(from, to));
+    public static float AngleTo(this Vector2 from, Vector2 to) => 
+        MathF.Atan2(Cross(from, to), Vector2.Dot(from, to));
 
     public static float Angle(this Vector2 vec) => MathF.Atan2(vec.Y, vec.X);
 }

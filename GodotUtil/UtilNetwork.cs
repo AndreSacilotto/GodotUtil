@@ -14,10 +14,8 @@ public static class UtilNetwork
         port = s[2].ToInt();
     }
 
-    public static string MakeFullAddress(string address, int port, char separator = ':')
-    {
-        return address + separator + port;
-    }
+    public static string MakeFullAddress(string address, int port, char separator = ':') => 
+        address + separator + port;
 
     public static void OpenTerminals(int count, string scene = "")
     {
@@ -29,7 +27,8 @@ public static class UtilNetwork
     }
 
     public static string GenerateObjectName(string prefix, int id) => prefix + '_' + id;
-    public static string GenerateObjectName(string prefix, int id, int number) => prefix + '_' + id + '_' + number;
+    public static string GenerateObjectName(string prefix, int id, int number) => 
+        prefix + '_' + id + '_' + number;
 
     public static void OpenTerminals(int count, string godot, string project, string scene)
     {

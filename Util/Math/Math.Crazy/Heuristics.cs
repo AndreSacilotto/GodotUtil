@@ -18,10 +18,7 @@ public static class Heuristics
     /// Cells distance number in a grid <br/> 
     /// Use when diagonal move is not allowed 
     /// </summary>
-    public static int Manhattan(int x0, int x1, int y0, int y1)
-    {
-        return Math.Abs(x0 - x1) + Math.Abs(y0 - y1);
-    }
+    public static int Manhattan(int x0, int x1, int y0, int y1) => Math.Abs(x0 - x1) + Math.Abs(y0 - y1);
 
     /// <summary> 
     /// Cells distance number in a grid <br/> 

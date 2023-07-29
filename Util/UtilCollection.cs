@@ -7,7 +7,8 @@ public static class UtilCollection
 
     #region Array
 
-    public static T[,] NewOfSameSize<T>(this T[,] array) => new T[array.GetLength(0), array.GetLength(1)];
+    public static T[,] NewOfSameSize<T>(this T[,] array) => 
+        new T[array.GetLength(0), array.GetLength(1)];
 
     [MethodImpl(INLINE)]
     public static void ChangeCapacity<T>(ref T[] array, int newSize)
@@ -273,8 +274,10 @@ public static class UtilCollection
         return newArr;
     }
 
-    [MethodImpl(INLINE)] public static int Rows<T>(this T[,] array) => array.GetLength(0);
-    [MethodImpl(INLINE)] public static int Columns<T>(this T[,] array) => array.GetLength(1);
+    [MethodImpl(INLINE)] public static int Rows<T>(this T[,] array) => 
+        array.GetLength(0);
+    [MethodImpl(INLINE)] public static int Columns<T>(this T[,] array) => 
+        array.GetLength(1);
 
     [MethodImpl(INLINE)]
     public static void RowsColumns<T>(this T[,] array, out int rows, out int collums)
@@ -344,7 +347,8 @@ public static class UtilCollection
     #region List
 
     [MethodImpl(INLINE)]
-    public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort(ComparerReverse<T>.Default);
+    public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => 
+        list.Sort(ComparerReverse<T>.Default);
 
     [MethodImpl(INLINE)]
     public static int AddSorted<T>(this List<T> list, T item) where T : IComparable<T>

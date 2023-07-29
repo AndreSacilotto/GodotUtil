@@ -20,23 +20,18 @@ public static partial class Easing
     // d || duration = duration of animation;
     // t & d need to use the same measure of percent which could be frames, seconds, milliseconds or whatever.
 
-    public static float LinearIn(float percent, float initial, float delta, float duration) => delta * percent / duration + initial;
+    public static float LinearIn(float percent, float initial, float delta, float duration) => 
+        delta * percent / duration + initial;
 
     #region Sine or Sinusoidal
-    public static float SineIn(float percent, float initial, float delta, float duration)
-    {
-        return delta * (1f + MathF.Cos(percent / duration * UtilMath.TAU_90) * -1f) + initial;
-    }
+    public static float SineIn(float percent, float initial, float delta, float duration) => 
+        delta * (1f + MathF.Cos(percent / duration * UtilMath.TAU_90) * -1f) + initial;
 
-    public static float SineOut(float percent, float initial, float delta, float duration)
-    {
-        return delta * MathF.Sin(percent / duration * UtilMath.TAU_90) + initial;
-    }
+    public static float SineOut(float percent, float initial, float delta, float duration) => 
+        delta * MathF.Sin(percent / duration * UtilMath.TAU_90) + initial;
 
-    public static float SineInOut(float percent, float initial, float delta, float duration)
-    {
-        return -0.5f * delta * (MathF.Cos(UtilMath.TAU_180 * percent / duration) - 1f) + initial;
-    }
+    public static float SineInOut(float percent, float initial, float delta, float duration) =>
+        -0.5f * delta * (MathF.Cos(UtilMath.TAU_180 * percent / duration) - 1f) + initial;
 
     public static float SineOutIn(float percent, float initial, float delta, float duration)
     {
@@ -49,15 +44,11 @@ public static partial class Easing
     #endregion
 
     #region Quint
-    public static float QuintIn(float percent, float initial, float delta, float duration)
-    {
-        return delta * UtilMath.PowQuintic(percent / duration) + initial;
-    }
+    public static float QuintIn(float percent, float initial, float delta, float duration) => 
+        delta * UtilMath.PowQuintic(percent / duration) + initial;
 
-    public static float QuintOut(float percent, float initial, float delta, float duration)
-    {
-        return delta * (UtilMath.PowQuintic(percent / duration - 1f) + 1f) + initial;
-    }
+    public static float QuintOut(float percent, float initial, float delta, float duration) => 
+        delta * (UtilMath.PowQuintic(percent / duration - 1f) + 1f) + initial;
 
     public static float QuintInOut(float percent, float initial, float delta, float duration)
     {
@@ -78,15 +69,11 @@ public static partial class Easing
     #endregion
 
     #region Quart
-    public static float QuartIn(float percent, float initial, float delta, float duration)
-    {
-        return delta * UtilMath.PowQuartic(percent / duration) + initial;
-    }
+    public static float QuartIn(float percent, float initial, float delta, float duration) => 
+        delta * UtilMath.PowQuartic(percent / duration) + initial;
 
-    public static float QuartOut(float percent, float initial, float delta, float duration)
-    {
-        return -delta * (UtilMath.PowQuartic(percent / duration - 1f) - 1f) + initial;
-    }
+    public static float QuartOut(float percent, float initial, float delta, float duration) => 
+        -delta * (UtilMath.PowQuartic(percent / duration - 1f) - 1f) + initial;
 
     public static float QuartInOut(float percent, float initial, float delta, float duration)
     {
@@ -106,10 +93,8 @@ public static partial class Easing
     #endregion
 
     #region (Quad)dratic
-    public static float QuadIn(float percent, float initial, float delta, float duration)
-    {
-        return delta * UtilMath.PowSquare(percent / duration) + initial;
-    }
+    public static float QuadIn(float percent, float initial, float delta, float duration) => 
+        delta * UtilMath.PowSquare(percent / duration) + initial;
 
     public static float QuadOut(float percent, float initial, float delta, float duration)
     {
@@ -319,10 +304,8 @@ public static partial class Easing
         return delta * (7.5625f * percent * percent + 0.984375f) + initial;
     }
 
-    public static float BounceIn(float percent, float initial, float delta, float duration)
-    {
-        return delta - BounceOut(duration - percent, 0f, delta, duration) + initial;
-    }
+    public static float BounceIn(float percent, float initial, float delta, float duration) => 
+        delta - BounceOut(duration - percent, 0f, delta, duration) + initial;
 
     public static float BounceInOut(float percent, float initial, float delta, float duration)
     {

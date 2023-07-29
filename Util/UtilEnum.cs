@@ -4,11 +4,15 @@ namespace Util;
 
 public static class UtilEnum
 {
-    [MethodImpl(INLINE)] public static string EnumTitle<T>() where T : Enum => typeof(T).Name;
-    [MethodImpl(INLINE)] public static string[] EnumToString<T>() where T : Enum => typeof(T).GetEnumNames();
+    [MethodImpl(INLINE)] public static string EnumTitle<T>() where T : Enum => 
+        typeof(T).Name;
+    [MethodImpl(INLINE)] public static string[] EnumToString<T>() where T : Enum => 
+        typeof(T).GetEnumNames();
 
-    public static T StringToEnum<T>(string value) where T : Enum => (T)Enum.Parse(typeof(T), value);
-    public static T StringToEnum<T>(string value, bool ignoreCase) where T : Enum => (T)Enum.Parse(typeof(T), value, ignoreCase);
+    public static T StringToEnum<T>(string value) where T : Enum => 
+        (T)Enum.Parse(typeof(T), value);
+    public static T StringToEnum<T>(string value, bool ignoreCase) where T : Enum => 
+        (T)Enum.Parse(typeof(T), value, ignoreCase);
 
     public static string EnumToName<T>(T enumValue) where T : Enum
     {
@@ -43,9 +47,12 @@ public static class UtilEnum
     }
 
     #region Collections
-    public static int EnumCount<T>() where T : Enum => Enum.GetValues(typeof(T)).Length;
+    public static int EnumCount<T>() where T : Enum => 
+        Enum.GetValues(typeof(T)).Length;
 
-    public static T[] EnumToArray<T>() where T : Enum => (T[])typeof(T).GetEnumValues();
+    public static T[] EnumToArray<T>() where T : Enum => 
+        (T[])typeof(T).GetEnumValues();
+
     public static Dictionary<TEnum, TValue> EnumToDictionary<TEnum, TValue>(Func<TValue> newFunc, params TEnum[] skip) where TEnum : Enum
     {
         var arr = EnumToArray<TEnum>();
@@ -66,7 +73,8 @@ public static class UtilEnum
 
     #endregion
 
-    public static bool HasFlagsAttribute<T>() where T : Enum => typeof(T).IsDefined(typeof(FlagsAttribute), false);
+    public static bool HasFlagsAttribute<T>() where T : Enum => 
+        typeof(T).IsDefined(typeof(FlagsAttribute), false);
 
     public static IEnumerable<T> ComposingFlags<T>(T value, int enumSize = -1) where T : Enum
     {
