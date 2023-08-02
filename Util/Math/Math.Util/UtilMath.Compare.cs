@@ -8,10 +8,8 @@ public static partial class UtilMath
 {
     #region Precision Float
 
-    [MethodImpl(INLINE)] public static bool MoreThanZero(this float value) => value > EPSILON_FLOAT;
-    [MethodImpl(INLINE)] public static bool LessThanZero(this float value) => value < -EPSILON_FLOAT;
-
-    [MethodImpl(INLINE)] public static bool ApproximatelySign(float a, float b) => Math.Abs(b - a) < EPSILON_FLOAT;//float.Epsilon;
+    [MethodImpl(INLINE)] public static bool Approximately(float a) => MathF.Abs(a) < EPSILON_FLOAT;
+    [MethodImpl(INLINE)] public static bool Approximately(float a, float b) => MathF.Abs(b - a) < EPSILON_FLOAT;
 
     public static bool AlmostEqual2sComplement(float a, float b, int maxDeltaBits = 6)
     {
@@ -27,7 +25,7 @@ public static partial class UtilMath
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    public readonly struct FloatAsInt
+    internal readonly struct FloatAsInt
     {
         public static int Convert(float value) => new FloatAsInt(value).IntValue;
         public FloatAsInt(float floatValue) => FloatValue = floatValue;
@@ -36,6 +34,36 @@ public static partial class UtilMath
     }
 
     #endregion
+
+    #region Precision Double
+
+    [MethodImpl(INLINE)] public static bool Approximately(double a) => Math.Abs(a) < EPSILON_DOUBLE;
+    [MethodImpl(INLINE)] public static bool Approximately(double a, double b) => Math.Abs(b - a) < EPSILON_DOUBLE;
+
+    public static bool AlmostEqual2sComplement(double a, double b, int maxDeltaBits = 12)
+    {
+        long aInt = DoubleAsLong.Convert(a);
+        if (aInt < 0)
+            aInt = Int64.MinValue - aInt;
+
+        long bInt = DoubleAsLong.Convert(b);
+        if (bInt < 0)
+            bInt = Int64.MinValue - bInt;
+
+        return Math.Abs(aInt - bInt) <= (1 << maxDeltaBits);
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    internal readonly struct DoubleAsLong
+    {
+        public static long Convert(double value) => new DoubleAsLong(value).LongValue;
+        public DoubleAsLong(double doubleValue) => DoubleValue = doubleValue;
+        [FieldOffset(0)] public readonly long LongValue;
+        [FieldOffset(0)] public readonly double DoubleValue;
+    }
+
+    #endregion
+
 
     #region Bool to Value
     [MethodImpl(INLINE)] public static T BoolValue01<T>(bool value) where T : INumber<T> => value ? T.Zero : T.One;

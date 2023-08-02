@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+
 using vec2 = System.Numerics.Vector2;
 using vec3 = System.Numerics.Vector3;
 
@@ -26,14 +27,14 @@ public static partial class Bezier
             QuadBezier(start.Y, control.Y, end.Y, t),
             QuadBezier(start.Z, control.Z, end.Z, t)
         );
-    public static vec2 QuadBezierDerivative(vec2 start, vec2 control, vec2 end, float t) => new(
-            QuadBezierDerivative(start.X, control.X, end.X, t),
-            QuadBezierDerivative(start.Y, control.Y, end.Y, t)
+    public static vec2 QuadBezierFirstDerivative(vec2 start, vec2 control, vec2 end, float t) => new(
+            QuadBezierFirstDerivative(start.X, control.X, end.X, t),
+            QuadBezierFirstDerivative(start.Y, control.Y, end.Y, t)
         );
-    public static vec3 QuadBezierDerivative(vec3 start, vec3 control, vec3 end, float t) => new(
-            QuadBezierDerivative(start.X, control.X, end.X, t),
-            QuadBezierDerivative(start.Y, control.Y, end.Y, t),
-            QuadBezierDerivative(start.Z, control.Z, end.Z, t)
+    public static vec3 QuadBezierFirstDerivative(vec3 start, vec3 control, vec3 end, float t) => new(
+            QuadBezierFirstDerivative(start.X, control.X, end.X, t),
+            QuadBezierFirstDerivative(start.Y, control.Y, end.Y, t),
+            QuadBezierFirstDerivative(start.Z, control.Z, end.Z, t)
         );
     #endregion
 
@@ -47,14 +48,14 @@ public static partial class Bezier
             CubicBezier(start.Y, control0.Y, control1.Y, end.Y, t),
             CubicBezier(start.Z, control0.Z, control1.Z, end.Z, t)
         );
-    public static vec2 CubicBezierDerivative(vec2 start, vec2 control0, vec2 control1, vec2 end, float t) => new(
-            CubicBezierDerivative(start.X, control0.X, control1.X, end.X, t),
-            CubicBezierDerivative(start.Y, control0.Y, control1.Y, end.Y, t)
+    public static vec2 CubicBezierFirstDerivative(vec2 start, vec2 control0, vec2 control1, vec2 end, float t) => new(
+            CubicBezierFirstDerivative(start.X, control0.X, control1.X, end.X, t),
+            CubicBezierFirstDerivative(start.Y, control0.Y, control1.Y, end.Y, t)
         );
-    public static vec3 CubicBezierDerivative(vec3 start, vec3 control0, vec3 control1, vec3 end, float t) => new(
-            CubicBezierDerivative(start.X, control0.X, control1.X, end.X, t),
-            CubicBezierDerivative(start.Y, control0.Y, control1.Y, end.Y, t),
-            CubicBezierDerivative(start.Z, control0.Z, control1.Z, end.Z, t)
+    public static vec3 CubicBezierFirstDerivative(vec3 start, vec3 control0, vec3 control1, vec3 end, float t) => new(
+            CubicBezierFirstDerivative(start.X, control0.X, control1.X, end.X, t),
+            CubicBezierFirstDerivative(start.Y, control0.Y, control1.Y, end.Y, t),
+            CubicBezierFirstDerivative(start.Z, control0.Z, control1.Z, end.Z, t)
         );
     #endregion
 }

@@ -27,16 +27,12 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
 
     private int loops, loopsLeft;
 
-    private bool paused, finished;
+    private bool paused = true;
+    private bool finished = false;
 
     private TNumber timeAccumulator, delay;
 
-    public TimerSharp(TNumber delay, bool autostart = true)
-    {
-        this.delay = delay;
-        if (autostart)
-            Start();
-    }
+    public TimerSharp(TNumber delay) => this.delay = delay;
 
     public bool IsFinished => paused;
     public bool IsPaused => paused;
@@ -73,9 +69,9 @@ public class TimerSharp<TNumber> : ITween<TNumber>, IRequireGameLoop<TNumber>, I
         timeAccumulator += delta;
         if (timeAccumulator >= delay)
         {
-            onTimeout?.Invoke();
             if (NextLoop()) 
             {
+                onTimeout?.Invoke();
                 var overshot = timeAccumulator - delay;
                 Reset();
                 Step(overshot);

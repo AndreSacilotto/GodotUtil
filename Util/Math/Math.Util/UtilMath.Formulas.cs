@@ -13,6 +13,8 @@ public static partial class UtilMath
 
     #region Interpolation & Remapping
 
+    [MethodImpl(INLINE)] public static float PreciseLerp(float from, float to, float weight) => (1f - weight) * from + weight * to;
+
     [MethodImpl(INLINE)] public static float Lerp(float from, float to, float weight) => from + (to - from) * weight;
     [MethodImpl(INLINE)] public static float LerpClamped(float from, float to, float weight) => Math.Clamp(from + (to - from) * weight, 0f, 1f);
 

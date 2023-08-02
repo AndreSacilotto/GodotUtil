@@ -2,59 +2,43 @@
 
 partial class TweenSharp : IRequireGameLoop<float>
 {
-    public readonly record struct TweenerBatch(int FirstIndex, int LastIndex)
-    {
-        public int Size => FirstIndex - LastIndex + 1;
-        public TweenerSharpBase GetLongestTweener(List<TweenerSharpBase> tweeners) 
-        {
-            var bigger = tweeners[FirstIndex];
-            for (int i = FirstIndex + 1; i <= LastIndex; i++)
-            {
-                if (tweeners[i].Duration > bigger.Duration)
-                    bigger = tweeners[i];
-            }
-            return bigger;
-        }
-        public float GetOvershot(List<TweenerSharpBase> tweeners)
-        {
-            var bigger = GetLongestTweener(tweeners);
-            return bigger.Accumulator - bigger.Duration;
-        }
-
-    }
-
-    private readonly List<TweenerSharpBase> tweeners = new();
-    private readonly List<TweenerBatch> batches = new();
+    private readonly List<ITweenerBatch> tweenerBatchs = new();
 
     private int conclusions = 0;
-    private TweenerBatch currentBatch;
     private int currentIndex = 0;
 
-    public int TotalSteps => batches.Count;
-    public int TotalTweeners => tweeners.Count;
+    public int TotalBatchs => tweenerBatchs.Count;
+
+    public int GetTotalTweeners() 
+    {
+        var sum = 0;
+        foreach (var batch in tweenerBatchs)
+            sum += batch.Size;
+        return sum;
+    }
 
     public void Step(float delta)
     {
-        if (IsPaused)
+        if (paused)
             return;
 
         timeAccumulator += delta;
 
-        for (int i = currentBatch.FirstIndex; i <= currentBatch.LastIndex; i++)
-            tweeners[i].Step(delta);
+        tweenerBatchs[currentIndex].Step(delta);
     }
 
     private void WhenTweenerEnd()
     {
+        var currentBatch = tweenerBatchs[currentIndex];
         conclusions++;
         if (currentBatch.Size == conclusions)
         {
-            var overshot = currentBatch.GetOvershot(tweeners);
+            var overshot = currentBatch.GetOvershot();
 
             conclusions = 0;
             currentIndex++;
             OnBatchFinish?.Invoke();
-            if (currentIndex >= batches.Count)
+            if (currentIndex >= tweenerBatchs.Count)
             {
                 if (NextLoop())
                 {
@@ -67,8 +51,6 @@ partial class TweenSharp : IRequireGameLoop<float>
                     return;
                 }
             }
-
-            currentBatch = batches[currentIndex];
             Step(overshot);
         }
     }
@@ -77,40 +59,26 @@ partial class TweenSharp : IRequireGameLoop<float>
 
     public void Clear()
     {
-        batches.Clear();
-
-        foreach (var item in tweeners)
-            item.OnTweenerFinish -= WhenTweenerEnd;
-        tweeners.Clear();
-
+        foreach (var batch in tweenerBatchs)
+            foreach (var tweener in batch)
+                tweener.OnTweenerFinish -= WhenTweenerEnd;
+        tweenerBatchs.Clear();
         Reset();
     }
 
-    private void AddTweenerNoBatch(TweenerSharpBase tweener)
+    public void AddTweener(TweenerSharpDelay tweener)
     {
-        tweeners.Add(tweener);
         tweener.OnTweenerFinish += WhenTweenerEnd;
+        tweenerBatchs.Add(new TweenerBatchSingle(tweener));
     }
-    public void AddTweener(TweenerSharpBase tweener)
+
+    public void AddParallelTweeners(params TweenerSharpDelay[] tweeners)
     {
-        AddTweenerNoBatch(tweener);
-        var len = tweeners.Count;
-        batches.Add(new(len - 1, len));
-    }
-    public void AddTweenersParallel(ICollection<TweenerSharpBase> tweeners)
-    {
-        var len = tweeners.Count;
-        if (len == 0)
+        if (tweeners.Length == 0)
             return;
-        foreach (var item in tweeners)
-            AddTweenerNoBatch(item);
-        batches.Add(new(len - 1, tweeners.Count - 1));
-    }
-    public TweenerSharpDelay AddInterval(float duration)
-    {
-        var tweener = new TweenerSharpDelay(duration);
-        AddTweener(tweener);
-        return tweener;
+        foreach (var tweener in tweeners)
+            tweener.OnTweenerFinish += WhenTweenerEnd;
+        tweenerBatchs.Add(new TweenerBatchMultiple(tweeners));
     }
 
     #endregion
@@ -121,8 +89,8 @@ partial class TweenSharp : IRequireGameLoop<float>
             return -1f;
 
         var loopTime = 0f;
-        foreach (var item in batches)
-            loopTime += item.GetLongestTweener(tweeners).Duration;
+        foreach (var item in tweenerBatchs)
+            loopTime += item.GetLongestTweener().Duration;
         return loopTime;
     }
     public float GetTimeLeft()

@@ -2,7 +2,7 @@
 
 namespace Util.Interpolation;
 
-public static partial class Interpolation
+public static partial class Smoothstep
 {
     // https://en.Wikipedia.org/wiki/Smoothstep
 
@@ -11,15 +11,9 @@ public static partial class Interpolation
     [MethodImpl(INLINE)] public static float Sine(float x) => MathF.Sin(x * UtilMath.TAU_90);
     [MethodImpl(INLINE)] public static float WeightedAverage(float x, float slowdownFactor) => (x * slowdownFactor - x + 1f) / slowdownFactor;
 
-    [MethodImpl(INLINE)]
-    public static float Catmullrom(float t, float p0, float p1, float p2, float p3)
-    {
-        return 0.5f * ((2f * p1) + (-p0 + p2) * t + (2f * p0 - 5f * p1 + 4f * p2 - p3) * t * t + (-p0 + 3f * p1 - 3f * p2 + p3) * t * t * t);
-    }
-
     #endregion
 
-    #region Smoothstep | https://iquilezles.org/articles/smoothsteps/
+    #region https://iquilezles.org/articles/smoothsteps/
     // Inv = Inverse
 
     #region Polynomial Smoothstep

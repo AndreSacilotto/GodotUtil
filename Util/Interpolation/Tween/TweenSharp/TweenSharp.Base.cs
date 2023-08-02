@@ -7,15 +7,10 @@ public partial class TweenSharp : IClosable, ITween<float>
     public event Action? OnBatchFinish;
     public event Action? OnLoopFinish;
 
-    private bool paused, finished;
+    private bool paused = true;
+    private bool finished;
     private int loops, loopsLeft;
     private float timeAccumulator;
-
-    protected TweenSharp(bool autostart = true)
-    {
-        if (autostart)
-            Start();
-    }
 
     public float Time => timeAccumulator;
 
@@ -48,11 +43,10 @@ public partial class TweenSharp : IClosable, ITween<float>
 
     public void Start()
     {
-        if (tweeners.Count == 0)
+        if (tweenerBatchs.Count == 0)
             return;
         if (finished)
             Reset();
-        currentBatch = batches[currentIndex];
         paused = false;
     }
 

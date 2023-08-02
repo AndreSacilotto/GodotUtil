@@ -1,13 +1,13 @@
 ﻿namespace Util.Interpolation;
 
-public static partial class Easing
+partial class Easing
 {
     /// <summary>Default easing function signature</summary>
     /// <param name="percent">current percent or time</param>
     /// <param name="initial">initial value</param>
-    /// <param name="delta">the change between the initial and final value</param>
+    /// <param name="distance">the change between the initial and final value: (final - initial)</param>
     /// <param name="duration">duration of animation</param>
-    public delegate float EaseFunc(float percent, float initial, float delta, float duration);
+    public delegate float EaseFunc(float percent, float initial, float distance, float duration);
 
     public enum EaseEquation
     {
