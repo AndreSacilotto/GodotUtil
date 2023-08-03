@@ -57,15 +57,6 @@ partial class TweenSharp : IRequireGameLoop<float>
 
     #region Collection
 
-    public void Clear()
-    {
-        foreach (var batch in tweenerBatchs)
-            foreach (var tweener in batch)
-                tweener.OnTweenerFinish -= WhenTweenerEnd;
-        tweenerBatchs.Clear();
-        Reset();
-    }
-
     public void AddTweener(TweenerSharpDelay tweener)
     {
         tweener.OnTweenerFinish += WhenTweenerEnd;
@@ -79,6 +70,21 @@ partial class TweenSharp : IRequireGameLoop<float>
         foreach (var tweener in tweeners)
             tweener.OnTweenerFinish += WhenTweenerEnd;
         tweenerBatchs.Add(new TweenerBatchMultiple(tweeners));
+    }
+
+    public void Clear()
+    {
+        foreach (var batch in tweenerBatchs)
+            foreach (var tweener in batch)
+                tweener.OnTweenerFinish -= WhenTweenerEnd;
+        tweenerBatchs.Clear();
+        Reset();
+    }
+
+    public void ReverseTweenersOrder() 
+    {
+        Stop();
+        tweenerBatchs.Reverse();
     }
 
     #endregion

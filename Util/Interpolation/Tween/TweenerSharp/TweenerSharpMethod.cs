@@ -1,13 +1,12 @@
 ﻿namespace Util.Interpolation;
 
-public class TweenerSharpMethod : TweenerSharpDelay
+public class TweenerSharpMethod : TweenerSharpEasing
 {
     public delegate void InterpFunc(float interpolation);
 
     protected InterpFunc interpolationFunc;
-    protected Easing.EaseFunc easingFunc;
 
-    public TweenerSharpMethod(float duration, InterpFunc interpolationFunc, Easing.EaseFunc easingFunc) : base(duration)
+    public TweenerSharpMethod(float duration, InterpFunc interpolationFunc, Easing.EaseFunc easingFunc) : base(duration, easingFunc)
     {
         this.interpolationFunc = interpolationFunc;
         this.easingFunc = easingFunc;
@@ -20,19 +19,11 @@ public class TweenerSharpMethod : TweenerSharpDelay
     }
 
     #region Delegate Funcs
-
     public InterpFunc InterpolationFunc 
     {
         get => interpolationFunc;
         set => interpolationFunc = value;
     }
-    public Easing.EaseFunc EasingFunc
-    {
-        get => easingFunc;
-        set => easingFunc = value;
-    }
-    public void SetEasingFunc(Easing.EaseEquation easing) => easingFunc = Easing.GetEaseEquation(easing);
-
     #endregion
 
 }

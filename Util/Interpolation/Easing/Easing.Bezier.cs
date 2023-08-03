@@ -9,13 +9,13 @@ partial class Easing
     {
         var bez = new QuadBezierCurve(control.X, control.Y);
 
-        float Func(float percent, float initial, float delta, float duration)
+        float Func(float time, float initial, float change, float duration)
         {
-            var t = percent / duration;
+            var t = time / duration;
 
-            var r = bez.Sample(t);
+            var s = bez.Sample(t);
 
-            return delta * r + initial;
+            return initial + s * change;
         }
         return Func;
     }
@@ -24,13 +24,13 @@ partial class Easing
     {
         var bez = new CubicBezierCurve(control0.X, control0.Y, control1.X, control1.Y);
 
-        float Func(float percent, float initial, float delta, float duration)
+        float Func(float time, float initial, float change, float duration)
         {
-            var t = percent / duration;
+            var t = time / duration;
 
-            var r = bez.Sample(t);
+            var s = bez.Sample(t);
 
-            return delta * r + initial;
+            return initial + s * change;
         }
         return Func;
     }
