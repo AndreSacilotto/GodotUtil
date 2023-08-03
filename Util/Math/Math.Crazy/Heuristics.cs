@@ -59,7 +59,6 @@ public static class Heuristics
         return straightCost * Math.Max(diffX, diffY) + (diagonalCost - straightCost) * Math.Min(diffX, diffY);
     }
 
-
     #region Euclidean
     /// <summary> Absolute distance in a straight line </summary>
     public static float Euclidean(int x0, int x1, int y0, int y1)
