@@ -2,9 +2,13 @@
 
 namespace Util.Interpolation;
 
-public static partial class Smoothstep
+// https://en.Wikipedia.org/wiki/Smoothstep
+public static class Smoothstep
 {
-    // https://en.Wikipedia.org/wiki/Smoothstep
+    //[MethodImpl(INLINE)] public static float Step(float a, float b) => a <= b ? 1f : 0f;
+
+    [MethodImpl(INLINE)] public static float LinearStep(float x, float edge0 = 0f, float edge1 = 1f) => (x - edge0) / (edge1 - edge0);
+
 
     #region SOL_HSA | https://solhsa.com/interpolation/index.html
 
@@ -18,12 +22,14 @@ public static partial class Smoothstep
 
     #region Polynomial Smoothstep
 
+    /// <summary>Smoothstep</summary>
     [MethodImpl(INLINE)] public static float CubicSmoothstep(float x) => x * x * (3f - 2f * x);
-    [MethodImpl(INLINE)] public static float CubicInvSmoothstep(float x) => (float)(0.5 - MathF.Sin(MathF.Asin(1f - 2f * x) / 3f));
+    [MethodImpl(INLINE)] public static float CubicInvSmoothstep(float x) => (float)(0.5f - MathF.Sin(MathF.Asin(1f - 2f * x) / 3f));
 
     [MethodImpl(INLINE)] public static float QuarticSmoothstep(float x) => x * x * (2f - x * x);
     [MethodImpl(INLINE)] public static float QuarticInvSmoothstep(float x) => MathF.Sqrt(1f - MathF.Sqrt(1f - x));
 
+    /// <summary>Smootherstep</summary>
     [MethodImpl(INLINE)] public static float QuinticSmoothstep(float x) => x * x * x * (x * (x * 6f - 15f) + 10f);
 
     #endregion

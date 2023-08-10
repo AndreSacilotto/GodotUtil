@@ -49,7 +49,67 @@ public static partial class Easing
 
     #endregion
 
-    #region Quint
+    #region Cubic
+    public static float CubicIn(float time, float initial, float change, float duration)
+    {
+        time /= duration;
+        return change * UtilMath.PowCubic(time) + initial;
+    }
+
+    public static float CubicOut(float time, float initial, float change, float duration)
+    {
+        time /= duration - 1f;
+        return change * (UtilMath.PowCubic(time) + 1f) + initial;
+    }
+
+    public static float CubicInOut(float time, float initial, float change, float duration)
+    {
+        time = 2f * time / duration;
+        if (time < 1f)
+            return 0.5f * change * UtilMath.PowCubic(time) + initial;
+        time -= 2f;
+        return 0.5f * change * (UtilMath.PowCubic(time) + 2f) + initial;
+    }
+
+    public static float CubicOutIn(float time, float initial, float change, float duration)
+    {
+        var halfDelta = change * 0.5f;
+        if (time < duration * 0.5f)
+            return CubicOut(time * 2f, initial, halfDelta, duration);
+        return CubicIn(time * 2f - duration, initial + halfDelta, halfDelta, duration);
+    }
+    #endregion
+    
+    #region (Quad)dratic
+    public static float QuadIn(float time, float initial, float change, float duration)
+    {
+        return change * UtilMath.PowSquare(time / duration) + initial;
+    }
+
+    public static float QuadOut(float time, float initial, float change, float duration)
+    {
+        time /= duration;
+        return -change * time * (time - 2f) + initial;
+    }
+
+    public static float QuadInOut(float time, float initial, float change, float duration)
+    {
+        time = 2f * time / duration;
+        if (time < 1f)
+            return 0.5f * change * UtilMath.PowSquare(time) + initial;
+        return -0.5f * change * ((time - 1f) * (time - 3f) - 1f) + initial;
+    }
+
+    public static float QuadOutIn(float time, float initial, float change, float duration)
+    {
+        var halfDelta = change * .5f;
+        if (time < duration * 0.5f)
+            return QuadOut(time * 2f, initial, halfDelta, duration);
+        return QuadIn(time * 2f - duration, initial + halfDelta, halfDelta, duration);
+    }
+    #endregion
+
+    #region (Quint)ic
     public static float QuintIn(float time, float initial, float change, float duration)
     {
         return change * UtilMath.PowQuintic(time / duration) + initial;
@@ -103,35 +163,6 @@ public static partial class Easing
         if (time < duration * 0.5f)
             return QuartOut(time * 2f, initial, halfDelta, duration);
         return QuartIn(time * 2f - duration, initial + halfDelta, halfDelta, duration);
-    }
-    #endregion
-
-    #region (Quad)dratic
-    public static float QuadIn(float time, float initial, float change, float duration)
-    {
-        return change * UtilMath.PowSquare(time / duration) + initial;
-    }
-
-    public static float QuadOut(float time, float initial, float change, float duration)
-    {
-        time /= duration;
-        return -change * time * (time - 2f) + initial;
-    }
-
-    public static float QuadInOut(float time, float initial, float change, float duration)
-    {
-        time = 2f * time / duration;
-        if (time < 1f)
-            return 0.5f * change * UtilMath.PowSquare(time) + initial;
-        return -0.5f * change * ((time - 1f) * (time - 3f) - 1f) + initial;
-    }
-
-    public static float QuadOutIn(float time, float initial, float change, float duration)
-    {
-        var halfDelta = change * .5f;
-        if (time < duration * 0.5f)
-            return QuadOut(time * 2f, initial, halfDelta, duration);
-        return QuadIn(time * 2f - duration, initial + halfDelta, halfDelta, duration);
     }
     #endregion
 
@@ -229,37 +260,6 @@ public static partial class Easing
         if (time < duration * 0.5f)
             return ElasticOut(time * 2f, initial, halfDelta, duration);
         return ElasticIn(time * 2f - duration, initial + halfDelta, halfDelta, duration);
-    }
-    #endregion
-
-    #region Cubic
-    public static float CubicIn(float time, float initial, float change, float duration)
-    {
-        time /= duration;
-        return change * UtilMath.PowCubic(time) + initial;
-    }
-
-    public static float CubicOut(float time, float initial, float change, float duration)
-    {
-        time /= duration - 1f;
-        return change * (UtilMath.PowCubic(time) + 1f) + initial;
-    }
-
-    public static float CubicInOut(float time, float initial, float change, float duration)
-    {
-        time = 2f * time / duration;
-        if (time < 1f)
-            return 0.5f * change * UtilMath.PowCubic(time) + initial;
-        time -= 2f;
-        return 0.5f * change * (UtilMath.PowCubic(time) + 2f) + initial;
-    }
-
-    public static float CubicOutIn(float time, float initial, float change, float duration)
-    {
-        var halfDelta = change * 0.5f;
-        if (time < duration * 0.5f)
-            return CubicOut(time * 2f, initial, halfDelta, duration);
-        return CubicIn(time * 2f - duration, initial + halfDelta, halfDelta, duration);
     }
     #endregion
 
