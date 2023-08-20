@@ -38,6 +38,9 @@ public static partial class UtilMath
     [MethodImpl(INLINE)] public static int CeilToInt(float value) => (int)MathF.Ceiling(value);
     [MethodImpl(INLINE)] public static int CeilToInt(double value) => (int)Math.Ceiling(value);
 
+    [MethodImpl(INLINE)] public static int TruncateToInt(float value) => (int)MathF.Truncate(value);
+    [MethodImpl(INLINE)] public static int TruncateToInt(double value) => (int)Math.Truncate(value);
+
     #endregion
 
     #region Clamping
@@ -66,7 +69,35 @@ public static partial class UtilMath
 
     public static int GetDigit(int value, int power, int radix) => (int)(value / MathF.Pow(radix, power)) % radix;
 
-    [MethodImpl(INLINE)] public static float Fract(float x) => x - MathF.Floor(x);
+    [MethodImpl(INLINE)] public static float Fract(float x) => x - MathF.Truncate(x);
+    [MethodImpl(INLINE)] public static double Fract(double x) => x - Math.Truncate(x);
+
+    #endregion
+
+    #region DivRem
+
+    // Notice: do not trust floating points
+    // https://github.com/dotnet/runtime/issues/5213.
+    // I tested is also valid with my implementation
+
+    [MethodImpl(INLINE)]
+    public static float ModF(float dividend, float divisor) => dividend - MathF.Truncate(dividend / divisor) * divisor;
+
+    [MethodImpl(INLINE)]
+    public static float DivRem(float dividend, float divisor, out float remainer)
+    {            
+        var quotient = dividend / divisor;
+        //remainer = dividend % divisor;
+        remainer = dividend - MathF.Truncate(quotient) * divisor;
+        return quotient;
+    }
+    [MethodImpl(INLINE)]
+    public static (float Quotient, float Remainder) DivRem(float dividend, float divisor)
+    {
+        var quotient = dividend / divisor;
+        //remainer = dividend % divisor;
+        return (quotient, dividend - MathF.Truncate(quotient) * divisor);
+    }
 
     #endregion
 

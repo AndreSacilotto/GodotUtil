@@ -5,9 +5,8 @@ public static partial class UtilMath
 {
 
     #region Percent
-
-    [MethodImpl(INLINE)] public static float ValuePercent(float value, float max) => max != 0f ? value / max : 0f;
-    [MethodImpl(INLINE)] public static float ValuePercent(float value, float max, float min) => max != min ? (value - min) / (max - min) : 0f;
+    [MethodImpl(INLINE)] public static float ValuePercent(float value, float max) => max != 0f ? value / max : default;
+    [MethodImpl(INLINE)] public static float ValuePercent(float value, float max, float min) => max != min ? (value - min) / (max - min) : default;
 
     #endregion
 
