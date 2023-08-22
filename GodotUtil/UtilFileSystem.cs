@@ -2,10 +2,11 @@
 
 namespace GodotUtil;
 
-public static class UtilFile
+public static class UtilFileSystem
 {
     public static string UnixPath(string path) => path.Replace(@"\\", "/").Replace('\\', '/');
 
+    #region Read
     public static string ReadFile(string fullPath)
     {
         using var file = FileAccess.Open(fullPath, FileAccess.ModeFlags.Read);
@@ -13,7 +14,7 @@ public static class UtilFile
         {
             var error = FileAccess.GetOpenError();
             if (error != Error.Ok)
-                throw new GDException(typeof(UtilFile), error, nameof(ReadFile));
+                throw new GDException(typeof(UtilFileSystem), error, nameof(ReadFile));
             return default!;
         }
         else
@@ -27,12 +28,15 @@ public static class UtilFile
         {
             var error = FileAccess.GetOpenError();
             if (error != Error.Ok)
-                throw new GDException(typeof(UtilFile), error, nameof(ReadFile));
+                throw new GDException(typeof(UtilFileSystem), error, nameof(ReadFile));
             return default!;
         }
         else
             return action(file);
     }
+    #endregion
+
+    #region Write
 
     public static void WriteFile(string fullPath, string data)
     {
@@ -41,7 +45,7 @@ public static class UtilFile
         {
             var error = FileAccess.GetOpenError();
             if (error != Error.Ok)
-                throw new GDException(typeof(UtilFile), error, nameof(WriteFile));
+                throw new GDException(typeof(UtilFileSystem), error, nameof(WriteFile));
         }
         else
             file.StoreString(data);
@@ -54,13 +58,41 @@ public static class UtilFile
         {
             var error = FileAccess.GetOpenError();
             if (error != Error.Ok)
-                throw new GDException(typeof(UtilFile), error, nameof(WriteFile));
+                throw new GDException(typeof(UtilFileSystem), error, nameof(WriteFile));
         }
         else
             action(file);
     }
+    #endregion
 
 
+    #region Folders
 
+    public static string[] GetFilesAt(string path)
+    {
+        if (path[path.Length - 1] != '/')
+            throw new Exception("Invalid Path");
+        var arr = DirAccess.GetFilesAt(path);
+        for (int i = 0; i < arr.Length; i++)
+            arr[i] = path + arr[i];
+        return arr;
+    }
+
+    public static IEnumerable<string[]> GetFilesAt(string path, int depth)
+    {
+        if (path[path.Length - 1] != '/')
+            throw new Exception("Invalid Path");
+
+        yield return DirAccess.GetFilesAt(path);
+        if(depth > 0)
+        {
+            var folders = DirAccess.GetDirectoriesAt(path);
+            foreach (var f in folders)
+                foreach (var item in GetFilesAt(path + f + '/', depth - 1))
+                    yield return item;
+        }
+    }
+
+    #endregion
 
 }
