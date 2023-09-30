@@ -24,22 +24,16 @@ public class ConditionInt : IConditionEvent
         if (activeCount == 0u)
             return;
 
-        if (activeCount == 1u)
-            OnDesactivation?.Invoke();
-
         activeCount--;
-    }
 
-    public void UnrequestAll()
-    {
-        activeCount = 0u;
-        OnDesactivation?.Invoke();
+        if (activeCount == 0u)
+            OnDesactivation?.Invoke();
     }
 
     public void Reset()
     {
-        UnrequestAll();
-        Close();
+        activeCount = 0u;
+        OnDesactivation?.Invoke();
     }
 
     public void Close()

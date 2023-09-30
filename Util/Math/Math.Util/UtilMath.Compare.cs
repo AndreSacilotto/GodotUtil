@@ -66,8 +66,11 @@ public static partial class UtilMath
 
 
     #region Bool to Value
+    /// <summary>FALSE = 0 | TRUE = 1</summary>
     [MethodImpl(INLINE)] public static T BoolValue01<T>(bool value) where T : INumber<T> => value ? T.Zero : T.One;
+    /// <summary>FALSE = 1 | TRUE = 0</summary>
     [MethodImpl(INLINE)] public static T BoolValue10<T>(bool value) where T : INumber<T> => value ? T.One : T.Zero;
+    /// <summary>FALSE = -1 | TRUE = 1</summary>
     [MethodImpl(INLINE)] public static T BoolValue11<T>(bool value) where T : INumber<T>, ISignedNumber<T> => value ? T.One : T.NegativeOne;
     #endregion
 

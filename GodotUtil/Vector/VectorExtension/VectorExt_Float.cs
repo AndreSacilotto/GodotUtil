@@ -75,4 +75,10 @@ public static partial class VectorExt
     [MethodImpl(INLINE)] public static vec3_t Min(this vec3_t item, vec3_t min) => new(Math.Min(item.X, min.X), Math.Min(item.Y, min.Y), Math.Min(item.Z, min.Z));
 
     #endregion
+
+    #region Getting
+    [MethodImpl(INLINE)] public static vec2_t GetXY(this vec3_t item) => new(item.X, item.Y);
+    [MethodImpl(INLINE)] public static vec2_t GetXZ(this vec3_t item) => new(item.X, item.Z);
+    [MethodImpl(INLINE)] public static vec2_t GetYZ(this vec3_t item) => new(item.X, item.Z);
+    #endregion
 }

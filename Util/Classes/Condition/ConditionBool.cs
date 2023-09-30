@@ -27,7 +27,7 @@ public class ConditionBool : IConditionEvent
     public void Reset()
     {
         Active = false;
-        Close();
+        OnDesactivation?.Invoke();
     }
 
     public void Close()

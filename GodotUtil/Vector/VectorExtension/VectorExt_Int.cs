@@ -70,4 +70,9 @@ public static partial class VectorExt
 
     #endregion
 
+    #region Getting
+    [MethodImpl(INLINE)] public static vec2_t GetXY(this vec3_t item) => new(item.X, item.Y);
+    [MethodImpl(INLINE)] public static vec2_t GetXZ(this vec3_t item) => new(item.X, item.Z);
+    [MethodImpl(INLINE)] public static vec2_t GetYZ(this vec3_t item) => new(item.X, item.Z);
+    #endregion
 }

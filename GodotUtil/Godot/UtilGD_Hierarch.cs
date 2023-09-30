@@ -6,7 +6,6 @@ public static partial class UtilGD
 {
     [MethodImpl(INLINE)] public static SceneTree GetSceneTree() => (SceneTree)Engine.GetMainLoop();
 
-
     #region PackedScene->Add
     public static Node Instantiate(this PackedScene scene, Node parent, PackedScene.GenEditState editState = PackedScene.GenEditState.Disabled)
     {
@@ -31,6 +30,7 @@ public static partial class UtilGD
             parent.AddChild(children[i]);
     }
 
+    /// <summary>AddChild that returns the child. Use as "this.AddChild"</summary>
     [MethodImpl(INLINE)]
     public static T AddChild<T>(this Node parent, T node) where T : Node
     {
@@ -84,6 +84,27 @@ public static partial class UtilGD
         self.GetParent()?.RemoveChild(self);
         newParent.AddChild(self);
     }
+
+    public static void SwapOrder(this Node parent, Node child1, Node child2)
+    {
+        var index1 = child1.GetIndex();
+        var index2 = child2.GetIndex();
+        parent.MoveChild(child1, index2);
+        parent.MoveChild(child2, index1);
+    }
+
+    public static void RaiseOrder(this Node parent, Node child, int amount = 1)
+    {
+        var index = Math.Min(child.GetIndex() + amount, parent.GetChildCount()-1);
+        parent.MoveChild(child, index);
+    }
+
+    public static void DecreaseOrder(this Node parent, Node child, int amount = 1)
+    {
+        var index = Math.Max(child.GetIndex() - amount, 0);
+        parent.MoveChild(child, index);
+    }
+
 
     #endregion
 
