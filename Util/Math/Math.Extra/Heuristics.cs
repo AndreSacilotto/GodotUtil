@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Util.MathCrazy;
+namespace Util.MathExtra;
 
 public static class Heuristics
 {

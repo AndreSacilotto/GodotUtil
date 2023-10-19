@@ -1,14 +1,14 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Util.MathCrazy;
+namespace Util.MathExtra;
 
 public static class MathOptimization
 {
     #region Division
     /// <summary> Make a division using bitwise operator </summary>
-    /// <param name="divisor">Needs to be power of two</param>
+    /// <param name="divisorExponent">Needs to be power of two</param>
     [MethodImpl(INLINE)]
-    public static int PowerOf2Division(int value, Power2 divisor) => value >> divisor.GetExponent();
+    public static int PowerOf2Division(int value, int divisorExponent) => value >> divisorExponent;
 
     #endregion
 

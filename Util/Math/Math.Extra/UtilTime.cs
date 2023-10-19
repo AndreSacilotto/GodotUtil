@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Util.MathCrazy;
+namespace Util.MathExtra;
 
 public static class UtilTime
 {

@@ -46,7 +46,17 @@ public static class UtilEnum
     public static int EnumCount<T>() where T : Enum => Enum.GetValues(typeof(T)).Length;
 
     public static T[] EnumToArray<T>() where T : Enum => (T[])typeof(T).GetEnumValues();
-    public static Dictionary<TEnum, TValue> EnumToDictionary<TEnum, TValue>(Func<TValue> newFunc, params TEnum[] skip) where TEnum : Enum
+
+    public static Dictionary<TEnum, TValue> EnumToDictionary<TEnum, TValue>(Func<TEnum, TValue> newFunc) where TEnum : Enum
+    {
+        var arr = EnumToArray<TEnum>();
+        var len = arr.Length;
+        var dict = new Dictionary<TEnum, TValue>(len);
+        for (int i = 0, j; i < len; i++)
+            dict.Add(arr[i], newFunc(arr[i]));
+        return dict;
+    }
+    public static Dictionary<TEnum, TValue> EnumToDictionary<TEnum, TValue>(Func<TEnum, TValue> newFunc, params TEnum[] skip) where TEnum : Enum
     {
         var arr = EnumToArray<TEnum>();
         var len = arr.Length;
@@ -59,7 +69,7 @@ public static class UtilEnum
                     break;
             }
             if (j == skip.Length)
-                dict.Add(arr[i], newFunc());
+                dict.Add(arr[i], newFunc(arr[i]));
         }
         return dict;
     }

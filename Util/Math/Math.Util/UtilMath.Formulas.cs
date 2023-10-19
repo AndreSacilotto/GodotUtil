@@ -43,15 +43,18 @@ public static partial class UtilMath
     // https://math.stackexchange.com/questions/22348/how-to-add-and-subtract-values-from-an-average
     // size = number of elements that already exist
 
-    [MethodImpl(INLINE)] public static float AddToAverage(float average, float newValue, int newSize) => 
+    [MethodImpl(INLINE)]
+    public static float AddToAverage(float average, float newValue, int newSize) =>
         average + (newValue - average) / newSize;
-    [MethodImpl(INLINE)] public static float SubtractFromAverage(float average, float newValue, int newSize) => 
+    [MethodImpl(INLINE)]
+    public static float SubtractFromAverage(float average, float newValue, int newSize) =>
         average + (-newValue - average) / newSize;
-    [MethodImpl(INLINE)] public static float ReplaceInAverage(float average, int size, float oldValue, float newValue) => 
+    [MethodImpl(INLINE)]
+    public static float ReplaceInAverage(float average, int size, float oldValue, float newValue) =>
         (size * average - oldValue + newValue) / size;
-    [MethodImpl(INLINE)] public static float MergeAverages(float average1, int size1, float average2, int size2) => 
+    [MethodImpl(INLINE)]
+    public static float MergeAverages(float average1, int size1, float average2, int size2) =>
         (size1 * average1 + size2 * average2) / (size1 + size2);
 
     #endregion
-
 }
