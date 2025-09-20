@@ -1,5 +1,6 @@
-﻿using Godot;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+
+using Color = Godot.Color;
 
 namespace GodotUtil;
 
@@ -14,14 +15,14 @@ public static partial class UtilColor
     }
 
     private static readonly Random colorRng = new();
-    private static readonly Regex colorExpression = MyRegex();
 
-    [GeneratedRegex("#?[0-9A-Fa-f]{6}")]
-    private static partial Regex MyRegex();
 
-    public static bool HexStringIsValidColor(string value) => colorExpression.IsMatch(value);
+    [GeneratedRegex("#(?:[0-9A-Fa-f]{3}){1,2}")]
+    public static partial Regex HexColorRegex();
 
-    public static Color RandomColor(float alpha = 1) => new(colorRng.NextSingle(), colorRng.NextSingle(), colorRng.NextSingle(), alpha);
+    public static bool HexStringIsValidColor(string value) => HexColorRegex().IsMatch(value);
+
+    public static Color RandomColor(float alpha = 1f) => new(colorRng.NextSingle(), colorRng.NextSingle(), colorRng.NextSingle(), alpha);
 
     public static Color PseudoRandomColor(string colorStr, float alpha = 1)
     {
@@ -57,6 +58,9 @@ public static partial class UtilColor
         return L > 0.179f ? darkColor : lightColor;
     }
 
+    #endregion
+
+    #region From
 
 
     #endregion

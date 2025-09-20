@@ -4,7 +4,7 @@ public static partial class UtilMath
 {
     #region Constansts
 
-    public const float SQTR_2 = 1.41421356237F;
+    public const float SQTR_2 = 1.41421356237f;
 
     #endregion
 
@@ -45,7 +45,7 @@ public static partial class UtilMath
 
     #endregion
 
-    public const float EPSILON_FLOAT = 1E-06F;
-    public const float EPSILON_DOUBLE = 1E-12F;
+    public const float EPSILON_FLOAT = 1E-06f;
+    public const double EPSILON_DOUBLE = 1E-12f;
 
 }

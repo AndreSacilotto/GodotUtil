@@ -344,7 +344,7 @@ public static class UtilCollection
     #region List
 
     [MethodImpl(INLINE)]
-    public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort(ComparerReverse<T>.Default);
+    public static void SortReverse<T>(this List<T> list) where T : IComparable<T> => list.Sort(Classes.ComparerReverse<T>.Default);
 
     [MethodImpl(INLINE)]
     public static int AddSorted<T>(this List<T> list, T item) where T : IComparable<T>

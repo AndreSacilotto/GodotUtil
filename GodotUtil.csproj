@@ -1,7 +1,7 @@
-﻿<Project Sdk="Godot.NET.Sdk/4.1.2">
+﻿<Project Sdk="Godot.NET.Sdk/4.5.0">
 	<PropertyGroup>
 		<LangVersion>11.0</LangVersion>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 </Project>

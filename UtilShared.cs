@@ -1,10 +1,10 @@
 ﻿global using System;
 global using System.Collections.Generic;
-global using static Util.UtilShared;
 global using GDC = Godot.Collections;
+global using static GodotUtil.UtilShared;
 using System.Runtime.CompilerServices;
 
-namespace Util;
+namespace GodotUtil;
 
 public static class UtilShared
 {

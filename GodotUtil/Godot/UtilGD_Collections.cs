@@ -1,4 +1,6 @@
-﻿namespace Godot;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Godot;
 
 public static partial class UtilGD
 {
@@ -62,6 +64,17 @@ public static partial class UtilGD
     #endregion
 
     #region Collections Dictionary
+
+    public static bool TryGetValue<[MustBeVariant]T>(this GDC.Dictionary gdDict, Variant key, [MaybeNullWhen(false)] out T value)
+    {
+        if (gdDict.TryGetValue(key, out var variant))
+        {
+            value = variant.As<T>();
+            return true;
+        }
+        value = default;
+        return false;
+    }
 
     public static Dictionary<Variant, Variant> GDDictToDict(GDC.Dictionary gdDict)
     {

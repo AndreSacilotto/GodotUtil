@@ -8,10 +8,10 @@ public static class Heuristics
     {
         Manhattan,
         Chebyshev,
+        Octile,
         Euclidean,
         EuclideanSquared,
         CosineSimilarity,
-        Minkowski,
     }
 
     /// <summary> 
@@ -36,14 +36,25 @@ public static class Heuristics
 
     /// <summary> 
     /// Cells distance number in a grid <br/> 
-    /// Use when diagonal move is allowed 
+    /// Use when diagonal move is allowed, but it cost more
     /// </summary>
     public static float Octile(int x0, int x1, int y0, int y1)
     {
         int diffX = Math.Abs(x1 - x0);
         int diffY = Math.Abs(y1 - y0);
-
         return Math.Max(diffX, diffY) + UtilMath.SQTR_2 * Math.Min(diffX, diffY);
+    }
+    public static int OctileInt(int x0, int x1, int y0, int y1)
+    {
+        const int BASE = 10;
+        const int INT_SQTR2 = (int)(UtilMath.SQTR_2 * BASE);
+
+        int diffX = Math.Abs(x1 - x0);
+        int diffY = Math.Abs(y1 - y0);
+
+        if (diffX > diffY)
+            return BASE * diffY + INT_SQTR2 * (diffX - diffY);
+        return BASE * diffX + INT_SQTR2 * (diffY - diffX);
     }
 
     /// <summary> 
@@ -59,7 +70,6 @@ public static class Heuristics
         return straightCost * Math.Max(diffX, diffY) + (diagonalCost - straightCost) * Math.Min(diffX, diffY);
     }
 
-    #region Euclidean
     /// <summary> Absolute distance in a straight line </summary>
     public static float Euclidean(int x0, int x1, int y0, int y1)
     {
@@ -67,7 +77,6 @@ public static class Heuristics
         int diffY = Math.Abs(y1 - y0);
         return MathF.Sqrt(diffX * diffX + diffY * diffY);
     }
-
 
     /// <summary> 
     /// Absolute distance in a straight line - 
@@ -80,14 +89,11 @@ public static class Heuristics
         return diffX * diffX + diffY * diffY;
     }
 
-    #endregion
-
     /// <summary>Using cosine to find distance between two points </summary>
     public static float CosineSimilarity(int x0, int x1, int y0, int y1)
     {
         var v0 = new Vector2(x0, y0);
         var v1 = new Vector2(x1, y1);
-
         return Vector2.Dot(v0, v1) / (v0.Length() * v1.Length());
     }
 

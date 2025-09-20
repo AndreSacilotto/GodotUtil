@@ -52,7 +52,7 @@ public static class UtilEnum
         var arr = EnumToArray<TEnum>();
         var len = arr.Length;
         var dict = new Dictionary<TEnum, TValue>(len);
-        for (int i = 0, j; i < len; i++)
+        for (int i = 0; i < len; i++)
             dict.Add(arr[i], newFunc(arr[i]));
         return dict;
     }
